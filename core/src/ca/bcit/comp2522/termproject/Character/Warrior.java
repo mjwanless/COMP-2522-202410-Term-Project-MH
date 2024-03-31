@@ -1,4 +1,4 @@
-package ca.bcit.comp2522.termproject;
+package ca.bcit.comp2522.termproject.Character;
 
 public class Warrior extends Character {
     private int strength;

@@ -1,11 +1,11 @@
-package ca.bcit.comp2522.termproject;
+package ca.bcit.comp2522.termproject.Character;
 
-public class Rouge extends Character {
+public class Wizzard extends Character {
     private int strength;
     private int defense;
     private int evade;
 
-    public Rouge(String name, int strength, int defense, int evade) {
+    public Wizzard(String name, int strength, int defense, int evade) {
         super(name);
         this.strength = strength;
         this.defense = defense;
@@ -26,7 +26,7 @@ public class Rouge extends Character {
 
     @Override
     public String toString() {
-        return "Rouge{" +
+        return "Wizzard{" +
                 "name='" + getName() + '\'' +
                 ", strength=" + strength +
                 ", defense=" + defense +

@@ -1,4 +1,4 @@
-package ca.bcit.comp2522.termproject;
+package ca.bcit.comp2522.termproject.Character;
 
 abstract class Character {
     private String name;
