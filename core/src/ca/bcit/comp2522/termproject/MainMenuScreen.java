@@ -68,6 +68,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 Gdx.app.exit(); // Exit the application
+                System.exit(0); // Ensure that the application exits properly
             }
         });
 
