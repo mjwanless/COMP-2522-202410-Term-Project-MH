@@ -8,7 +8,7 @@ import ca.bcit.comp2522.termproject.DiceGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setWindowedMode(800, 600);
+		config.setWindowedMode(1000, 800);
 		config.setForegroundFPS(60);
 		config.setTitle("DICE GAME");
 		new Lwjgl3Application(new DiceGame(), config);
