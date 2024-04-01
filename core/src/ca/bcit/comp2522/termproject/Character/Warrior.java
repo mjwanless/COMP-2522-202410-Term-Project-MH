@@ -1,36 +1,35 @@
 package ca.bcit.comp2522.termproject.Character;
 
 public class Warrior extends Character {
-    private int strength;
-    private int defense;
-    private int evade;
+    private static final String IMAGE_PATH = "Characters/Warrior.jpg";
 
-    public Warrior(String name, int strength, int defense, int evade) {
-        super(name);
-        this.strength = strength;
-        this.defense = defense;
-        this.evade = evade;
+    public Warrior() {
+        // Assuming you have specific values for Paladin's stats
+        // and you are storing the image in the 'Characters' directory.
+        super("Warrior", 5, 20, 5, 1, IMAGE_PATH);
     }
 
-    public int getStrength() {
-        return strength;
+    // Since strength, health, defense, and evade are already in the Character class,
+    // you don't need to redeclare them here unless you have class-specific behavior.
+    @Override
+    public String getImagePath() {
+        return IMAGE_PATH;
     }
 
-    public int getDefense() {
-        return defense;
+    @Override
+    public String getStatsAsString() {
+        return String.format("Name: %s, Strength: %d, Health: %d, Defense: %d, Evade: %d",
+                getName(), getStrength(), getHealth(), getDefense(), getEvade());
     }
-
-    public int getEvade() {
-        return evade;
-    }
-
+    // Override toString() to include Warrior-specific properties if there are any.
     @Override
     public String toString() {
         return "Warrior{" +
                 "name='" + getName() + '\'' +
-                ", strength=" + strength +
-                ", defense=" + defense +
-                ", evade=" + evade +
+                ", strength=" + getStrength() +
+                ", health=" + getHealth() +
+                ", defense=" + getDefense() +
+                ", evade=" + getEvade() +
                 '}';
     }
 }
