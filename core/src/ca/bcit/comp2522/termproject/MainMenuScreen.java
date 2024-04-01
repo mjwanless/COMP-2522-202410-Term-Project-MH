@@ -52,7 +52,8 @@ public class MainMenuScreen implements Screen {
         newGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                // Handle new game action
+                // Change to the intro screen
+                game.setScreen(new IntroScreen(game));
             }
         });
 
