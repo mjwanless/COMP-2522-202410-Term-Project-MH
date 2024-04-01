@@ -1,17 +1,18 @@
 package ca.bcit.comp2522.termproject;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 
+// This class is the main entry point of the program.
 public class DiceGame extends Game {
 	SpriteBatch batch;
 	Texture img;
-	
+
+//	The first thing that happens is this create method is called. It then creates a new SpriteBatch for optimized
+//	rendering of images and sprites.
 	@Override
 	public void create () {
 		batch = new SpriteBatch();

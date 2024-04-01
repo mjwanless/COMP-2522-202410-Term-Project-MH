@@ -1,16 +1,16 @@
 package ca.bcit.comp2522.termproject;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -20,16 +20,19 @@ public class MainMenuScreen implements Screen {
     private final Texture img;
     private Stage stage;
     private Skin skin;
+    private AssetManager assetManager;
+    private Music mainMenuMusic;
 
     public MainMenuScreen(final DiceGame game) {
         this.game = game;
         batch = new SpriteBatch();
         img = new Texture("MainScreenBgTemp.jpg");
 
-        // Initialize Stage and Skin
+        // Initialize Stage and Skin. The stage manages UI elements (like buttons and labels).
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json")); // Ensure you have uiskin.json and related assets
 
+        assetManager = new AssetManager();
         setupUI();
     }
 
@@ -55,6 +58,7 @@ public class MainMenuScreen implements Screen {
                 // Change to the intro screen
                 game.setScreen(new IntroScreen(game));
             }
+
         });
 
         loadGameButton.addListener(new ClickListener() {
@@ -88,6 +92,13 @@ public class MainMenuScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage); // Important for capturing button clicks
+
+        // Load and begin playing the music
+        assetManager.load("Music/101 Presentiment.mp3", Music.class);
+        assetManager.finishLoading();
+        mainMenuMusic = assetManager.get("Music/101 Presentiment.mp3", Music.class);
+        mainMenuMusic.setLooping(true);
+        mainMenuMusic.play();
     }
 
     @Override
@@ -118,6 +129,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void hide() {
+        mainMenuMusic.stop();
         // no-op
     }
 
@@ -127,5 +139,6 @@ public class MainMenuScreen implements Screen {
         img.dispose();
         stage.dispose(); // Dispose of the stage to clean up resources
         skin.dispose();
+        mainMenuMusic.dispose();
     }
 }
