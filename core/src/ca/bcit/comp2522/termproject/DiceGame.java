@@ -1,31 +1,38 @@
 package ca.bcit.comp2522.termproject;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class DiceGame extends ApplicationAdapter {
+public class DiceGame extends Game {
 	SpriteBatch batch;
 	Texture img;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		this.setScreen(new MainMenuScreen(this)); // Set the main menu screen when the game starts
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+		super.render(); // Important to call this to render the current screen
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
 		img.dispose();
+
+	}
+
+	// Utility method for clearing the screen, may be implemented in the future
+	public void clearScreen() {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	}
 }
