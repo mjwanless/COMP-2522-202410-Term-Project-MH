@@ -1,11 +1,13 @@
 package ca.bcit.comp2522.termproject;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -76,6 +78,29 @@ public class IntroScreen implements Screen {
         introScreenMusic.setLooping(true);
         introScreenMusic.play();
 
+        // Add a listener for skipping the intro
+        stage.addListener(new ClickListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == Input.Keys.SPACE || keycode == Input.Keys.ENTER) {
+                    skipIntro();
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                skipIntro();
+            }
+        });
+
+    }
+
+    // Create a method to handle the skipping of the intro
+    private void skipIntro() {
+        introScreenMusic.stop(); // Stop the music
+        game.setScreen(new CharacterSelectionScreen(game)); // Switch to the character selection screen
     }
 
     @Override
