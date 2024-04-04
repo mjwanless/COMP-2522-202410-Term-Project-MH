@@ -105,7 +105,7 @@ public class CharacterSelectionScreen implements Screen {
             mainTable.row(); // Start a new row for the next character
         }
 
-// Confirm button at the bottom of the table
+        // Confirm button at the bottom of the table
         TextButton confirmButton = new TextButton("Confirm", skin);
         confirmButton.addListener(new ClickListener() {
             @Override

@@ -1,5 +1,6 @@
 package ca.bcit.comp2522.termproject;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -14,7 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 public class IntroScreen implements Screen {
 
@@ -30,7 +34,7 @@ public class IntroScreen implements Screen {
         this.game = game;
         batch = new SpriteBatch();
         // Load an intro image or animation
-        img = new Texture("backgrounds/forest_background.jpeg");
+        img = new Texture("backgrounds/IntroBackground.jpg");
 
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json")); // Ensure you have uiskin.json and related assets
@@ -45,11 +49,12 @@ public class IntroScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        // Optional: Enable debug lines
+        // Enable debug lines
         // table.setDebug(true);
 
         // Create UI components
         Label titleLabel = new Label("Test next area", skin);
+        titleLabel.setAlignment(Align.center);
         TextButton nextAreaButton = new TextButton("Next Area", skin);
 
         // Add listeners to buttons
@@ -62,9 +67,16 @@ public class IntroScreen implements Screen {
 
         });
 
-        // Add components to the table
+        //Add components to the table
         table.add(titleLabel).padBottom(20).row(); // Add titleLabel with padding and move to next row
-        table.add(nextAreaButton).padTop(10); // Add nextAreaButton with padding at the top
+        table.row(); // Skip a row to move the button to the bottom
+        table.add(nextAreaButton).expand().bottom().padBottom(10); // Add nextAreaButton with padding at the bottom
+
+        titleLabel.addAction(Actions.sequence(
+                Actions.moveTo(titleLabel.getX(), Gdx.graphics.getHeight()),
+                Actions.delay(1f),
+                Actions.moveTo(titleLabel.getX(), -Gdx.graphics.getHeight(), 10f)
+        ));
     }
 
     @Override
@@ -119,7 +131,7 @@ public class IntroScreen implements Screen {
     }
     @Override
     public void resize(int width, int height) {
-        // Resize the intro assets or elements
+        stage.getViewport().update(width, height, true);
     }
     @Override
     public void pause() {
