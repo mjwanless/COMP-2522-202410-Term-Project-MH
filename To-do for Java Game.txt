@@ -1,0 +1,75 @@
+Game to-dos:
+
+Scenes and visual tweaks:
+====================================================================
+Main screen:
+	- Change Title to a better name than "Dice Game"
+	- Load - Doesn't work yet; Look at after game logic finished
+	- Exit - Fine
+	
+Current Forest Scene:
+	- Change background to book/Tavern/WC 2-style background
+	- Text story (scrolling or not)
+	- Button to character select
+	
+Character Select:
+	- Tweak code to provide warning when user tries to continue without selecting exactly two classes
+	- Maybe change names of classes at character click on names
+
+Screens to finish:
+	- Forest (1st)
+		- This has button that goes to a choice between Desert/Volcano
+	- Desert/Volcano
+	- Castle
+	- Ending (story/Exit after boss)
+	- Death screen (At character death)
+	- All of these need background/music
+	
+For all:
+	- Button that leads to screen exit with either Save/Exit and Save/Not exit
+	
+=====================================================================
+Combat loop:
+
+- showEncounter()
+	- Darken background
+	- display message
+	- tap to proceed
+	- display character and enemies
+	
+- EnemyGeneration()
+	- generates enemies to display
+	- # of enemies
+	- stats
+	- portrait
+	- etc...
+
+- PlayerGeneration()
+	- Same as above, but for player
+	
+- DicerollForInitiative()
+	- random int that lets player or comp go first
+	- indicates turn order
+	- use enum for player/enemy selection
+	
+- PLayerTurn()
+	- rolldice()
+	- ShowDice()
+	- playerSelectDice()
+		- click on one die in each column of the character row
+	- SelectEnemyToAttack()
+	
+- EnemyTurn()
+	- attacks random ally with randInt() or other fun function
+	
+- CheckForDead()
+	- check player and enemy after each attack
+	- If player/enemy dies
+		- remove from flow of combat
+		- destroy portrait if enemy dies, but shade character portrait if character dies
+		
+- OnceAllDead()
+	- once characters dead, lead to gameOver screen
+	- once all enemies dead, move to rest and next battle
+	
+
