@@ -4,16 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.graphics.Color;
 
 import ca.bcit.comp2522.termproject.Character.Character;
@@ -32,8 +27,7 @@ public class CharacterSelectionScreen implements Screen {
     private Stage stage;
     private Skin skin;
     private Character[] availableCharacters;
-    private Character[] selectedCharacters;
-    private int numberOfSelectedCharacters;
+    private ArrayList<Character> selectedCharacters;
     private TextButton[] selectButtons;
     private TextField[] nameTextFields;
 
@@ -43,14 +37,13 @@ public class CharacterSelectionScreen implements Screen {
         this.img = new Texture("backgrounds/CharacterSelectionBg.jpg");
         this.stage = new Stage(new ScreenViewport());
         this.skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
-        this.availableCharacters = new Character[] {
-                new Paladin(), // Paladin must have a default constructor setting the name, stats, and imagePath
+        this.availableCharacters = new Character[]{
+                new Paladin(),
                 new Rogue(),
                 new Warrior(),
                 new Wizard()
         };
-        this.selectedCharacters = new Character[2];
-        this.numberOfSelectedCharacters = 0;
+        this.selectedCharacters = new ArrayList<>();
         this.selectButtons = new TextButton[availableCharacters.length];
         this.nameTextFields = new TextField[availableCharacters.length];
         setupUI();
@@ -89,7 +82,7 @@ public class CharacterSelectionScreen implements Screen {
             selectButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if (selectedCharacters.contains(character)) {
+                   if (selectedCharacters.contains(character)) {
                         // Character is already selected, deselect it
                         selectedCharacters.remove(character);
                         selectButton.setText("Select");
@@ -112,18 +105,18 @@ public class CharacterSelectionScreen implements Screen {
             mainTable.row(); // Start a new row for the next character
         }
 
-        // Confirm button at the bottom of the table
+// Confirm button at the bottom of the table
         TextButton confirmButton = new TextButton("Confirm", skin);
         confirmButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (selectedCharacters.size() == 2) {
-                    // Proceed with the game using the selected characters
-                    // For example, you can set the screen to the game screen and pass the selected characters
-                    game.setScreen(new DesertScreen(game));
+                    // Convert the ArrayList to an array and pass it to the DesertScreen
+                    Character[] selectedCharsArray = selectedCharacters.toArray(new Character[0]);
+                    game.setScreen(new DesertScreen(game, selectedCharsArray));
                 } else {
                     // Notify the user that two characters need to be selected
-                    // You can use a dialog box, toast message, or any other UI element for this
+                    // Implement the logic for notification
                 }
             }
         });
@@ -173,6 +166,7 @@ public class CharacterSelectionScreen implements Screen {
         img.dispose();
         stage.dispose();
         skin.dispose();
+
     }
 
 }
