@@ -57,7 +57,7 @@ public class IntroScreen implements Screen {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 // Change to the intro screen
-                game.setScreen(new DesertScreen(game));
+                game.setScreen(new CharacterSelectionScreen(game));
             }
 
         });
