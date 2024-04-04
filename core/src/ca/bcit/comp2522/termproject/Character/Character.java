@@ -26,6 +26,13 @@ public abstract class Character {
     public int getHealth() { return health; }
     public int getDefense() { return defense; }
     public int getEvade() { return evade; }
+    public Texture getImage() {
+        return image;
+    }
+    public String getHealthString() {
+        return "HP: " + this.health + "/" + this.health; // if you don't have max health
+        // if you had a maxHealth property it would be "HP: " + this.health + "/" + this.maxHealth;
+    }
     public abstract String getImagePath();
     public abstract String getStatsAsString();
 
