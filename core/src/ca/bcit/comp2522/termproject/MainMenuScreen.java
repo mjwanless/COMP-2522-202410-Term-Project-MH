@@ -46,7 +46,7 @@ public class MainMenuScreen implements Screen {
         // table.setDebug(true);
 
         // Create UI components
-        Label titleLabel = new Label("Dice Game", skin);
+        Label titleLabel = new Label("Dice Adventure 2: Electric Boogaloo ", skin);
         TextButton newGameButton = new TextButton("New Game", skin);
         TextButton loadGameButton = new TextButton("Load Game", skin);
         TextButton exitButton = new TextButton("Exit", skin);

@@ -53,7 +53,7 @@ public class IntroScreen implements Screen {
         // table.setDebug(true);
 
         // Create UI components
-        Label titleLabel = new Label("Test next area", skin);
+        Label titleLabel = new Label("This is a big story; This is where text story slides down!", skin);
         titleLabel.setAlignment(Align.center);
         TextButton nextAreaButton = new TextButton("Next Area", skin);
 
@@ -67,16 +67,23 @@ public class IntroScreen implements Screen {
 
         });
 
-        //Add components to the table
-        table.add(titleLabel).padBottom(20).row(); // Add titleLabel with padding and move to next row
-        table.row(); // Skip a row to move the button to the bottom
-        table.add(nextAreaButton).expand().bottom().padBottom(10); // Add nextAreaButton with padding at the bottom
+        // Center titleLabel horizontally and start from the vertical middle
+        float initialYPosition = Gdx.graphics.getHeight() / 2f + titleLabel.getHeight() / 2f; // Center vertically
+        float initialXPosition = (Gdx.graphics.getWidth() - titleLabel.getWidth()) / 2; // Center horizontally
+        titleLabel.setPosition(initialXPosition, initialYPosition); // Set initial position for animation
 
         titleLabel.addAction(Actions.sequence(
-                Actions.moveTo(titleLabel.getX(), Gdx.graphics.getHeight()),
-                Actions.delay(1f),
-                Actions.moveTo(titleLabel.getX(), -Gdx.graphics.getHeight(), 10f)
+                Actions.moveTo(initialXPosition, initialYPosition),
+                Actions.delay(1f), // Wait for 1 second before scrolling
+                Actions.moveTo(initialXPosition, -titleLabel.getHeight(), 10f) // Animate to move up
         ));
+
+        // Due to manual positioning, we won't add titleLabel to the table
+        stage.addActor(titleLabel); // Add directly to the stage instead
+
+        // Position the button at the bottom of the screen
+        table.row(); // Skip a row to move the button to the bottom
+        table.add(nextAreaButton).expand().bottom().padBottom(10);
     }
 
     @Override
