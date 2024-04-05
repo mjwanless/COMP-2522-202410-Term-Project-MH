@@ -1,7 +1,10 @@
 package ca.bcit.comp2522.termproject;
 
+import ca.bcit.comp2522.termproject.Character.Character;
+import ca.bcit.comp2522.termproject.Character.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,13 +12,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-import ca.bcit.comp2522.termproject.Character.Character;
-import ca.bcit.comp2522.termproject.Character.Paladin;
-import ca.bcit.comp2522.termproject.Character.Rogue;
-import ca.bcit.comp2522.termproject.Character.Warrior;
-import ca.bcit.comp2522.termproject.Character.Wizard;
 
 import java.util.ArrayList;
 
@@ -30,6 +32,8 @@ public class CharacterSelectionScreen implements Screen {
     private ArrayList<Character> selectedCharacters;
     private TextButton[] selectButtons;
     private TextField[] nameTextFields;
+    private AssetManager assetManager;
+    private Music characterSelectMusic;
 
     public CharacterSelectionScreen(final DiceGame game) {
         this.game = game;
@@ -46,6 +50,8 @@ public class CharacterSelectionScreen implements Screen {
         this.selectedCharacters = new ArrayList<>();
         this.selectButtons = new TextButton[availableCharacters.length];
         this.nameTextFields = new TextField[availableCharacters.length];
+
+        assetManager = new AssetManager();
         setupUI();
     }
 
@@ -93,7 +99,7 @@ public class CharacterSelectionScreen implements Screen {
                             selectButton.setText("Selected");
                         } else {
                             // Notify the user that only two characters can be selected
-                            // You can use a dialog box, toast message, or any other UI element for this
+
                         }
                     }
                 }
@@ -111,9 +117,9 @@ public class CharacterSelectionScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (selectedCharacters.size() == 2) {
-                    // Convert the ArrayList to an array and pass it to the DesertScreen
+                    // Convert the ArrayList to an array and pass it to the Forest Screen
                     Character[] selectedCharsArray = selectedCharacters.toArray(new Character[0]);
-                    game.setScreen(new DesertScreen(game, selectedCharsArray));
+                    game.setScreen(new ForestScreen(game, selectedCharsArray));
                 } else {
                     // Notify the user that two characters need to be selected
                     // Implement the logic for notification
@@ -131,6 +137,12 @@ public class CharacterSelectionScreen implements Screen {
     public void show() {
         Gdx.input.setInputProcessor(stage);
         // Set up any initial settings or assets for character selection
+
+        assetManager.load("Music/106 Guardia Millennial Fair.mp3", Music.class);
+        assetManager.finishLoading();
+        characterSelectMusic = assetManager.get("Music/106 Guardia Millennial Fair.mp3", Music.class);
+        characterSelectMusic.setLooping(true);
+        characterSelectMusic.play();
     }
 
     @Override
@@ -158,6 +170,7 @@ public class CharacterSelectionScreen implements Screen {
     }
     @Override
     public void hide() {
+        characterSelectMusic.stop();
         // Dispose of any intro assets or elements
     }
     @Override
@@ -166,7 +179,7 @@ public class CharacterSelectionScreen implements Screen {
         img.dispose();
         stage.dispose();
         skin.dispose();
-
+        characterSelectMusic.dispose();
     }
 
 }

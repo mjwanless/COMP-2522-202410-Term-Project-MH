@@ -4,8 +4,7 @@ Scenes and visual tweaks:
 ====================================================================
 Main screen:
 	- Load - Doesn't work yet; Look at after game logic finished
-	- Exit - Fine
-	
+
 Character Select:
 	- Tweak code to provide warning when user tries to continue without selecting exactly two classes
 	- Maybe change names of classes at character click on names

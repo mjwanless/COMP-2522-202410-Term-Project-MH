@@ -8,14 +8,13 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 public class IntroScreen implements Screen {
 
@@ -119,9 +118,9 @@ public class IntroScreen implements Screen {
         // Prepare any assets or variables for the intro
         Gdx.input.setInputProcessor(stage);
 
-        assetManager.load("Music/111 Secret of the Forest.mp3", Music.class);
+        assetManager.load("Music/222 Magus' Castle.mp3", Music.class);
         assetManager.finishLoading();
-        introScreenMusic = assetManager.get("Music/111 Secret of the Forest.mp3", Music.class);
+        introScreenMusic = assetManager.get("Music/222 Magus' Castle.mp3", Music.class);
         introScreenMusic.setLooping(true);
         introScreenMusic.play();
 

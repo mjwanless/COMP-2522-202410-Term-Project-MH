@@ -28,12 +28,7 @@ public class DesertScreen implements Screen {
         batch = new SpriteBatch();
         img = new Texture("backgrounds/desert_background.jpeg");
         assetManager = new AssetManager();
-        // Load and play music
-        assetManager.load("Music/201 Ruined World.mp3", Music.class);
-        assetManager.finishLoading();
-        desertScreenMusic = assetManager.get("Music/201 Ruined World.mp3", Music.class);
-        desertScreenMusic.setLooping(true);
-        desertScreenMusic.play();
+
     }
 
     @Override
@@ -42,6 +37,12 @@ public class DesertScreen implements Screen {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
 
+        // Load and play music
+        assetManager.load("Music/201 Ruined World.mp3", Music.class);
+        assetManager.finishLoading();
+        desertScreenMusic = assetManager.get("Music/201 Ruined World.mp3", Music.class);
+        desertScreenMusic.setLooping(true);
+        desertScreenMusic.play();
     }
 
     @Override
@@ -150,5 +151,7 @@ public class DesertScreen implements Screen {
         for (Character character : selectedCharacters) {
             character.dispose();
         }
+
+
     }
 }
