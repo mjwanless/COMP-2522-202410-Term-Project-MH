@@ -34,7 +34,7 @@ public class CharacterSelectionScreen implements Screen {
     public CharacterSelectionScreen(final DiceGame game) {
         this.game = game;
         this.batch = new SpriteBatch();
-        this.img = new Texture("backgrounds/CharacterSelectionBg.jpg");
+        this.img = new Texture("backgrounds/CharacterSelectBackground.jpeg");
         this.stage = new Stage(new ScreenViewport());
         this.skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
         this.availableCharacters = new Character[]{

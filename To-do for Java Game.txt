@@ -6,10 +6,6 @@ Main screen:
 	- Load - Doesn't work yet; Look at after game logic finished
 	- Exit - Fine
 	
-Current Forest Scene:
-	- Change background to book/Tavern/WC 2-style background
-	- Button to character select
-	
 Character Select:
 	- Tweak code to provide warning when user tries to continue without selecting exactly two classes
 	- Maybe change names of classes at character click on names
