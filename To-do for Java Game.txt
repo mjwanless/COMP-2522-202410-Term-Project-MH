@@ -12,11 +12,7 @@ Character Select:
 Screens to finish:
 	- Forest (1st)
 		- This has button that goes to a choice between Desert/Volcano
-	- Desert/Volcano
-	- Castle
-	- Ending (story/Exit after boss)
-	- Death screen (At character death)
-	- All of these need background/music
+    - Find backgrounds/music for character death/other non-combat screens
 	
 For all:
 	- Button that leads to screen exit with either Save/Exit and Save/Not exit

@@ -1,5 +1,6 @@
 package ca.bcit.comp2522.termproject;
 
+import ca.bcit.comp2522.termproject.Character.Character;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -8,8 +9,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import ca.bcit.comp2522.termproject.Character.Character;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class DesertScreen implements Screen {
 
@@ -20,15 +26,45 @@ public class DesertScreen implements Screen {
     private AssetManager assetManager;
     private Music desertScreenMusic;
     private Character[] selectedCharacters;
+    private Stage stage;
+    private Skin skin;
 
 
-    public DesertScreen(final DiceGame game, Character[] selectedCharacters) {
+    public DesertScreen(final DiceGame game, final Character[] selectedCharacters) {
         this.game = game;
         this.selectedCharacters = selectedCharacters;
         batch = new SpriteBatch();
         img = new Texture("backgrounds/desert_background.jpeg");
-        assetManager = new AssetManager();
 
+        stage = new Stage(new ScreenViewport());
+        skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
+
+        assetManager = new AssetManager();
+        setupUI();
+    }
+
+
+    private void setupUI() {
+        Table mainTable = new Table();
+        mainTable.setFillParent(true);
+        stage.addActor(mainTable);
+
+        // Adjust the pad, spacing, and sizes as needed
+        mainTable.defaults().pad(5).space(5);
+
+        TextButton goToVolcanoButton = new TextButton("Go to Volcano", skin);
+        goToVolcanoButton.setSize(750, 100); // Set the size of the button
+        // Position the button at the bottom center of the screen
+        goToVolcanoButton.setPosition((Gdx.graphics.getWidth() - goToVolcanoButton.getWidth()) / 2, 100); // Raise it 20px above the bottom
+
+        goToVolcanoButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                game.setScreen(new VolcanoScreen(game, selectedCharacters)); // Transition to DesertScreen
+            }
+        });
+
+        stage.addActor(goToVolcanoButton);
     }
 
     @Override
@@ -36,6 +72,7 @@ public class DesertScreen implements Screen {
         // Prepare any assets or variables for the intro
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
+        Gdx.input.setInputProcessor(stage);
 
         // Load and play music
         assetManager.load("Music/201 Ruined World.mp3", Music.class);
@@ -56,6 +93,9 @@ public class DesertScreen implements Screen {
 
         renderSelectedCharacters(batch, shapeRenderer);
         // Handle additional rendering or logic here
+
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
     }
 
     private void renderSelectedCharacters(SpriteBatch batch, ShapeRenderer shapeRenderer) {
@@ -133,6 +173,7 @@ public class DesertScreen implements Screen {
 
     @Override
     public void hide() {
+        desertScreenMusic.stop();
         // Implement if there is anything you need to hide
     }
 
@@ -151,7 +192,6 @@ public class DesertScreen implements Screen {
         for (Character character : selectedCharacters) {
             character.dispose();
         }
-
-
+        desertScreenMusic.dispose();
     }
 }
