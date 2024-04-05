@@ -11,10 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -50,12 +47,43 @@ public class IntroScreen implements Screen {
         stage.addActor(table);
 
         // Enable debug lines
-        // table.setDebug(true);
+        table.setDebug(true);
+
+        // The story text
+        String storyText = "Six years have passed since the First War between man and orc.\n\n" +
+                "The once mighty army of Azeroth lay among the blackened and charred remains of Stormwind Keep. " +
+                "Those that escaped fled across the Great Sea, bringing tales of the suffering they had faced at the " +
+                "hands of the Orcish Hordes.\n\n" +
+                "Eager to engage in battle once again, the Orcs constructed ships of war to bear them across the " +
+                "Great Sea.\n\n" +
+                "The Orcish warriors yearned for the sounds of battle to fill the air and looked to the far horizon " +
+                "for new blood to spill. Using the weapons forged by their new allies, the Humans made haste to " +
+                "prepare " +
+                "for the onslaught. " +
+                "While Dwarven cannon were being loaded, others armed themselves with Elven steel and mail.\n\n" +
+                "Now, united in arms with new allies against a common foe, Mankind stands at the shores of destiny " +
+                "and awaits the coming of the Tides of Darkness.";
 
         // Create UI components
-        Label titleLabel = new Label("This is a big story; This is where text story slides down!", skin);
+        Label titleLabel = new Label(storyText, skin);
+        titleLabel.setWrap(true);
         titleLabel.setAlignment(Align.center);
         TextButton nextAreaButton = new TextButton("Character select", skin);
+
+        // Create a ScrollPane for the story label
+        ScrollPane scrollPane = new ScrollPane(titleLabel, skin);
+        scrollPane.setScrollingDisabled(true, false); // Disable horizontal scrolling
+        scrollPane.setFadeScrollBars(false);
+
+        // Create a window for the story text
+        Window storyWindow = new Window("Story", skin);
+        storyWindow.add(scrollPane).prefWidth(Gdx.graphics.getWidth() * 0.8f).prefHeight(Gdx.graphics.getHeight() * 0.6f);
+        storyWindow.row();
+        storyWindow.pack();
+
+        // Position the story window in the center of the screen
+        storyWindow.setPosition(Gdx.graphics.getWidth() / 2 - storyWindow.getWidth() / 2,
+                Gdx.graphics.getHeight() / 2 - storyWindow.getHeight() / 2);
 
         // Add listeners to buttons
         nextAreaButton.addListener(new ClickListener() {
@@ -68,14 +96,14 @@ public class IntroScreen implements Screen {
         });
 
         // Center titleLabel horizontally and start from the vertical middle
-        float initialYPosition = Gdx.graphics.getHeight() / 2f + titleLabel.getHeight() / 2f; // Center vertically
+        float initialYPosition = -(Gdx.graphics.getHeight() / 2f + titleLabel.getHeight() / 2f); // Center vertically
         float initialXPosition = (Gdx.graphics.getWidth() - titleLabel.getWidth()) / 2; // Center horizontally
         titleLabel.setPosition(initialXPosition, initialYPosition); // Set initial position for animation
 
         titleLabel.addAction(Actions.sequence(
                 Actions.moveTo(initialXPosition, initialYPosition),
                 Actions.delay(1f), // Wait for 1 second before scrolling
-                Actions.moveTo(initialXPosition, -titleLabel.getHeight(), 10f) // Animate to move up
+                Actions.moveTo(initialXPosition, titleLabel.getHeight(), 10f) // Animate to move up
         ));
 
         // Due to manual positioning, we won't add titleLabel to the table
