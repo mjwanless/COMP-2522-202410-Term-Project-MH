@@ -55,7 +55,7 @@ public class IntroScreen implements Screen {
         // Create UI components
         Label titleLabel = new Label("This is a big story; This is where text story slides down!", skin);
         titleLabel.setAlignment(Align.center);
-        TextButton nextAreaButton = new TextButton("Next Area", skin);
+        TextButton nextAreaButton = new TextButton("Character select", skin);
 
         // Add listeners to buttons
         nextAreaButton.addListener(new ClickListener() {
