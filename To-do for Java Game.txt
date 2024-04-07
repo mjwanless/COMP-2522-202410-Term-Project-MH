@@ -6,7 +6,6 @@ Main screen:
 	- Load - Doesn't work yet; Look at after game logic finished
 
 Character Select:
-	- Tweak code to provide warning when user tries to continue without selecting exactly two classes
 	- Maybe change names of classes at character click on names
 
 Screens to finish:
@@ -21,15 +20,6 @@ For all:
 =====================================================================
 Combat loop:
 
-- showEncounter()
-	- Darken background
-	- display message
-	- tap to proceed
-	- display character and enemies
-
-- PlayerGeneration()
-	- Same as above, but for player
-	
 - PLayerTurn()
 	- ShowDice()
 	- playerSelectDice()
