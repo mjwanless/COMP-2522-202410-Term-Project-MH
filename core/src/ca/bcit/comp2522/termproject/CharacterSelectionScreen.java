@@ -3,6 +3,7 @@ package ca.bcit.comp2522.termproject;
 import ca.bcit.comp2522.termproject.Character.Character;
 import ca.bcit.comp2522.termproject.Character.*;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 
 
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class CharacterSelectionScreen implements Screen {
     private TextField[] nameTextFields;
     private AssetManager assetManager;
     private Music characterSelectMusic;
+
 
     public CharacterSelectionScreen(final DiceGame game) {
         this.game = game;
@@ -122,7 +125,7 @@ public class CharacterSelectionScreen implements Screen {
                     game.setScreen(new ForestScreen(game, selectedCharsArray));
                 } else {
                     // Notify the user that two characters need to be selected
-                    // Implement the logic for notification
+                    showCharacterSelectionErrorDialog();
                 }
             }
         });
@@ -132,6 +135,25 @@ public class CharacterSelectionScreen implements Screen {
         buttonTable.center().bottom().padBottom(20);
         buttonTable.add(confirmButton).pad(10);
         mainTable.add(buttonTable).expandX().center().bottom().colspan(4).padBottom(20);
+    }
+
+    private void showCharacterSelectionErrorDialog() {
+        Dialog dialog = new Dialog("Selection Error", skin) {
+            @Override
+            protected void result(Object obj) {
+                System.out.println("Closed dialog with result: " + obj);
+            }
+        };
+
+        dialog.text("You must select two characters to proceed.");
+
+        // Create the button with a smaller size.
+        TextButton okButton = new TextButton("OK", skin);
+        okButton.getLabel().setFontScale(0.8f); // Make the text smaller, adjust as needed
+        dialog.button(okButton, true); // sends "true" as the result
+
+        dialog.key(Input.Keys.ENTER, true); // sends "true" when the ENTER key is pressed
+        dialog.show(stage);
     }
     @Override
     public void show() {
