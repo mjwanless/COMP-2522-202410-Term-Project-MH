@@ -1,6 +1,7 @@
 package ca.bcit.comp2522.termproject;
 
 import ca.bcit.comp2522.termproject.Character.Character;
+import ca.bcit.comp2522.termproject.Combat.EncounterManager;
 import ca.bcit.comp2522.termproject.Combat.EnemyGeneration;
 import ca.bcit.comp2522.termproject.Enemy.Dog;
 import ca.bcit.comp2522.termproject.Enemy.Enemy;
@@ -32,6 +33,8 @@ public class ForestScreen implements Screen {
     private Stage stage;
     private Skin skin;
     private Enemy[] enemies;
+    private EncounterManager encounterManager;
+
 
     public ForestScreen(final DiceGame game, final Character[] selectedCharacters) {
         this.game = game;
@@ -40,6 +43,7 @@ public class ForestScreen implements Screen {
         img = new Texture("backgrounds/forest_background.jpeg");
 
         stage = new Stage(new ScreenViewport());
+        encounterManager = new EncounterManager(stage, this::onEncounterEnd);
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
 
         assetManager = new AssetManager();
@@ -68,40 +72,6 @@ public class ForestScreen implements Screen {
         });
 
         stage.addActor(goToDesertButton);
-    }
-
-    @Override
-    public void show() {
-        // Prepare any assets or variables for the intro
-        batch = new SpriteBatch();
-        shapeRenderer = new ShapeRenderer();
-        Gdx.input.setInputProcessor(stage);
-        enemies = EnemyGeneration.generateEnemiesForLocation(Locations.FOREST, 2).toArray(new Enemy[0]); // Example: Generate 2 enemies for the forest
-
-        // Load and play music
-        assetManager.load("Music/111 Secret of the Forest.mp3", Music.class);
-        assetManager.finishLoading();
-        forestScreenMusic = assetManager.get("Music/111 Secret of the Forest.mp3", Music.class);
-        forestScreenMusic.setLooping(true);
-        forestScreenMusic.play();
-    }
-
-    @Override
-    public void render(float delta) {
-        game.clearScreen();
-
-        batch.begin();
-        batch.draw(img, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.end();
-
-
-        renderSelectedCharacters(batch, shapeRenderer);
-        renderEnemies(batch, shapeRenderer);
-
-        // Handle additional rendering or logic here
-
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
     }
 
     private void renderSelectedCharacters(SpriteBatch batch, ShapeRenderer shapeRenderer) {
@@ -212,6 +182,46 @@ public class ForestScreen implements Screen {
 
         font.dispose(); // Dispose font if it's not reused elsewhere
         // Note: Texture disposal should be handled where the Texture is loaded or managed
+    }
+
+    private void onEncounterEnd() {
+        // This method is called when the encounter ends.
+        // Proceed with the game logic, e.g., starting combat.
+    }
+
+    @Override
+    public void show() {
+        // Prepare any assets or variables for the intro
+        batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
+        Gdx.input.setInputProcessor(stage);
+        enemies = EnemyGeneration.generateEnemiesForLocation(Locations.FOREST, 2).toArray(new Enemy[0]); // Example: Generate 2 enemies for the forest
+        encounterManager.startEncounter();
+
+        // Load and play music
+        assetManager.load("Music/111 Secret of the Forest.mp3", Music.class);
+        assetManager.finishLoading();
+        forestScreenMusic = assetManager.get("Music/111 Secret of the Forest.mp3", Music.class);
+        forestScreenMusic.setLooping(true);
+        forestScreenMusic.play();
+    }
+
+    @Override
+    public void render(float delta) {
+        game.clearScreen();
+
+        batch.begin();
+        batch.draw(img, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.end();
+
+
+        renderSelectedCharacters(batch, shapeRenderer);
+        renderEnemies(batch, shapeRenderer);
+
+        // Handle additional rendering or logic here
+
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
     }
     @Override
     public void resize(int width, int height) {
