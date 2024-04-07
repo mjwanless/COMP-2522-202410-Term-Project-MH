@@ -26,19 +26,11 @@ Combat loop:
 	- display message
 	- tap to proceed
 	- display character and enemies
-	
-- EnemyGeneration()
-	- generates enemies to display
-	- # of enemies
-	- stats
-	- portrait
-	- etc...
 
 - PlayerGeneration()
 	- Same as above, but for player
 	
 - PLayerTurn()
-	- rolldice()
 	- ShowDice()
 	- playerSelectDice()
 		- click on one die in each column of the character row
