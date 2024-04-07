@@ -26,7 +26,7 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(final DiceGame game) {
         this.game = game;
         batch = new SpriteBatch();
-        img = new Texture("MainScreenBgTemp.jpg");
+        img = new Texture("backgrounds/MainScreenBgTemp.jpg");
 
         // Initialize Stage and Skin. The stage manages UI elements (like buttons and labels).
         stage = new Stage(new ScreenViewport());
