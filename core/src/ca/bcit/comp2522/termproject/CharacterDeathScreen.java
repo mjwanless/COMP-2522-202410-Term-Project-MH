@@ -34,7 +34,7 @@ public class CharacterDeathScreen implements Screen {
         this.game = game;
         this.selectedCharacters = selectedCharacters;
         batch = new SpriteBatch();
-        img = new Texture("backgrounds/campfire_background.jpeg");
+        img = new Texture("backgrounds/defeat.jpg");
 
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
