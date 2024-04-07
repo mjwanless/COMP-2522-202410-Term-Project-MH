@@ -13,6 +13,7 @@ Screens to finish:
 	- Forest (1st)
 		- This has button that goes to a choice between Desert/Volcano
     - Find backgrounds/music for character death/other non-combat screens
+    - fade in music and lower the volume
 	
 For all:
 	- Button that leads to screen exit with either Save/Exit and Save/Not exit

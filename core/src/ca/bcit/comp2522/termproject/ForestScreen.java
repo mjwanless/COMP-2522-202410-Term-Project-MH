@@ -179,15 +179,9 @@ public class ForestScreen implements Screen {
 
     @Override
     public void dispose() {
-        if (batch != null) {
-            batch.dispose();
-        }
-        if (shapeRenderer != null) {
-            shapeRenderer.dispose();
-        }
-        if (img != null) {
-            img.dispose();
-        }
+        batch.dispose();
+        shapeRenderer.dispose();
+        img.dispose();
         // Dispose character textures if not used elsewhere
         for (Character character : selectedCharacters) {
             character.dispose();
