@@ -5,7 +5,7 @@ public class Dog extends Enemy {
 
     // Default constructor
     public Dog() {
-        this("Dog", 2, 10, 2, 1, IMAGE_PATH);
+        this("Dog", 3, 13, 3, 2, IMAGE_PATH);
     }
 
     public Dog(String name, int strength, int health, int defense, int evade, String imagePath) {
@@ -13,7 +13,7 @@ public class Dog extends Enemy {
     }
 
     public Dog(String name) {
-        super(name, 2, 10, 2, 1, IMAGE_PATH);
+        super(name, 3, 13, 3, 2, IMAGE_PATH);
     }
 
     @Override

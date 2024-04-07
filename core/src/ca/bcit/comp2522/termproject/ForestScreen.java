@@ -1,6 +1,7 @@
 package ca.bcit.comp2522.termproject;
 
 import ca.bcit.comp2522.termproject.Character.Character;
+import ca.bcit.comp2522.termproject.Combat.EnemyGeneration;
 import ca.bcit.comp2522.termproject.Enemy.Dog;
 import ca.bcit.comp2522.termproject.Enemy.Enemy;
 import com.badlogic.gdx.Gdx;
@@ -75,7 +76,7 @@ public class ForestScreen implements Screen {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         Gdx.input.setInputProcessor(stage);
-        generateEnemies();
+        enemies = EnemyGeneration.generateEnemiesForLocation(Locations.FOREST, 2).toArray(new Enemy[0]); // Example: Generate 2 enemies for the forest
 
         // Load and play music
         assetManager.load("Music/111 Secret of the Forest.mp3", Music.class);
@@ -162,13 +163,6 @@ public class ForestScreen implements Screen {
         font.dispose();
     }
 
-    private void generateEnemies(){
-        enemies = new Enemy[]{
-                new Dog(),
-                new Dog(),
-        };
-    }
-
     private void renderEnemies(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         // Adjust the start X position to place enemies on the right side
         float startX = Gdx.graphics.getWidth() - 350; // Adjusted X position
@@ -178,54 +172,46 @@ public class ForestScreen implements Screen {
         float portraitSize = 90;
         float padding = 10;
 
-        BitmapFont font = new BitmapFont();
+        BitmapFont font = new BitmapFont(); // Consider moving font initialization outside if it doesn't change
         font.getData().setScale(1f);
 
-        // Begin drawing shapes
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK); // Background color for enemy info
 
         for (Enemy enemy : enemies) {
-            // Draw the background rectangle for each enemy
             shapeRenderer.rect(startX, startY, boxWidth, boxHeight);
-
-            // Adjust startY for the next enemy's position
-            startY -= (boxHeight + padding);
+            startY -= (boxHeight + padding); // Adjust startY for the next enemy's position
         }
 
         shapeRenderer.end();
 
-        // Start drawing batch for text and images
         batch.begin();
 
-        // Reset startY for drawing images and text
-        startY = Gdx.graphics.getHeight() - 450;
+        startY = Gdx.graphics.getHeight() - 450; // Reset startY for drawing images and text
 
         for (Enemy enemy : enemies) {
-            // Assume enemy has a getImage() method to get Texture
-            Texture portrait = new Texture(Gdx.files.internal(enemy.getImagePath()));
+            // If you have a method to get the texture from the enemy, use it here
+            // Make sure textures are preloaded or cached to avoid reloading every frame
+            Texture portrait = new Texture(Gdx.files.internal(enemy.getImagePath())); // Example method, ensure you implement this in your Enemy class or preload textures
+
             batch.draw(portrait, startX + padding, startY + (boxHeight - portraitSize) / 2, portraitSize, portraitSize);
 
-            // Text X position next to the portrait
             float textX = startX + portraitSize + 2 * padding;
             float textY = startY + boxHeight - padding;
 
-            // Draw enemy's name
             font.setColor(Color.WHITE);
             font.draw(batch, enemy.getName(), textX, textY);
 
-            // Draw enemy's health (assuming a method exists to get health as string)
-            String healthString = "HP: " + enemy.getHealth();
+            String healthString = "HP: " + enemy.getHealth(); // Assume method exists or enemy has a field for health
             font.draw(batch, healthString, textX, textY - 20);
 
-            // Adjust startY for the next enemy
-            startY -= (boxHeight + padding);
+            startY -= (boxHeight + padding); // Adjust startY for the next enemy
         }
 
         batch.end();
 
-        // Dispose resources properly
-        font.dispose();
+        font.dispose(); // Dispose font if it's not reused elsewhere
+        // Note: Texture disposal should be handled where the Texture is loaded or managed
     }
     @Override
     public void resize(int width, int height) {
