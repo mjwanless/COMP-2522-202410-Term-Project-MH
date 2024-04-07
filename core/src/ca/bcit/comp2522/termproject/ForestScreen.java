@@ -3,7 +3,6 @@ package ca.bcit.comp2522.termproject;
 import ca.bcit.comp2522.termproject.Character.Character;
 import ca.bcit.comp2522.termproject.Combat.EncounterManager;
 import ca.bcit.comp2522.termproject.Combat.EnemyGeneration;
-import ca.bcit.comp2522.termproject.Enemy.Dog;
 import ca.bcit.comp2522.termproject.Enemy.Enemy;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -36,12 +35,14 @@ public class ForestScreen implements Screen {
     private EncounterManager encounterManager;
 
 
+
     public ForestScreen(final DiceGame game, final Character[] selectedCharacters) {
         this.game = game;
         this.selectedCharacters = selectedCharacters;
         batch = new SpriteBatch();
         img = new Texture("backgrounds/forest_background.jpeg");
 
+        // Load the dice textures for the animation
         stage = new Stage(new ScreenViewport());
         encounterManager = new EncounterManager(stage, this::onEncounterEnd);
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
@@ -214,12 +215,11 @@ public class ForestScreen implements Screen {
         batch.draw(img, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
 
-
+        // Your existing code to render characters and enemies
         renderSelectedCharacters(batch, shapeRenderer);
         renderEnemies(batch, shapeRenderer);
 
-        // Handle additional rendering or logic here
-
+        // Your existing code to update and draw the stage
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
@@ -254,5 +254,8 @@ public class ForestScreen implements Screen {
             character.dispose();
         }
         forestScreenMusic.dispose();
+        for(Enemy enemy : enemies) {
+            enemy.dispose();
+        }
     }
 }
