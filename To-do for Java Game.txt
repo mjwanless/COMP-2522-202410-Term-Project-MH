@@ -37,11 +37,6 @@ Combat loop:
 - PlayerGeneration()
 	- Same as above, but for player
 	
-- DicerollForInitiative()
-	- random int that lets player or comp go first
-	- indicates turn order
-	- use enum for player/enemy selection
-	
 - PLayerTurn()
 	- rolldice()
 	- ShowDice()
