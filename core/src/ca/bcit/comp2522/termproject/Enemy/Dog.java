@@ -3,6 +3,11 @@ package ca.bcit.comp2522.termproject.Enemy;
 public class Dog extends Enemy {
     private static final String IMAGE_PATH = "Enemies/GuardDog.jpg";
 
+    // Default constructor
+    public Dog() {
+        this("Dog", 2, 10, 2, 1, IMAGE_PATH);
+    }
+
     public Dog(String name, int strength, int health, int defense, int evade, String imagePath) {
         super(name, strength, health, defense, evade, imagePath);
     }

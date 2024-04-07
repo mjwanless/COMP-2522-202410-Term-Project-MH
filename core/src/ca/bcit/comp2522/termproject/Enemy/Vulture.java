@@ -1,4 +1,4 @@
 package ca.bcit.comp2522.termproject.Enemy;
 
-public class Vulture extends Minion{
+public class Vulture{
 }

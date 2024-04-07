@@ -1,6 +1,8 @@
 package ca.bcit.comp2522.termproject;
 
 import ca.bcit.comp2522.termproject.Character.Character;
+import ca.bcit.comp2522.termproject.Enemy.Dog;
+import ca.bcit.comp2522.termproject.Enemy.Enemy;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -28,7 +30,7 @@ public class ForestScreen implements Screen {
     private Character[] selectedCharacters;
     private Stage stage;
     private Skin skin;
-
+    private Enemy[] enemies;
 
     public ForestScreen(final DiceGame game, final Character[] selectedCharacters) {
         this.game = game;
@@ -73,6 +75,7 @@ public class ForestScreen implements Screen {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         Gdx.input.setInputProcessor(stage);
+        generateEnemies();
 
         // Load and play music
         assetManager.load("Music/111 Secret of the Forest.mp3", Music.class);
@@ -92,6 +95,8 @@ public class ForestScreen implements Screen {
 
 
         renderSelectedCharacters(batch, shapeRenderer);
+        renderEnemies(batch, shapeRenderer);
+
         // Handle additional rendering or logic here
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
@@ -154,6 +159,72 @@ public class ForestScreen implements Screen {
         batch.end();
 
         // Don't forget to dispose of the font when you're done to avoid memory leaks
+        font.dispose();
+    }
+
+    private void generateEnemies(){
+        enemies = new Enemy[]{
+                new Dog(),
+                new Dog(),
+        };
+    }
+
+    private void renderEnemies(SpriteBatch batch, ShapeRenderer shapeRenderer) {
+        // Adjust the start X position to place enemies on the right side
+        float startX = Gdx.graphics.getWidth() - 350; // Adjusted X position
+        float startY = Gdx.graphics.getHeight() - 450;
+        float boxWidth = 300;
+        float boxHeight = 100;
+        float portraitSize = 90;
+        float padding = 10;
+
+        BitmapFont font = new BitmapFont();
+        font.getData().setScale(1f);
+
+        // Begin drawing shapes
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLACK); // Background color for enemy info
+
+        for (Enemy enemy : enemies) {
+            // Draw the background rectangle for each enemy
+            shapeRenderer.rect(startX, startY, boxWidth, boxHeight);
+
+            // Adjust startY for the next enemy's position
+            startY -= (boxHeight + padding);
+        }
+
+        shapeRenderer.end();
+
+        // Start drawing batch for text and images
+        batch.begin();
+
+        // Reset startY for drawing images and text
+        startY = Gdx.graphics.getHeight() - 450;
+
+        for (Enemy enemy : enemies) {
+            // Assume enemy has a getImage() method to get Texture
+            Texture portrait = new Texture(Gdx.files.internal(enemy.getImagePath()));
+            batch.draw(portrait, startX + padding, startY + (boxHeight - portraitSize) / 2, portraitSize, portraitSize);
+
+            // Text X position next to the portrait
+            float textX = startX + portraitSize + 2 * padding;
+            float textY = startY + boxHeight - padding;
+
+            // Draw enemy's name
+            font.setColor(Color.WHITE);
+            font.draw(batch, enemy.getName(), textX, textY);
+
+            // Draw enemy's health (assuming a method exists to get health as string)
+            String healthString = "HP: " + enemy.getHealth();
+            font.draw(batch, healthString, textX, textY - 20);
+
+            // Adjust startY for the next enemy
+            startY -= (boxHeight + padding);
+        }
+
+        batch.end();
+
+        // Dispose resources properly
         font.dispose();
     }
     @Override
