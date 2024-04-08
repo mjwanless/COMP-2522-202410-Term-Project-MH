@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Timer;
 
 import java.util.Random;
 
@@ -23,10 +24,11 @@ public class EncounterManager {
 
     private Stage stage;
     private Image darkBackground;
-    private Label encounterMessage, resultLabel; // Added resultLabel here
+    private Label encounterMessage, resultLabel;
     private Runnable onEncounterEnd;
     private Skin skin;
     private TextButton rollInitiativeButton;
+    private TextButton switchTurnButton;
 
     public EncounterManager(Stage stage, Runnable onEncounterEnd) {
         this.stage = stage;
@@ -55,13 +57,11 @@ public class EncounterManager {
         encounterMessage.setVisible(false);
         stage.addActor(encounterMessage);
 
-        // Initialize resultLabel
         resultLabel = new Label("", skin, "default");
         resultLabel.setPosition(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 3);
         resultLabel.setVisible(false);
         stage.addActor(resultLabel);
 
-        // Initialize and setup the Roll for Initiative button
         rollInitiativeButton = new TextButton("Roll for initiative", skin);
         rollInitiativeButton.setSize(200, 50);
         rollInitiativeButton.setPosition((Gdx.graphics.getWidth() - rollInitiativeButton.getWidth()) / 2, 20);
@@ -69,35 +69,58 @@ public class EncounterManager {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 displayRandomInitiativeResult();
-                // endOverlay(); // Uncomment if ending overlay here
+                endOverlay();
             }
         });
         rollInitiativeButton.setVisible(false);
         stage.addActor(rollInitiativeButton);
+
+        switchTurnButton = new TextButton("Switch Turn", skin);
+        switchTurnButton.setSize(200, 50);
+        switchTurnButton.setPosition((Gdx.graphics.getWidth() - switchTurnButton.getWidth()) / 2, 20); // Adjust position
+        switchTurnButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                CombatManager.switchTurn();
+            }
+        });
+        switchTurnButton.setVisible(false);
+        stage.addActor(switchTurnButton);
+
+        // Initialize currentInitiator
+        CombatManager.setCurrentInitiator(Initiative.PLAYER);
     }
 
     private void displayRandomInitiativeResult() {
         Initiative result = new Random().nextBoolean() ? Initiative.PLAYER : Initiative.ENEMY;
         resultLabel.setText(result + " rolls for initiative!");
         resultLabel.setVisible(true);
-        // Update the label's position if needed, depending on the new text's size
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                resultLabel.setVisible(false);
+            }
+        }, 2);
+        CombatManager.handleCombatRound(result);
     }
 
     public void startOverlay() {
         darkBackground.setVisible(true);
         encounterMessage.setVisible(true);
         rollInitiativeButton.setVisible(true);
-        resultLabel.setVisible(false); // Ensure resultLabel is hidden at the start
+        switchTurnButton.setVisible(false);
+        resultLabel.setVisible(false);
     }
 
     public void endOverlay() {
         darkBackground.setVisible(false);
         encounterMessage.setVisible(false);
         rollInitiativeButton.setVisible(false);
-        // Optionally, decide if you want to hide resultLabel here
+        switchTurnButton.setVisible(true);
         if (onEncounterEnd != null) {
             onEncounterEnd.run();
         }
     }
-    // Additional methods unchanged
 }
+
