@@ -1,5 +1,6 @@
 package ca.bcit.comp2522.termproject.Combat;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -17,7 +18,6 @@ import com.badlogic.gdx.utils.Timer;
 import java.util.List;
 import java.util.Random;
 
-
 enum Initiative {
     PLAYER, ENEMY;
 }
@@ -29,24 +29,32 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     private Label encounterMessage, resultLabel;
     private Runnable onEncounterEnd;
     private Skin skin;
-    private TextButton rollInitiativeButton;
-    private TextButton switchTurnButton;
+    private TextButton rollInitiativeButton, switchTurnButton;
     private int numberOfDice;
     private SpriteBatch batch;
-    private DiceRollForInitiative diceRoll;
+    private Texture[] diceTextures = new Texture[6]; // Textures for dice faces 1 to 6
     private boolean showDice = false;
+    private int currentDiceIndex = 0;
+    private float elapsedTime = 0; // To control dice rolling animation
+
 
     public EncounterManager(Stage stage, Runnable onEncounterEnd) {
-        this.batch = new SpriteBatch(); // Initialize a new SpriteBatch
         this.stage = stage;
         this.onEncounterEnd = onEncounterEnd;
         this.skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
+        this.batch = new SpriteBatch();
+        loadDiceTextures();
         generateOverlay();
         initializeUI();
-        this.numberOfDice = 8;
-
-        // Set this as the listener for combat events
+        this.numberOfDice = 8; // Default number of dice
         CombatManager.setEventListener(this);
+
+    }
+
+    private void loadDiceTextures() {
+        for (int i = 0; i < 6; i++) {
+            diceTextures[i] = new Texture(Gdx.files.internal("dice/32x/front-" + (i + 1) + ".png"));
+        }
     }
 
     public void displayDiceResults(List<Integer> diceResults) {
@@ -58,12 +66,29 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         String resultsText = stringBuilder.toString();
         resultLabel.setText(resultsText);
         resultLabel.setVisible(true);
+
+        // Display the corresponding dice faces
+//        showDiceFaces(diceResults);
     }
 
-    public void rollDiceDisplay(int diceResult) {
-        diceRoll = new DiceRollForInitiative();
-        diceRoll.startRoll();
-        showDice = true;
+//    private void showDiceFaces(List<Integer> diceResults) {
+//        diceRoll = new DiceRollForInitiative(diceResults);
+//        diceRoll.startRoll();
+//        showDice = true;
+//    }
+
+    public void render(float delta) {
+        if (showDice) {
+            elapsedTime += delta;
+            if (elapsedTime <= 2.0f) { // Continue rolling for 2 seconds
+                batch.begin();
+                currentDiceIndex = (currentDiceIndex + 1) % 6; // Loop through dice textures
+                batch.draw(diceTextures[currentDiceIndex], Gdx.graphics.getWidth() / 2f - 16, Gdx.graphics.getHeight() / 2f - 16);
+                batch.end();
+            } else {
+                endDiceRoll(); // Automatically stop the animation after 2 seconds
+            }
+        }
     }
 
     private void generateOverlay() {
@@ -76,17 +101,6 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         darkBackground = new Image(texture);
         darkBackground.setVisible(false);
         stage.addActor(darkBackground);
-    }
-
-    public void render(float delta) {
-        if (showDice) {
-            batch.begin();
-            diceRoll.draw(batch, 1f);
-            batch.end();
-            if (diceRoll.isFinishedRolling()) {
-                showDice = false;
-            }
-        }
     }
 
     private void initializeUI() {
@@ -116,7 +130,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
 
         switchTurnButton = new TextButton("Switch Turn", skin);
         switchTurnButton.setSize(200, 50);
-        switchTurnButton.setPosition((Gdx.graphics.getWidth() - switchTurnButton.getWidth()) / 2, 20); // Adjust position
+        switchTurnButton.setPosition((Gdx.graphics.getWidth() - switchTurnButton.getWidth()) / 2, 20);
         switchTurnButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -130,25 +144,35 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         CombatManager.setCurrentInitiator(Initiative.PLAYER);
     }
 
-    public void clearDiceDisplay() {
-        showDice = false;
-        if (diceRoll != null) {
-            diceRoll.hideDice();
-        }
-    }
+//    public void clearDiceDisplay() {
+//        showDice = false;
+//        elapsedTime = 0;
+//    }
 
     private void displayRandomInitiativeResult() {
-        Initiative result = new Random().nextBoolean() ? Initiative.PLAYER : Initiative.ENEMY;
-        resultLabel.setText(result + " rolls for initiative!");
-        resultLabel.setVisible(true);
+        // Initiates the dice roll animation
+        startDiceRoll();
 
+        Initiative result = new Random().nextBoolean() ? Initiative.PLAYER : Initiative.ENEMY;
+        // Simulate some delay before showing the result, to allow dice animation to play
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                resultLabel.setVisible(false);
+                resultLabel.setText(result + " rolls for initiative!");
+                resultLabel.setVisible(true);
+                endDiceRoll(); // Call to stop the dice rolling animation
+                // Proceed with the rest of the game logic here
             }
-        }, 2);
-        CombatManager.handleCombatRound(result, numberOfDice);
+        }, 2); // Delay for 2 seconds for the sake of the animation
+    }
+
+    private void startDiceRoll() {
+        showDice = true;
+        elapsedTime = 0; // Reset elapsed time for the animation
+    }
+
+    private void endDiceRoll() {
+        showDice = false;
     }
 
     public void startOverlay() {
@@ -178,5 +202,11 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     @Override
     public void onEnemyAttack() {
 
+    }
+    public void dispose() {
+        for (Texture tex : diceTextures) {
+            if (tex != null) tex.dispose();
+        }
+        if (batch != null) batch.dispose();
     }
 }

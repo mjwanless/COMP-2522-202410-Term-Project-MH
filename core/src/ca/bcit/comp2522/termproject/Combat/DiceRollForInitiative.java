@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import java.util.List;
 import java.util.Random;
 
 public class DiceRollForInitiative extends Actor {
@@ -17,7 +19,7 @@ public class DiceRollForInitiative extends Actor {
     private boolean isRolling; // Added to indicate if the dice is currently rolling
     private float rollTime; // Time the dice has been rolling
 
-    public DiceRollForInitiative() {
+    public DiceRollForInitiative(List<Integer> diceResults) {
         setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
         startRoll(); // Start rolling the dice
         setVisible(false);
