@@ -29,6 +29,7 @@ public class EncounterManager {
     private Skin skin;
     private TextButton rollInitiativeButton;
     private TextButton switchTurnButton;
+    private int numberOfDice;
 
     public EncounterManager(Stage stage, Runnable onEncounterEnd) {
         this.stage = stage;
@@ -36,6 +37,7 @@ public class EncounterManager {
         this.skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
         generateOverlay();
         initializeUI();
+        this.numberOfDice = 8;
     }
 
     private void generateOverlay() {
@@ -81,10 +83,12 @@ public class EncounterManager {
         switchTurnButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                CombatManager.switchTurn();
+                CombatManager.switchTurn(numberOfDice);
             }
         });
         switchTurnButton.setVisible(false);
+        CombatManager.initializeDiceRoller();
+
         stage.addActor(switchTurnButton);
 
         // Initialize currentInitiator
@@ -92,6 +96,7 @@ public class EncounterManager {
     }
 
     private void displayRandomInitiativeResult() {
+
         Initiative result = new Random().nextBoolean() ? Initiative.PLAYER : Initiative.ENEMY;
         resultLabel.setText(result + " rolls for initiative!");
         resultLabel.setVisible(true);
@@ -102,7 +107,7 @@ public class EncounterManager {
                 resultLabel.setVisible(false);
             }
         }, 2);
-        CombatManager.handleCombatRound(result);
+        CombatManager.handleCombatRound(result, numberOfDice);
     }
 
     public void startOverlay() {
