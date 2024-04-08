@@ -1,0 +1,5 @@
+- Make sure lab 6 checkstyle is copied over to project (checkstyle-idea.xml)
+- setting -> search for checkstyle -> make sure the correct boxes are selected:
+    - Treat checkstyle errors as warnings
+    - copy libraries...
+    - Comp 2522 checkstyle
