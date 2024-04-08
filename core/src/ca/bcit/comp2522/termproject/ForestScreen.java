@@ -1,7 +1,6 @@
 package ca.bcit.comp2522.termproject;
 
 import ca.bcit.comp2522.termproject.Character.Character;
-import ca.bcit.comp2522.termproject.Combat.DiceRollForInitiative;
 import ca.bcit.comp2522.termproject.Combat.EncounterManager;
 import ca.bcit.comp2522.termproject.Combat.EnemyGeneration;
 import ca.bcit.comp2522.termproject.Enemy.Enemy;
@@ -13,14 +12,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class ForestScreen implements Screen {
@@ -36,9 +31,6 @@ public class ForestScreen implements Screen {
     private Skin skin;
     private Enemy[] enemies;
     private EncounterManager encounterManager;
-    private DiceRollForInitiative diceRollForInitiative;
-    private TextureRegion diceTexture;
-    private boolean diceRollCompleted;
     private boolean encounterActive = true;
 
     public ForestScreen(final DiceGame game, final Character[] selectedCharacters) {
@@ -47,12 +39,9 @@ public class ForestScreen implements Screen {
         batch = new SpriteBatch();
         img = new Texture("backgrounds/forest_background.jpeg");
 
-        // Load the dice textures for the animation
         stage = new Stage(new ScreenViewport());
         encounterManager = new EncounterManager(stage, this::onEncounterEnd);
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
-        diceRollForInitiative = new DiceRollForInitiative();
-        diceRollForInitiative.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
 
         assetManager = new AssetManager();
         setupUI();
@@ -64,22 +53,20 @@ public class ForestScreen implements Screen {
         mainTable.setFillParent(true);
         stage.addActor(mainTable);
 
-        // Adjust the pad, spacing, and sizes as needed
         mainTable.defaults().pad(5).space(5);
-
-        TextButton goToDesertButton = new TextButton("Go to Desert", skin);
-        goToDesertButton.setSize(450, 100); // Set the size of the button
-        // Position the button at the bottom center of the screen
-        goToDesertButton.setPosition((Gdx.graphics.getWidth() - goToDesertButton.getWidth()) / 2, 100); // Raise it 20px above the bottom
-
-        goToDesertButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                game.setScreen(new DesertScreen(game, selectedCharacters)); // Transition to DesertScreen
-            }
-        });
-
-        stage.addActor(goToDesertButton);
+//
+//        TextButton goToDesertButton = new TextButton("Go to Desert", skin);
+//        goToDesertButton.setSize(450, 100);
+//        goToDesertButton.setPosition((Gdx.graphics.getWidth() - goToDesertButton.getWidth()) / 2, 100);
+//
+//        goToDesertButton.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+//                game.setScreen(new DesertScreen(game, selectedCharacters));
+//            }
+//        });
+//
+//        stage.addActor(goToDesertButton);
     }
 
     private void renderSelectedCharacters(SpriteBatch batch, ShapeRenderer shapeRenderer) {
@@ -194,33 +181,23 @@ public class ForestScreen implements Screen {
 
     // This method is called when the EncounterManager is done.
     private void onEncounterEnd() {
-        // Now, we assume the encounter has ended and it's time for the dice roll.
-        // You can start the dice roll animation here or set a flag to start it in the render method.
-        diceRollForInitiative.startRoll(); // Start the dice roll.
         encounterActive = false; // Set the flag to false indicating the encounter is over.
     }
 
     @Override
     public void show() {
-        // Prepare any assets or variables for the intro
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         Gdx.input.setInputProcessor(stage);
-        enemies = EnemyGeneration.generateEnemiesForLocation(Locations.FOREST, 2).toArray(new Enemy[0]); // Example: Generate 2 enemies for the forest
+        enemies = EnemyGeneration.generateEnemiesForLocation(Locations.FOREST, 2).toArray(new Enemy[0]);
 
-        // Load and play music
         assetManager.load("Music/111 Secret of the Forest.mp3", Music.class);
         assetManager.finishLoading();
         forestScreenMusic = assetManager.get("Music/111 Secret of the Forest.mp3", Music.class);
         forestScreenMusic.setLooping(true);
         forestScreenMusic.play();
 
-        // Initialize the dice roll actor
-        diceRollForInitiative = new DiceRollForInitiative();
-        diceRollForInitiative.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f); // Center on the screen
-        stage.addActor(diceRollForInitiative); // Add to stage for processing and drawing
-
-        encounterManager.startEncounter();
+        encounterManager.startOverlay();
     }
 
     @Override
@@ -231,13 +208,6 @@ public class ForestScreen implements Screen {
         batch.draw(img, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
 
-        // Check if the encounter has ended and the dice roll is completed.
-        if (!encounterActive && !diceRollForInitiative.isFinishedRolling()) {
-            // If the encounter is over but the dice roll is not yet completed, render the dice.
-            renderDice(batch, delta);
-        }
-
-        // Your existing code
         renderSelectedCharacters(batch, shapeRenderer);
         renderEnemies(batch, shapeRenderer);
 
@@ -245,15 +215,6 @@ public class ForestScreen implements Screen {
         stage.draw();
     }
 
-    private void renderDice(SpriteBatch batch, float delta) {
-        batch.begin();
-
-        // Update and draw the dice roll actor
-        diceRollForInitiative.act(delta); // Update the actor based on time
-        diceRollForInitiative.draw(batch, 1); // Draw the actor with maximum alpha
-
-        batch.end();
-    }
     @Override
     public void resize(int width, int height) {
         // If you need to handle screen resizing, do it here
@@ -280,16 +241,12 @@ public class ForestScreen implements Screen {
         batch.dispose();
         shapeRenderer.dispose();
         img.dispose();
-        // Dispose character textures if not used elsewhere
         for (Character character : selectedCharacters) {
             character.dispose();
         }
         forestScreenMusic.dispose();
         for(Enemy enemy : enemies) {
             enemy.dispose();
-        }
-        if (diceTexture != null) {
-            diceTexture.getTexture().dispose();
         }
         stage.dispose();
     }
