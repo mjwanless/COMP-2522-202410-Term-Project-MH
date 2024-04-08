@@ -50,7 +50,7 @@ public class EncounterManager {
         encounterMessage.setPosition(Gdx.graphics.getWidth() / 2 - encounterMessage.getWidth() / 2, Gdx.graphics.getHeight() / 2 - encounterMessage.getHeight() / 2);
         stage.addActor(encounterMessage);
 
-        // Tap to Proceed
+// Tap to Proceed
         stage.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

@@ -1,63 +1,59 @@
 package ca.bcit.comp2522.termproject.Combat;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import java.util.Random;
 
 public class DiceRollForInitiative extends Actor {
-    // Define the enum inside the class
     public enum TurnOrder {
         PLAYER,
         ENEMY
     }
 
-    private Animation<TextureRegion> diceAnimation;
-    private float stateTime;
+    private Texture diceTexture;
     private TurnOrder turnOrder;
-    private boolean finishedRolling;
+    private boolean isRolling; // Added to indicate if the dice is currently rolling
+    private float rollTime; // Time the dice has been rolling
 
     public DiceRollForInitiative() {
-        // Assuming you have packed all your dice images into a TextureAtlas
-        TextureAtlas diceAtlas = new TextureAtlas(Gdx.files.internal("dice/dice.atlas"));
-        diceAnimation = new Animation<>(0.1f, diceAtlas.findRegions("front"), Animation.PlayMode.LOOP);
-        rollDice(); // Starts the dice roll
+        setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+        startRoll(); // Start rolling the dice
+        setVisible(false);
     }
 
-    public void rollDice() {
-        Random random = new Random();
-        turnOrder = random.nextBoolean() ? TurnOrder.PLAYER : TurnOrder.ENEMY;
-        // The rolling will be shown for a set amount of time, say 1 second
-        finishedRolling = false;
-        stateTime = 0;
+    public void startRoll() {
+        setVisible(true);
+        isRolling = true;
+        rollTime = 0f;
+        // Assuming you want the roll to last a certain amount of time
+        // If you want a random roll time, you can randomize this value
     }
 
     @Override
     public void act(float delta) {
-        if (!finishedRolling) {
-            stateTime += delta;
-            if (stateTime > 1.0f) { // This is how long the dice rolls before stopping
-                finishedRolling = true;
-                // Here we would set the dice to the final side based on turnOrder
-                // For simplicity, let's just say player = 1, enemy = 6
-                int finalIndex = turnOrder == TurnOrder.PLAYER ? 0 : 5; // Adjust if your frames are indexed differently
-                TextureRegion finalFrame = diceAnimation.getKeyFrames()[finalIndex];
-                diceAnimation = new Animation<>(0f, finalFrame);
+        if (isRolling) {
+            rollTime += delta;
+            if (rollTime > 1.0f) { // After 1 second, the dice roll ends
+                completeRoll();
             }
         }
     }
 
+    private void completeRoll() {
+        Random random = new Random();
+        turnOrder = random.nextBoolean() ? TurnOrder.PLAYER : TurnOrder.ENEMY;
+
+        String fileName = (turnOrder == TurnOrder.PLAYER) ? "dice/32x/front-1.png" : "dice/32x/front-6.png";
+        diceTexture = new Texture(Gdx.files.internal(fileName));
+        isRolling = false; // The dice roll is finished
+    }
+
     @Override
     public void draw(Batch batch, float alpha) {
-        if (diceAnimation != null && !finishedRolling) {
-            TextureRegion frame = diceAnimation.getKeyFrame(stateTime);
-            batch.draw(frame, getX(), getY(), getOriginX(), getOriginY(),
-                    frame.getRegionWidth(), frame.getRegionHeight(),
-                    getScaleX(), getScaleY(), getRotation());
+        if (!isRolling && diceTexture != null) {
+            batch.draw(diceTexture, getX() - diceTexture.getWidth() / 2f, getY() - diceTexture.getHeight() / 2f);
         }
     }
 
@@ -65,7 +61,18 @@ public class DiceRollForInitiative extends Actor {
         return turnOrder;
     }
 
+    // Consider adding a method to hide the dice again if needed
+    public void hideDice() {
+        setVisible(false);
+    }
+
     public boolean isFinishedRolling() {
-        return finishedRolling;
+        return !isRolling;
+    }
+
+    public void dispose() {
+        if (diceTexture != null) {
+            diceTexture.dispose();
+        }
     }
 }

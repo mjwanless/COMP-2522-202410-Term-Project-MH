@@ -1,6 +1,7 @@
 package ca.bcit.comp2522.termproject;
 
 import ca.bcit.comp2522.termproject.Character.Character;
+import ca.bcit.comp2522.termproject.Combat.DiceRollForInitiative;
 import ca.bcit.comp2522.termproject.Combat.EncounterManager;
 import ca.bcit.comp2522.termproject.Combat.EnemyGeneration;
 import ca.bcit.comp2522.termproject.Enemy.Enemy;
@@ -12,8 +13,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -33,8 +36,10 @@ public class ForestScreen implements Screen {
     private Skin skin;
     private Enemy[] enemies;
     private EncounterManager encounterManager;
-
-
+    private DiceRollForInitiative diceRollForInitiative;
+    private TextureRegion diceTexture;
+    private boolean diceRollCompleted;
+    private boolean encounterActive = true;
 
     public ForestScreen(final DiceGame game, final Character[] selectedCharacters) {
         this.game = game;
@@ -46,6 +51,8 @@ public class ForestScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         encounterManager = new EncounterManager(stage, this::onEncounterEnd);
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
+        diceRollForInitiative = new DiceRollForInitiative();
+        diceRollForInitiative.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
 
         assetManager = new AssetManager();
         setupUI();
@@ -61,7 +68,7 @@ public class ForestScreen implements Screen {
         mainTable.defaults().pad(5).space(5);
 
         TextButton goToDesertButton = new TextButton("Go to Desert", skin);
-        goToDesertButton.setSize(750, 100); // Set the size of the button
+        goToDesertButton.setSize(450, 100); // Set the size of the button
         // Position the button at the bottom center of the screen
         goToDesertButton.setPosition((Gdx.graphics.getWidth() - goToDesertButton.getWidth()) / 2, 100); // Raise it 20px above the bottom
 
@@ -185,9 +192,12 @@ public class ForestScreen implements Screen {
         // Note: Texture disposal should be handled where the Texture is loaded or managed
     }
 
+    // This method is called when the EncounterManager is done.
     private void onEncounterEnd() {
-        // This method is called when the encounter ends.
-        // Proceed with the game logic, e.g., starting combat.
+        // Now, we assume the encounter has ended and it's time for the dice roll.
+        // You can start the dice roll animation here or set a flag to start it in the render method.
+        diceRollForInitiative.startRoll(); // Start the dice roll.
+        encounterActive = false; // Set the flag to false indicating the encounter is over.
     }
 
     @Override
@@ -197,7 +207,6 @@ public class ForestScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
         Gdx.input.setInputProcessor(stage);
         enemies = EnemyGeneration.generateEnemiesForLocation(Locations.FOREST, 2).toArray(new Enemy[0]); // Example: Generate 2 enemies for the forest
-        encounterManager.startEncounter();
 
         // Load and play music
         assetManager.load("Music/111 Secret of the Forest.mp3", Music.class);
@@ -205,6 +214,13 @@ public class ForestScreen implements Screen {
         forestScreenMusic = assetManager.get("Music/111 Secret of the Forest.mp3", Music.class);
         forestScreenMusic.setLooping(true);
         forestScreenMusic.play();
+
+        // Initialize the dice roll actor
+        diceRollForInitiative = new DiceRollForInitiative();
+        diceRollForInitiative.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f); // Center on the screen
+        stage.addActor(diceRollForInitiative); // Add to stage for processing and drawing
+
+        encounterManager.startEncounter();
     }
 
     @Override
@@ -215,13 +231,28 @@ public class ForestScreen implements Screen {
         batch.draw(img, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
 
-        // Your existing code to render characters and enemies
+        // Check if the encounter has ended and the dice roll is completed.
+        if (!encounterActive && !diceRollForInitiative.isFinishedRolling()) {
+            // If the encounter is over but the dice roll is not yet completed, render the dice.
+            renderDice(batch, delta);
+        }
+
+        // Your existing code
         renderSelectedCharacters(batch, shapeRenderer);
         renderEnemies(batch, shapeRenderer);
 
-        // Your existing code to update and draw the stage
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
+    }
+
+    private void renderDice(SpriteBatch batch, float delta) {
+        batch.begin();
+
+        // Update and draw the dice roll actor
+        diceRollForInitiative.act(delta); // Update the actor based on time
+        diceRollForInitiative.draw(batch, 1); // Draw the actor with maximum alpha
+
+        batch.end();
     }
     @Override
     public void resize(int width, int height) {
@@ -257,5 +288,9 @@ public class ForestScreen implements Screen {
         for(Enemy enemy : enemies) {
             enemy.dispose();
         }
+        if (diceTexture != null) {
+            diceTexture.getTexture().dispose();
+        }
+        stage.dispose();
     }
 }
