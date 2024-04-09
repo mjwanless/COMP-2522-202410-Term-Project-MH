@@ -12,14 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import java.util.List;
 import java.util.Random;
 
 enum Initiative {
     PLAYER, ENEMY
 }
 
-public class EncounterManager implements ca.bcit.comp2522.termproject.Combat.combatManager.CombatEventListener {
+public class EncounterManager implements CombatManager.CombatEventListener {
 
     private Stage stage;
     private Image darkBackground;
@@ -28,7 +27,9 @@ public class EncounterManager implements ca.bcit.comp2522.termproject.Combat.com
     private Skin skin;
     private TextButton rollInitiativeButton, switchTurnButton, rerollButton;
     private boolean encounterActive = false;
-    private ca.bcit.comp2522.termproject.Combat.combatManager combatManager;
+    private CombatManager combatManager;
+    private EntityManager entityManager;
+
 
 
 
@@ -36,8 +37,9 @@ public class EncounterManager implements ca.bcit.comp2522.termproject.Combat.com
     public EncounterManager(Stage stage, Runnable onEncounterEnd, EntityManager entityManager) {
         this.stage = stage;
         this.onEncounterEnd = onEncounterEnd;
+        this.entityManager = entityManager;
         this.skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
-        this.combatManager = new combatManager(entityManager); // Assuming CombatManager accepts EntityManager in its constructor
+        this.combatManager = new CombatManager(entityManager); // Assuming CombatManager accepts EntityManager in its constructor
         this.combatManager.setEventListener(this);
         generateOverlay();
         initializeUI();
@@ -174,14 +176,9 @@ public class EncounterManager implements ca.bcit.comp2522.termproject.Combat.com
         }
     }
 
-    // Combat event listener methods
     @Override
-    public void onPlayerAttack(int numberOfDice, List<Integer> diceResults) {
-        // Since we're only rolling one die, we can assume diceResults contains only one value
-        if (!diceResults.isEmpty()) {
-            int dieResult = diceResults.get(0);
-            displayDiceResult(dieResult);
-        }
+    public void onPlayerAttack(int dieResult) {
+        displayDiceResult(dieResult);
         showRerollButton(true);
     }
 

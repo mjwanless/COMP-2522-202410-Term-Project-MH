@@ -23,14 +23,17 @@ public class EntityManager {
         }
     }
 
-    public void applyDamageToEnemy(Enemy enemy, int damage) {
-        if (enemy != null) {
+    /**
+     * Applies damage to all enemies.
+     * @param damage The amount of damage to apply to each enemy.
+     */
+    public void applyDamageToAllEnemies(int damage) {
+        for (Enemy enemy : enemies) {
             enemy.takeDamage(damage);
-            if (enemy.getHealth() <= 0) {
-                enemies.remove(enemy);
-                // Additional logic for when an enemy is defeated
-            }
+            System.out.println("Applied " + damage + " damage to " + enemy.getName() + ". Health is now " + enemy.getHealth() + ".");
+
         }
+//        enemies.removeAll(defeatedEnemies); // Remove all defeated enemies from the list
     }
 
 

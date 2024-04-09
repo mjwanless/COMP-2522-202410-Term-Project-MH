@@ -3,11 +3,9 @@ package ca.bcit.comp2522.termproject.Combat;
 import ca.bcit.comp2522.termproject.Character.Character;
 import ca.bcit.comp2522.termproject.Enemy.Enemy;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-public class combatManager {
+public class CombatManager {
 
     private Initiative currentInitiator;
     private CombatEventListener eventListener;
@@ -18,12 +16,12 @@ public class combatManager {
 
     // Interface for listening to combat events
     public interface CombatEventListener {
-        void onPlayerAttack(int numberOfDice, List<Integer> diceResults);
+        void onPlayerAttack(int dieResult);
         void onEnemyAttack();
     }
 
     // Constructor
-    public combatManager(EntityManager entityManager) {
+    public CombatManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
@@ -35,14 +33,6 @@ public class combatManager {
         this.eventListener = listener;
     }
 
-    public void setCharacter(Character character) {
-        this.character = character;
-    }
-
-    public void setEnemy(Enemy enemy) {
-        this.enemy = enemy;
-    }
-
     private int rollDie(int numberOfFaces) {
         Random random = new Random();
         return random.nextInt(numberOfFaces) + 1; // Generate a random number between 1 and numberOfFaces
@@ -51,17 +41,18 @@ public class combatManager {
     public void attack() {
         int numberOfFaces = 6; // Number of faces on the die (e.g., a six-sided die)
         int dieResult = rollDie(numberOfFaces); // Result of the die roll
-        List<Integer> diceResults = new ArrayList<>();
-        diceResults.add(dieResult);
 
         if (currentInitiator == Initiative.PLAYER) {
             System.out.println("Player attacks with a roll of: " + dieResult);
             if (eventListener != null) {
-                eventListener.onPlayerAttack(1, diceResults);
+                eventListener.onPlayerAttack(dieResult); // Notify about the player attack
             }
             if (enemy != null) {
-                entityManager.applyDamageToEnemy(enemy, dieResult);
+                entityManager.applyDamageToAllEnemies(dieResult); // Apply damage to the enemy
                 System.out.println("Enemy health after attack: " + enemy.getHealth());
+                if (enemy.getHealth() <= 0) {
+                    // Additional logic if needed, e.g., remove enemy from game, award XP to player
+                }
             }
         } else if (currentInitiator == Initiative.ENEMY && !enemyHasAttacked) {
             System.out.println("Enemy attacks with a roll of: " + dieResult);
