@@ -3,6 +3,7 @@ package ca.bcit.comp2522.termproject.Combat;
 import ca.bcit.comp2522.termproject.Character.Character;
 import ca.bcit.comp2522.termproject.Enemy.Enemy;
 
+import java.util.List;
 import java.util.Random;
 
 public class CombatManager {
@@ -10,8 +11,8 @@ public class CombatManager {
     private Initiative currentInitiator;
     private CombatEventListener eventListener;
     private boolean enemyHasAttacked = false;
-    private Character character;
-    private Enemy enemy;
+    private List<Character> characters;
+    private List<Enemy> enemies;
     private EntityManager entityManager;
 
     // Interface for listening to combat events
@@ -23,6 +24,8 @@ public class CombatManager {
     // Constructor
     public CombatManager(final EntityManager entityManager) {
         this.entityManager = entityManager;
+        this.characters = entityManager.characters;
+        this.enemies = entityManager.enemies;
     }
 
     public Initiative getCurrentInitiator() {
@@ -47,11 +50,13 @@ public class CombatManager {
             if (eventListener != null) {
                 eventListener.onPlayerAttack(dieResult); // Notify about the player attack
             }
-            if (enemy != null) {
-                entityManager.applyDamageToAllEnemies(dieResult); // Apply damage to the enemy
-                System.out.println("Enemy health after attack: " + enemy.getHealth());
-                if (enemy.getHealth() <= 0) {
-                    // Additional logic if needed, e.g., remove enemy from game, award XP to player
+            if (enemies != null) {
+                entityManager.applyDamageToAllEnemies(dieResult); // Apply damage to all enemies
+                for (Enemy enemy : enemies) {
+                    System.out.println("Enemy health after attack: " + enemy.getHealth());
+                    if (enemy.getHealth() <= 0) {
+                        // Additional logic if needed, e.g., remove enemy from game, award XP to player
+                    }
                 }
             }
         } else if (currentInitiator == Initiative.ENEMY && !enemyHasAttacked) {
@@ -59,10 +64,13 @@ public class CombatManager {
             if (eventListener != null) {
                 eventListener.onEnemyAttack();
             }
-            if (character != null) {
-                // Assuming Character has a method to apply damage
-                // character.applyDamage(dieResult);
-                // System.out.println("Character health after attack: " + character.getHealth());
+            if (characters != null) {
+                // Apply damage to player characters
+                // Assuming each character in the list has a method to apply damage
+                for (Character character : characters) {
+                    // character.applyDamage(dieResult);
+                    // System.out.println("Character health after attack: " + character.getHealth());
+                }
             }
             enemyHasAttacked = true;
         }

@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EntityManager {
-    private final List<Character> characters;
-    private final List<Enemy> enemies;
+    public final List<Character> characters;
+    public final List<Enemy> enemies;
 
     public EntityManager(Character[] charactersArray, Enemy[] enemiesArray) {
         this.characters = new ArrayList<>();
