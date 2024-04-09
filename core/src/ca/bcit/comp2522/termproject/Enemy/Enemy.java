@@ -40,4 +40,13 @@ public abstract class Enemy  {
     public void dispose() {
         image.dispose();
     }
+
+    public void takeDamage(int damage) {
+        this.health -= damage;
+        if (this.health <= 0) {
+            // Enemy is defeated
+            // Implement removal from the battle or other actions
+            System.out.println("Character is dead!");
+        }
+    }
 }

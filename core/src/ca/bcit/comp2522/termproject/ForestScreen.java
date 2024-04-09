@@ -4,6 +4,7 @@ package ca.bcit.comp2522.termproject;
 import ca.bcit.comp2522.termproject.Character.Character;
 import ca.bcit.comp2522.termproject.Combat.EncounterManager;
 import ca.bcit.comp2522.termproject.Combat.EnemyGeneration;
+import ca.bcit.comp2522.termproject.Combat.EntityManager;
 import ca.bcit.comp2522.termproject.Enemy.Enemy;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -38,6 +39,7 @@ public class ForestScreen implements Screen {
     private Enemy[] enemies; // Array of enemies present in the forest
     private EncounterManager encounterManager; // Manages encounters with enemies
     private boolean encounterActive = true; // Indicates whether an encounter/battle is currently active
+    private EntityManager entityManager;
 
     /**
      * Constructor for the ForestScreen. Initializes the screen with the game context and selected characters.
@@ -50,10 +52,14 @@ public class ForestScreen implements Screen {
         this.selectedCharacters = selectedCharacters;
         batch = new SpriteBatch();
         img = new Texture("backgrounds/forest_background.jpeg");
+        enemies = EnemyGeneration.generateEnemiesForLocation(Locations.FOREST, 2).toArray(new Enemy[0]);
 
         stage = new Stage(new ScreenViewport());
-        encounterManager = new EncounterManager(stage, this::onEncounterEnd);
+        entityManager = new EntityManager(selectedCharacters, enemies);
+
+        encounterManager = new EncounterManager(stage, this::onEncounterEnd, entityManager);
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
+
 
         assetManager = new AssetManager();
         setupUI(); // Calls the method to setup UI components for the screen
@@ -208,7 +214,6 @@ public class ForestScreen implements Screen {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         Gdx.input.setInputProcessor(stage);
-        enemies = EnemyGeneration.generateEnemiesForLocation(Locations.FOREST, 2).toArray(new Enemy[0]);
 
         // Load and play music
         assetManager.load("Music/111 Secret of the Forest.mp3", Music.class);

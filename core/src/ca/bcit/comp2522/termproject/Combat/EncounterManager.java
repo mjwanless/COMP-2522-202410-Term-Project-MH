@@ -19,7 +19,7 @@ enum Initiative {
     PLAYER, ENEMY
 }
 
-public class EncounterManager implements CombatManager.CombatEventListener {
+public class EncounterManager implements ca.bcit.comp2522.termproject.Combat.combatManager.CombatEventListener {
 
     private Stage stage;
     private Image darkBackground;
@@ -28,17 +28,21 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     private Skin skin;
     private TextButton rollInitiativeButton, switchTurnButton, rerollButton;
     private boolean encounterActive = false;
+    private ca.bcit.comp2522.termproject.Combat.combatManager combatManager;
+
 
 
     // Constructor
-    public EncounterManager(Stage stage, Runnable onEncounterEnd) {
+    public EncounterManager(Stage stage, Runnable onEncounterEnd, EntityManager entityManager) {
         this.stage = stage;
         this.onEncounterEnd = onEncounterEnd;
         this.skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
+        this.combatManager = new combatManager(entityManager); // Assuming CombatManager accepts EntityManager in its constructor
+        this.combatManager.setEventListener(this);
         generateOverlay();
         initializeUI();
-        CombatManager.setEventListener(this);
     }
+
 
     // Display dice results method
     public void displayDiceResult(final int dieResult) {
@@ -98,13 +102,13 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         switchTurnButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                CombatManager.switchTurn();
+                combatManager.switchTurn();
             }
         });
         switchTurnButton.setVisible(false);
 
         stage.addActor(switchTurnButton);
-        CombatManager.setCurrentInitiator(Initiative.PLAYER);
+        combatManager.setCurrentInitiator(Initiative.PLAYER);
 
         rerollButton = new TextButton("Reroll Dice", skin);
         rerollButton.setSize(200, 50);
@@ -128,16 +132,16 @@ public class EncounterManager implements CombatManager.CombatEventListener {
 
         // If the enemy rolls initiative, immediately trigger the enemy's attack
         if (result == Initiative.ENEMY) {
-            CombatManager.handleCombatRound(Initiative.ENEMY);
+            combatManager.handleCombatRound(Initiative.ENEMY);
         } else {
-            CombatManager.handleCombatRound(Initiative.PLAYER);
+            combatManager.handleCombatRound(Initiative.PLAYER);
         }
         // Proceed with the rest of the game logic here if needed
     }
 
     // Method to show the reroll button during the player's turn
     public void showRerollButton(boolean show) {
-        if (CombatManager.getCurrentInitiator() == Initiative.PLAYER) {
+        if (combatManager.getCurrentInitiator() == Initiative.PLAYER) {
             rerollButton.setVisible(show);
         } else {
             rerollButton.setVisible(false);
@@ -147,7 +151,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     // Method to re-roll the dice
     private void rerollDice() {
         // Call CombatManager to re-roll the dice
-        CombatManager.attack();
+        combatManager.attack();
     }
 
     // Start overlay method
