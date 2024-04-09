@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -13,18 +14,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-
 
 import java.util.ArrayList;
 
-
+/**
+ * Represents the character selection screen of the game.
+ */
 public class CharacterSelectionScreen implements Screen {
+
     private final DiceGame game;
     private SpriteBatch batch;
     private Texture img;
@@ -32,12 +29,13 @@ public class CharacterSelectionScreen implements Screen {
     private Skin skin;
     private Character[] availableCharacters;
     private ArrayList<Character> selectedCharacters;
-    private TextButton[] selectButtons;
-    private TextField[] nameTextFields;
     private AssetManager assetManager;
     private Music characterSelectMusic;
 
-
+    /**
+     * Constructs a new CharacterSelectionScreen object.
+     * @param game The main game object.
+     */
     public CharacterSelectionScreen(final DiceGame game) {
         this.game = game;
         this.batch = new SpriteBatch();
@@ -51,13 +49,13 @@ public class CharacterSelectionScreen implements Screen {
                 new Wizard()
         };
         this.selectedCharacters = new ArrayList<>();
-        this.selectButtons = new TextButton[availableCharacters.length];
-        this.nameTextFields = new TextField[availableCharacters.length];
-
-        assetManager = new AssetManager();
+        this.assetManager = new AssetManager();
         setupUI();
     }
 
+    /**
+     * Sets up the user interface components.
+     */
     private void setupUI() {
         Table mainTable = new Table();
         mainTable.setFillParent(true);
@@ -65,9 +63,6 @@ public class CharacterSelectionScreen implements Screen {
 
         // Adjust the pad, spacing, and sizes as needed
         mainTable.defaults().pad(5).space(5);
-
-        // Track selected characters
-        ArrayList<Character> selectedCharacters = new ArrayList<>();
 
         for (Character character : availableCharacters) {
             // Create a row table for character details
@@ -91,7 +86,7 @@ public class CharacterSelectionScreen implements Screen {
             selectButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                   if (selectedCharacters.contains(character)) {
+                    if (selectedCharacters.contains(character)) {
                         // Character is already selected, deselect it
                         selectedCharacters.remove(character);
                         selectButton.setText("Select");
@@ -102,7 +97,7 @@ public class CharacterSelectionScreen implements Screen {
                             selectButton.setText("Selected");
                         } else {
                             // Notify the user that only two characters can be selected
-
+                            showCharacterSelectionErrorDialog();
                         }
                     }
                 }
@@ -137,6 +132,9 @@ public class CharacterSelectionScreen implements Screen {
         mainTable.add(buttonTable).expandX().center().bottom().colspan(4).padBottom(20);
     }
 
+    /**
+     * Shows a dialog indicating a character selection error.
+     */
     private void showCharacterSelectionErrorDialog() {
         Dialog dialog = new Dialog("Selection Error", skin) {
             @Override
@@ -155,6 +153,7 @@ public class CharacterSelectionScreen implements Screen {
         dialog.key(Input.Keys.ENTER, true); // sends "true" when the ENTER key is pressed
         dialog.show(stage);
     }
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -178,23 +177,28 @@ public class CharacterSelectionScreen implements Screen {
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
+
     @Override
     public void resize(int width, int height) {
         // Resize the intro assets or elements
     }
+
     @Override
     public void pause() {
         // Pause any intro animations or sounds
     }
+
     @Override
     public void resume() {
         // Resume any intro animations or sounds
     }
+
     @Override
     public void hide() {
         characterSelectMusic.stop();
         // Dispose of any intro assets or elements
     }
+
     @Override
     public void dispose() {
         batch.dispose();
@@ -203,5 +207,4 @@ public class CharacterSelectionScreen implements Screen {
         skin.dispose();
         characterSelectMusic.dispose();
     }
-
 }
