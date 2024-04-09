@@ -1,28 +1,35 @@
 package ca.bcit.comp2522.termproject.Combat;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class CombatManager {
 
     private static Initiative currentInitiator;
-    private static RollMultipleDice rollMultipleDice;
     private static CombatEventListener eventListener;
 
     public interface CombatEventListener {
         void onPlayerAttack(int numberOfDice, List<Integer> diceResults);
         void onEnemyAttack();
     }
-    public static void initializeDiceRoller() {
-        rollMultipleDice = new RollMultipleDice();
-    }
 
     public static void setEventListener(CombatEventListener listener) {
         eventListener = listener;
     }
 
-    private static void playerAttack(int numberOfDice) {
-        List<Integer> diceResults = rollDice(numberOfDice);
+    private static int rollDie(int numberOfFaces) {
+        Random random = new Random();
+        return random.nextInt(numberOfFaces) + 1; // Generate a random number between 1 and numberOfFaces
+    }
+
+    private static void playerAttack() {
+        int numberOfFaces = 6; // Specify the number of faces on the die (e.g., a six-sided die)
+        int dieResult = rollDie(numberOfFaces);
+        List<Integer> diceResults = new ArrayList<>();
+        diceResults.add(dieResult);
         if (eventListener != null) {
-            eventListener.onPlayerAttack(numberOfDice, diceResults);
+            eventListener.onPlayerAttack(1, diceResults);
         }
     }
 
@@ -32,12 +39,14 @@ public class CombatManager {
         }
     }
 
-    public static void handleCombatRound(Initiative initiator, int numberOfDice) {
+    public static void handleCombatRound(Initiative initiator) {
         switch (initiator) {
             case PLAYER:
-                playerAttack(numberOfDice);
+                System.out.println("Player Attacks!");
+                playerAttack();
                 break;
             case ENEMY:
+                System.out.println("Enemy Attacks!");
                 enemyAttack();
                 break;
             default:
@@ -49,18 +58,8 @@ public class CombatManager {
         currentInitiator = initiator;
     }
 
-    public static void switchTurn(int numberOfDice) {
+    public static void switchTurn() {
         currentInitiator = (currentInitiator == Initiative.PLAYER) ? Initiative.ENEMY : Initiative.PLAYER;
-        handleCombatRound(currentInitiator, numberOfDice);
-    }
-
-    // Method to roll multiple dice using RollMultipleDice class
-    private static List<Integer> rollDice(int numberOfDice) {
-        List<Integer> diceResults = rollMultipleDice.rollDice(numberOfDice, 6); // Roll specified number of six-sided dice
-        System.out.println("Player rolled " + numberOfDice + " dice:");
-        for (int i = 0; i < diceResults.size(); i++) {
-            System.out.println("Dice " + (i + 1) + ": " + diceResults.get(i));
-        }
-        return diceResults;
+        handleCombatRound(currentInitiator);
     }
 }
