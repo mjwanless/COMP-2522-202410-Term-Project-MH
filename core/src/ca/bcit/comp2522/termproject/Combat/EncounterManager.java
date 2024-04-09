@@ -127,21 +127,26 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         // If the enemy rolls initiative, immediately trigger the enemy's attack
         if (result == Initiative.ENEMY) {
             CombatManager.handleCombatRound(Initiative.ENEMY);
+            rerollButton.setVisible(false); // Hide the reroll button if the enemy gets initiative
         } else {
             CombatManager.handleCombatRound(Initiative.PLAYER);
+            rerollButton.setVisible(true); // Show the reroll button if the player gets initiative
         }
-        // Proceed with the rest of the game logic here if needed
     }
 
     // Method to show the reroll button during the player's turn
     public void showRerollButton(boolean show) {
-        rerollButton.setVisible(show);
-    }
+        if (CombatManager.getCurrentInitiator() == Initiative.PLAYER) {
+            rerollButton.setVisible(show);
+        } else {
+            rerollButton.setVisible(false);
+        }    }
+
 
     // Method to re-roll the dice
     private void rerollDice() {
         // Call CombatManager to re-roll the dice
-        CombatManager.playerAttack();
+        CombatManager.attack();
     }
 
     // Start overlay method

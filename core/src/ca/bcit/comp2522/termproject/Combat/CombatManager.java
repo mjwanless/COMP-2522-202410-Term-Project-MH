@@ -17,6 +17,10 @@ public class CombatManager {
         void onEnemyAttack();
     }
 
+    public static Initiative getCurrentInitiator() {
+        return currentInitiator;
+    }
+
     // Set the combat event listener
     public static void setEventListener(CombatEventListener listener) {
         eventListener = listener;
@@ -28,37 +32,29 @@ public class CombatManager {
         return random.nextInt(numberOfFaces) + 1; // Generate a random number between 1 and numberOfFaces
     }
 
-    // Perform a player attack
-    public static void playerAttack() {
+    // Perform an enemy attack
+    public static void attack() {
         int numberOfFaces = 6; // Specify the number of faces on the die (e.g., a six-sided die)
         int dieResult = rollDie(numberOfFaces);
         List<Integer> diceResults = new ArrayList<>();
         diceResults.add(dieResult);
         if (eventListener != null) {
-            eventListener.onPlayerAttack(1, diceResults);
+            eventListener.onPlayerAttack(1, diceResults); // Notify event listener with enemy attack result
         }
     }
 
-    // Perform an enemy attack
-    private static void enemyAttack() {
-        if (eventListener != null) {
-            eventListener.onEnemyAttack();
-        }
-    }
-
-    // Modify the handleCombatRound method to set the flag accordingly
     public static void handleCombatRound(Initiative initiator) {
         switch (initiator) {
             case PLAYER:
                 System.out.println("Player Attacks!");
-                playerAttack();
-                enemyHasAttacked = false; // Set the flag to true after attacking
+                attack();
+                resetEnemyAttackFlag();
                 break;
             case ENEMY:
                 if (!enemyHasAttacked) {
                     System.out.println("Enemy Attacks!");
-                    enemyAttack();
-                    enemyHasAttacked = true; // Set the flag to true after attacking
+                    attack();
+                    enemyHasAttacked = true;
                 }
                 break;
             default:
@@ -70,7 +66,6 @@ public class CombatManager {
     public static void resetEnemyAttackFlag() {
         enemyHasAttacked = false;
     }
-
 
     // Set the current initiator
     public static void setCurrentInitiator(Initiative initiator) {
