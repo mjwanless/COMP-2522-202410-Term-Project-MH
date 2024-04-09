@@ -1,15 +1,13 @@
 package ca.bcit.comp2522.termproject.Combat;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.Random;
@@ -30,7 +28,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     private CombatManager combatManager;
     private EntityManager entityManager;
 
-
+    private int rerollCount = 0;
 
 
     // Constructor
@@ -148,14 +146,36 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         } else {
             rerollButton.setVisible(false);
         }    }
+    // Method to show the reroll error dialog
+    private void showRerollErrorDialog() {
+        Dialog dialog = new Dialog("Reroll Limit Reached", skin) {
+            @Override
+            protected void result(Object obj) {
+                System.out.println("Closed dialog with result: " + obj);
+            }
+        };
 
+        dialog.text("You can only reroll twice during combat.");
 
-    // Method to re-roll the dice
-    private void rerollDice() {
-        // Call CombatManager to re-roll the dice
-        combatManager.attack();
+        TextButton okButton = new TextButton("OK", skin);
+        okButton.getLabel().setFontScale(0.8f);
+        dialog.button(okButton, true);
+
+        dialog.key(Input.Keys.ENTER, true);
+        dialog.show(stage);
     }
 
+
+    // Method to handle rerolling
+    private void rerollDice() {
+        if (rerollCount < 2) { // Check if the reroll limit has not been reached
+            rerollCount++; // Increment the reroll count
+            // Call CombatManager to re-roll the dice
+            combatManager.attack();
+        } else {
+            showRerollErrorDialog(); // Show the reroll error dialog
+        }
+    }
     // Start overlay method
     public void startOverlay() {
         darkBackground.setVisible(true);

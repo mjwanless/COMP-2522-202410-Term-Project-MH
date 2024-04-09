@@ -55,7 +55,7 @@ public class CombatManager {
                 for (Enemy enemy : enemies) {
                     System.out.println("Enemy health after attack: " + enemy.getHealth());
                     if (enemy.getHealth() <= 0) {
-                        // Additional logic if needed, e.g., remove enemy from game, award XP to player
+                        // Additional logic if needed to award XP to player
                     }
                 }
             }
