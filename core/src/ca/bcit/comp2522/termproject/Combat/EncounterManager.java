@@ -36,7 +36,6 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         generateOverlay();
         initializeUI();
         CombatManager.setEventListener(this);
-        showRerollButton(true);
     }
 
     // Display dice results method
@@ -167,10 +166,12 @@ public class EncounterManager implements CombatManager.CombatEventListener {
             int dieResult = diceResults.get(0);
             displayDiceResult(dieResult);
         }
+        showRerollButton(true);
     }
 
     @Override
     public void onEnemyAttack() {
         // No implementation needed for player's encounter manager
+        showRerollButton(false);
     }
 }

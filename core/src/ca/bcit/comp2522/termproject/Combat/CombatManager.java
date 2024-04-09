@@ -52,6 +52,7 @@ public class CombatManager {
             case PLAYER:
                 System.out.println("Player Attacks!");
                 playerAttack();
+                enemyHasAttacked = false; // Set the flag to true after attacking
                 break;
             case ENEMY:
                 if (!enemyHasAttacked) {
