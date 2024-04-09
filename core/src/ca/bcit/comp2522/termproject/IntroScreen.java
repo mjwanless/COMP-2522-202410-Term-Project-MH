@@ -1,6 +1,5 @@
 package ca.bcit.comp2522.termproject;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -16,6 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+/**
+ * Represents the introduction screen of the game.
+ */
 public class IntroScreen implements Screen {
 
     private final DiceGame game;
@@ -26,6 +28,10 @@ public class IntroScreen implements Screen {
     private Stage stage;
     private Skin skin;
 
+    /**
+     * Constructs a new IntroScreen object.
+     * @param game The main game object.
+     */
     public IntroScreen(final DiceGame game) {
         this.game = game;
         batch = new SpriteBatch();
@@ -39,14 +45,14 @@ public class IntroScreen implements Screen {
         setupUI();
     }
 
+    /**
+     * Sets up the user interface components.
+     */
     private void setupUI() {
         // Use a Table for layout
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
-
-        // Enable debug lines
-        table.setDebug(true);
 
         // The story text
         String storyText = "Six years have passed since the First War between man and orc.\n\n" +
@@ -163,23 +169,28 @@ public class IntroScreen implements Screen {
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
+
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
+
     @Override
     public void pause() {
         // Pause any intro animations or sounds
     }
-@Override
+
+    @Override
     public void resume() {
         // Resume any intro animations or sounds
     }
+
     @Override
     public void hide() {
         // Dispose of any intro assets or elements
         introScreenMusic.stop();
     }
+
     @Override
     public void dispose() {
         batch.dispose();
@@ -188,5 +199,4 @@ public class IntroScreen implements Screen {
         skin.dispose();
         introScreenMusic.dispose();
     }
-
 }

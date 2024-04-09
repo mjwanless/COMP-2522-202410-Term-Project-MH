@@ -14,6 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+/**
+ * Represents the main menu screen of the game.
+ */
 public class MainMenuScreen implements Screen {
     private final DiceGame game;
     private final SpriteBatch batch;
@@ -23,6 +26,10 @@ public class MainMenuScreen implements Screen {
     private AssetManager assetManager;
     private Music mainMenuMusic;
 
+    /**
+     * Constructs a new MainMenuScreen object.
+     * @param game The main game object.
+     */
     public MainMenuScreen(final DiceGame game) {
         this.game = game;
         batch = new SpriteBatch();
@@ -36,14 +43,14 @@ public class MainMenuScreen implements Screen {
         setupUI();
     }
 
+    /**
+     * Sets up the user interface components.
+     */
     private void setupUI() {
         // Use a Table for layout
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
-
-        // Optional: Enable debug lines
-        // table.setDebug(true);
 
         // Create UI components
         Label titleLabel = new Label("Dice Adventure 2: Electric Boogaloo ", skin);
@@ -58,7 +65,6 @@ public class MainMenuScreen implements Screen {
                 // Change to the intro screen
                 game.setScreen(new IntroScreen(game));
             }
-
         });
 
         loadGameButton.addListener(new ClickListener() {
@@ -103,7 +109,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        game.clearScreen(); // A method to clear the screen, you might need to implement this in DiceGame
+        game.clearScreen(); // A method to clear the screen
         batch.begin();
         batch.draw(img, 0, 0);
         batch.end();
@@ -114,30 +120,29 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(final int width, final int height) {
-        // no-op
+        // N/A
     }
 
     @Override
     public void pause() {
-        // no-op
+        // N/A
     }
 
     @Override
     public void resume() {
-        // no-op
+        // N/A
     }
 
     @Override
     public void hide() {
         mainMenuMusic.stop();
-        // no-op
     }
 
     @Override
     public void dispose() {
         batch.dispose();
         img.dispose();
-        stage.dispose(); // Dispose of the stage to clean up resources
+        stage.dispose();
         skin.dispose();
         mainMenuMusic.dispose();
     }

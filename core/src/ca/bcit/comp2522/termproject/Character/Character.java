@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
  * representation using the LibGDX framework. This class is abstract, meaning it
  * is intended to be subclassed with specific character implementations.
  *
- * @author Malcom Wanless
+ * @author Malcolm Wanless
  * @author Heraldo Abreu
  *
  * @version 2024
@@ -16,12 +16,12 @@ import com.badlogic.gdx.graphics.Texture;
  */
 
 public abstract class Character {
-    private final String name;
-    private final int strength;
-    private final int health;
-    private final int defense;
-    private final int evade;
-    private final Texture image; // LibGDX class to handle images
+    private String name;
+    private int strength;
+    private int health;
+    private int defense;
+    private int evade;
+    private Texture image; // LibGDX class to handle images
     /**
      * Constructs a new Character instance with specified attributes and an image path.
      *
@@ -72,6 +72,22 @@ public abstract class Character {
      * @return The character's evade chance.
      */
     public int getEvade() { return evade; }
+
+
+    /**
+     * Method to apply damage to the character.
+     *
+     * @param damage The amount of damage to apply.
+     */
+    public void takeDamage(int damage) {
+        this.health -= damage;
+        if (this.health <= 0) {
+            // Enemy is defeated
+            // Implement removal from the battle or other actions
+            System.out.println("Character is dead!");
+        }
+    }
+
     /**
      * Returns the character's image.
      *

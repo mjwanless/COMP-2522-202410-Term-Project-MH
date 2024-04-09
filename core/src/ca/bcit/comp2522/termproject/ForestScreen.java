@@ -69,6 +69,16 @@ public class ForestScreen implements Screen {
 //        stage.addActor(goToDesertButton);
     }
 
+//    public void applyDamageToEnemies(int damage) {
+//        for (Enemy enemy : enemies) {
+//            enemy.takeDamage(damage);
+//            // Check if enemy is dead and handle accordingly
+//            if (enemy.getHealth() <= 0) {
+//                // Handle defeated enemy, such as removing from the array or marking as defeated
+//            }
+//        }
+//    }
+
     private void renderSelectedCharacters(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         float startX = 50; // X position for character info box
         float startY = Gdx.graphics.getHeight() - 450; // Y position from the top of the screen

@@ -27,6 +27,8 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     private Runnable onEncounterEnd;
     private Skin skin;
     private TextButton rollInitiativeButton, switchTurnButton, rerollButton;
+    private boolean encounterActive = false;
+
 
     // Constructor
     public EncounterManager(Stage stage, Runnable onEncounterEnd) {
@@ -127,11 +129,10 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         // If the enemy rolls initiative, immediately trigger the enemy's attack
         if (result == Initiative.ENEMY) {
             CombatManager.handleCombatRound(Initiative.ENEMY);
-            rerollButton.setVisible(false); // Hide the reroll button if the enemy gets initiative
         } else {
             CombatManager.handleCombatRound(Initiative.PLAYER);
-            rerollButton.setVisible(true); // Show the reroll button if the player gets initiative
         }
+        // Proceed with the rest of the game logic here if needed
     }
 
     // Method to show the reroll button during the player's turn
