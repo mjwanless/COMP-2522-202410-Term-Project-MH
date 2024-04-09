@@ -176,6 +176,8 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         }
     }
 
+
+
     @Override
     public void onPlayerAttack(int dieResult) {
         displayDiceResult(dieResult);

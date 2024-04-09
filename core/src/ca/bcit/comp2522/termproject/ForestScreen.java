@@ -154,7 +154,7 @@ public class ForestScreen implements Screen {
         float padding = 10;
 
         // Font setup
-        BitmapFont font = new BitmapFont(); // Consider moving font initialization outside if it doesn't change
+        BitmapFont font = new BitmapFont();
         font.getData().setScale(1f);
 
         // Draw background for enemy info
@@ -232,6 +232,42 @@ public class ForestScreen implements Screen {
         // Update and draw stage
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
+
+        // Check for defeated characters and enemies and remove them from the stage
+        for (Character character : selectedCharacters) {
+            if (character.getHealth() <= 0) {
+                selectedCharacters = removeCharacter(character, selectedCharacters);
+            }
+        }
+        for (Enemy enemy : enemies) {
+            if (enemy.getHealth() <= 0) {
+                enemies = removeEnemy(enemy, enemies);
+            }
+        }
+    }
+
+    // Method to remove a character from the array
+    private Character[] removeCharacter(Character characterToRemove, Character[] characters) {
+        Character[] updatedCharacters = new Character[characters.length - 1];
+        int idx = 0;
+        for (Character character : characters) {
+            if (character != characterToRemove) {
+                updatedCharacters[idx++] = character;
+            }
+        }
+        return updatedCharacters;
+    }
+
+    // Method to remove an enemy from the array
+    private Enemy[] removeEnemy(Enemy enemyToRemove, Enemy[] enemies) {
+        Enemy[] updatedEnemies = new Enemy[enemies.length - 1];
+        int idx = 0;
+        for (Enemy enemy : enemies) {
+            if (enemy != enemyToRemove) {
+                updatedEnemies[idx++] = enemy;
+            }
+        }
+        return updatedEnemies;
     }
 
     @Override
