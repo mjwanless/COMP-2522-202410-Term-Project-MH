@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Random;
 
 enum Initiative {
-    PLAYER, ENEMY;
+    PLAYER, ENEMY
 }
 
 public class EncounterManager implements CombatManager.CombatEventListener {
@@ -27,34 +27,25 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     private Runnable onEncounterEnd;
     private Skin skin;
     private TextButton rollInitiativeButton, switchTurnButton;
-    private int numberOfDice;
 
+    // Constructor
     public EncounterManager(Stage stage, Runnable onEncounterEnd) {
         this.stage = stage;
         this.onEncounterEnd = onEncounterEnd;
         this.skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
         generateOverlay();
         initializeUI();
-        this.numberOfDice = 8; // Default number of dice
         CombatManager.setEventListener(this);
-
     }
 
-    public void displayDiceResults(List<Integer> diceResults) {
-        // Display dice results on the resultLabel
-        StringBuilder stringBuilder = new StringBuilder("Dice Results: ");
-        for (Integer result : diceResults) {
-            stringBuilder.append(result).append(", ");
-        }
-        String resultsText = stringBuilder.toString();
-        resultLabel.setText(resultsText);
+    // Display dice results method
+    public void displayDiceResult(final int dieResult) {
+        String resultText = "Dice Result: " + dieResult;
+        resultLabel.setText(resultText);
         resultLabel.setVisible(true);
     }
 
-    public void render(float delta) {
-        // No dice animation to render
-    }
-
+    // Generate overlay method
     private void generateOverlay() {
         Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Pixmap.Format.RGBA8888);
         pixmap.setColor(new Color(0, 0, 0, 0.5f));
@@ -67,6 +58,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         stage.addActor(darkBackground);
     }
 
+    // Initialize UI method
     private void initializeUI() {
         encounterMessage = new Label("An enemy appears!", skin, "default");
         encounterMessage.setPosition(Gdx.graphics.getWidth() / 2 - encounterMessage.getWidth() / 2,
@@ -107,13 +99,22 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         CombatManager.setCurrentInitiator(Initiative.PLAYER);
     }
 
+    // Display random initiative result method
     private void displayRandomInitiativeResult() {
         Initiative result = new Random().nextBoolean() ? Initiative.PLAYER : Initiative.ENEMY;
         resultLabel.setText(result + " rolls for initiative!");
         resultLabel.setVisible(true);
-        // Proceed with the rest of the game logic here
+
+        // If the enemy rolls initiative, immediately trigger the enemy's attack
+        if (result == Initiative.ENEMY) {
+            CombatManager.handleCombatRound(Initiative.ENEMY);
+        } else {
+            CombatManager.handleCombatRound(Initiative.PLAYER);
+        }
+        // Proceed with the rest of the game logic here if needed
     }
 
+    // Start overlay method
     public void startOverlay() {
         darkBackground.setVisible(true);
         encounterMessage.setVisible(true);
@@ -122,6 +123,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         resultLabel.setVisible(false);
     }
 
+    // End overlay method
     public void endOverlay() {
         darkBackground.setVisible(false);
         encounterMessage.setVisible(false);
@@ -132,18 +134,18 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         }
     }
 
+    // Combat event listener methods
     @Override
     public void onPlayerAttack(int numberOfDice, List<Integer> diceResults) {
-        // Display the dice results on the screen
-        displayDiceResults(diceResults);
+        // Since we're only rolling one die, we can assume diceResults contains only one value
+        if (!diceResults.isEmpty()) {
+            int dieResult = diceResults.get(0);
+            displayDiceResult(dieResult);
+        }
     }
 
     @Override
     public void onEnemyAttack() {
         // No implementation needed for player's encounter manager
-    }
-
-    public void dispose() {
-        // No need to dispose of anything
     }
 }
