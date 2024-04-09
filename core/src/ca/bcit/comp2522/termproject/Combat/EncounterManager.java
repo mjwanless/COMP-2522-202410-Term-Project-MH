@@ -45,6 +45,12 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         resultLabel.setVisible(true);
     }
 
+    public void displayEnemyResult() {
+        String resultText = "Enemy Attacks";
+        resultLabel.setText(resultText);
+        resultLabel.setVisible(true);
+    }
+
     // Generate overlay method
     private void generateOverlay() {
         Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Pixmap.Format.RGBA8888);
@@ -172,6 +178,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     @Override
     public void onEnemyAttack() {
         // No implementation needed for player's encounter manager
+        displayEnemyResult();
         showRerollButton(false);
     }
 }
