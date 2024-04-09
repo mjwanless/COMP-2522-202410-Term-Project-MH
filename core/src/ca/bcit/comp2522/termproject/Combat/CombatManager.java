@@ -18,7 +18,7 @@ public class CombatManager {
     // Interface for listening to combat events
     public interface CombatEventListener {
         void onPlayerAttack(int dieResult);
-        void onEnemyAttack();
+        void onEnemyAttack(int dieResult);
     }
 
     // Constructor
@@ -62,14 +62,15 @@ public class CombatManager {
         } else if (currentInitiator == Initiative.ENEMY && !enemyHasAttacked) {
             System.out.println("Enemy attacks with a roll of: " + dieResult);
             if (eventListener != null) {
-                eventListener.onEnemyAttack();
+                eventListener.onEnemyAttack(dieResult);
             }
             if (characters != null) {
+                entityManager.applyDamageToAllCharacters(dieResult);
+
                 // Apply damage to player characters
                 // Assuming each character in the list has a method to apply damage
                 for (Character character : characters) {
-                    // character.applyDamage(dieResult);
-                    // System.out.println("Character health after attack: " + character.getHealth());
+                     System.out.println("Character health after attack: " + character.getHealth());
                 }
             }
             enemyHasAttacked = true;

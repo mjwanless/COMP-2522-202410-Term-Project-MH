@@ -183,9 +183,9 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     }
 
     @Override
-    public void onEnemyAttack() {
-        // No implementation needed for player's encounter manager
-        displayEnemyResult();
+    public void onEnemyAttack(int dieResult) {
+        displayDiceResult(dieResult);
         showRerollButton(false);
     }
+
 }

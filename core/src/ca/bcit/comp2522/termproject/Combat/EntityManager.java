@@ -35,6 +35,14 @@ public class EntityManager {
         }
 //        enemies.removeAll(defeatedEnemies); // Remove all defeated enemies from the list
     }
+    public void applyDamageToAllCharacters(int damage) {
+        for (Character character : characters) {
+            character.takeDamage(damage);
+            System.out.println("Applied " + damage + " damage to " + character.getName() + ". Health is now " + character.getHealth() + ".");
+
+        }
+//        enemies.removeAll(defeatedEnemies); // Remove all defeated enemies from the list
+    }
 
 
 }
