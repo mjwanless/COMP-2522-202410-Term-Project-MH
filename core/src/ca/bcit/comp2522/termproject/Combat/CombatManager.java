@@ -29,7 +29,7 @@ public class CombatManager {
     }
 
     // Perform a player attack
-    private static void playerAttack() {
+    public static void playerAttack() {
         int numberOfFaces = 6; // Specify the number of faces on the die (e.g., a six-sided die)
         int dieResult = rollDie(numberOfFaces);
         List<Integer> diceResults = new ArrayList<>();
@@ -78,7 +78,11 @@ public class CombatManager {
 
     // Switch the turn between player and enemy
     public static void switchTurn() {
-        currentInitiator = (currentInitiator == Initiative.PLAYER) ? Initiative.ENEMY : Initiative.PLAYER;
+        if (currentInitiator == Initiative.PLAYER) {
+            currentInitiator = Initiative.ENEMY;
+        } else {
+            currentInitiator = Initiative.PLAYER;
+        }
         handleCombatRound(currentInitiator);
     }
 }

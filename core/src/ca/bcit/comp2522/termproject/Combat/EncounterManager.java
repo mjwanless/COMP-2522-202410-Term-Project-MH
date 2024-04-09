@@ -26,7 +26,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     private Label encounterMessage, resultLabel;
     private Runnable onEncounterEnd;
     private Skin skin;
-    private TextButton rollInitiativeButton, switchTurnButton;
+    private TextButton rollInitiativeButton, switchTurnButton, rerollButton;
 
     // Constructor
     public EncounterManager(Stage stage, Runnable onEncounterEnd) {
@@ -36,6 +36,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         generateOverlay();
         initializeUI();
         CombatManager.setEventListener(this);
+        showRerollButton(true);
     }
 
     // Display dice results method
@@ -97,6 +98,19 @@ public class EncounterManager implements CombatManager.CombatEventListener {
 
         stage.addActor(switchTurnButton);
         CombatManager.setCurrentInitiator(Initiative.PLAYER);
+
+        rerollButton = new TextButton("Reroll Dice", skin);
+        rerollButton.setSize(200, 50);
+        rerollButton.setPosition((Gdx.graphics.getWidth() - rerollButton.getWidth()) / 2, 100);
+        rerollButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Call the method to re-roll the dice
+                rerollDice();
+            }
+        });
+        rerollButton.setVisible(false);
+        stage.addActor(rerollButton);
     }
 
     // Display random initiative result method
@@ -112,6 +126,17 @@ public class EncounterManager implements CombatManager.CombatEventListener {
             CombatManager.handleCombatRound(Initiative.PLAYER);
         }
         // Proceed with the rest of the game logic here if needed
+    }
+
+    // Method to show the reroll button during the player's turn
+    public void showRerollButton(boolean show) {
+        rerollButton.setVisible(show);
+    }
+
+    // Method to re-roll the dice
+    private void rerollDice() {
+        // Call CombatManager to re-roll the dice
+        CombatManager.playerAttack();
     }
 
     // Start overlay method
