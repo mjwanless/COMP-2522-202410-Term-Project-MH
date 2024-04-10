@@ -15,9 +15,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
@@ -40,6 +43,8 @@ public class ForestScreen implements Screen {
     private EncounterManager encounterManager; // Manages encounters with enemies
     private boolean encounterActive = true; // Indicates whether an encounter/battle is currently active
     private EntityManager entityManager;
+
+    private int defeatedEnemyCount = 0; // Counter for defeated enemies
 
     /**
      * Constructor for the ForestScreen. Initializes the screen with the game context and selected characters.
@@ -197,7 +202,6 @@ public class ForestScreen implements Screen {
     private void onEncounterEnd() {
         encounterActive = false; // Set the flag to false indicating the encounter is over
     }
-
     @Override
     public void show() {
         // Initialization
@@ -242,6 +246,10 @@ public class ForestScreen implements Screen {
         for (Enemy enemy : enemies) {
             if (enemy.getHealth() <= 0) {
                 enemies = removeEnemy(enemy, enemies);
+                defeatedEnemyCount++;
+                if (defeatedEnemyCount == 2) {
+                    switchToRestScreen();
+                }
             }
         }
     }
@@ -268,6 +276,26 @@ public class ForestScreen implements Screen {
             }
         }
         return updatedEnemies;
+    }
+
+    // Method to switch the turn button functionality to go to rest screen
+    public void switchToRestScreen() {
+        // Dispose of the reroll button and switch turn button
+        encounterManager.removeRerollButton();
+        encounterManager.removeSwitchTurnButton();
+
+        // Create a new button for resting
+        TextButton restButton = new TextButton("Rest", skin);
+        restButton.setSize(200, 50);
+        restButton.setPosition((Gdx.graphics.getWidth() - restButton.getWidth()) / 2, 20);
+        restButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Implement logic to go to the rest screen
+                game.setScreen(new OptionsAndSaveExitScreen(game, selectedCharacters)); // Change to the appropriate screen
+            }
+        });
+        stage.addActor(restButton); // Add the new button to the stage
     }
 
     @Override
@@ -304,6 +332,7 @@ public class ForestScreen implements Screen {
         forestScreenMusic.dispose();
         for (Enemy enemy : enemies) {
             enemy.dispose();
+
         }
         stage.dispose();
     }

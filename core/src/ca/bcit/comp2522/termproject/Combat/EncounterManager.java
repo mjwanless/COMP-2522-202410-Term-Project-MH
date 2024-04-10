@@ -31,6 +31,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     private int rerollCount = 0;
 
 
+
     // Constructor
     public EncounterManager(Stage stage, Runnable onEncounterEnd, EntityManager entityManager) {
         this.stage = stage;
@@ -176,6 +177,18 @@ public class EncounterManager implements CombatManager.CombatEventListener {
             showRerollErrorDialog(); // Show the reroll error dialog
         }
     }
+
+    // Method to hide the reroll button
+    public void removeRerollButton() {
+        rerollButton.remove();
+    }
+
+    public void removeSwitchTurnButton() {
+        switchTurnButton.remove();
+    }
+
+    // Method to
+
     // Start overlay method
     public void startOverlay() {
         darkBackground.setVisible(true);
