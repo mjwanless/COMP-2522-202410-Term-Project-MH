@@ -60,7 +60,7 @@ public class CharacterDeathScreen implements Screen {
         goToOptionsButton.addListener(new ClickListener() {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                game.setScreen(new OptionsAndSaveExitScreen(game, selectedCharacters)); // Transition to DesertScreen
+                game.setScreen(new OptionsAndSaveExitScreen(game, selectedCharacters, Locations.FOREST)); // Transition to DesertScreen
             }
         });
 
