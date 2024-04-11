@@ -92,7 +92,7 @@ public class OptionsAndSaveExitScreen implements Screen {
                     if (Math.random() < 0.5) {
                         game.setScreen(new DesertScreen(game, selectedCharacters));
                     } else {
-                        game.setScreen(new DesertScreen(game, selectedCharacters));
+                        game.setScreen(new VolcanoScreen(game, selectedCharacters));
                     }
                 }
             });
