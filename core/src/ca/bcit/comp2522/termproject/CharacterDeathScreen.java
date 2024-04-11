@@ -72,6 +72,10 @@ public class CharacterDeathScreen implements Screen {
             }
         });
 
+        // Add the defeat label to the table
+        table.add(defeatLabel).padTop(10);
+
+
         table.row(); // Start a new row
         table.add(newGameButton).padTop(10);
         table.row(); // Start another new row
@@ -142,5 +146,6 @@ public class CharacterDeathScreen implements Screen {
             img.dispose();
         }
         characterDeathMusic.dispose();
+        stage.dispose();
     }
 }
