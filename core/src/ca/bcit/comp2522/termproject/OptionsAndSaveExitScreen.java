@@ -79,34 +79,24 @@ public class OptionsAndSaveExitScreen implements Screen {
             });
 
             stage.addActor(goToForestButton);
-        } else if (currentLocation == Locations.DESERT) {
-            TextButton goToDesertButton = new TextButton("Go to Desert", skin);
-            goToDesertButton.setSize(750, 100); // Set the size of the button
-            // Position the button at the bottom center of the screen
-            goToDesertButton.setPosition((Gdx.graphics.getWidth() - goToDesertButton.getWidth()) / 2, 100); // Raise it 20px above the bottom
+        } else if (currentLocation == Locations.DESERT || currentLocation == Locations.VOLCANO) {
+            TextButton goToNewLocationButton = new TextButton("Go to Next Location", skin);
+            goToNewLocationButton.setSize(750, 100); // Set the size of the button
+            goToNewLocationButton.setPosition((Gdx.graphics.getWidth() - goToNewLocationButton.getWidth()) / 2, 100); // Raise it 20px above the bottom
 
-            goToDesertButton.addListener(new ClickListener() {
+            goToNewLocationButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                    game.setScreen(new DesertScreen(game, selectedCharacters)); // Transition to DesertScreen
+                    // Determine the next location randomly
+                    Locations nextLocation;
+                    if (Math.random() < 0.5) {
+                        game.setScreen(new DesertScreen(game, selectedCharacters));
+                    } else {
+                        game.setScreen(new DesertScreen(game, selectedCharacters));
+                    }
                 }
             });
-
-            stage.addActor(goToDesertButton);
-        } else if (currentLocation == Locations.VOLCANO) {
-            TextButton goToVolcanoButton = new TextButton("Go to Volcano", skin);
-            goToVolcanoButton.setSize(750, 100); // Set the size of the button
-            // Position the button at the bottom center of the screen
-            goToVolcanoButton.setPosition((Gdx.graphics.getWidth() - goToVolcanoButton.getWidth()) / 2, 100); // Raise it 20px above the bottom
-
-            goToVolcanoButton.addListener(new ClickListener() {
-                @Override
-                public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                    game.setScreen(new VolcanoScreen(game, selectedCharacters)); // Transition to DesertScreen
-                }
-            });
-
-            stage.addActor(goToVolcanoButton);
+            stage.addActor(goToNewLocationButton);
         } else if (currentLocation == Locations.CASTLE) {
             TextButton goToCastleButton = new TextButton("Go to Castle", skin);
             goToCastleButton.setSize(750, 100); // Set the size of the button
@@ -262,5 +252,6 @@ public class OptionsAndSaveExitScreen implements Screen {
             character.dispose();
         }
         optionsScreenMusic.dispose();
+        stage.dispose();
     }
 }
