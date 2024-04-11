@@ -10,7 +10,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -49,23 +51,31 @@ public class BossKilledScreen implements Screen {
         mainTable.setFillParent(true);
         stage.addActor(mainTable);
 
-        // Adjust the pad, spacing, and sizes as needed
-        mainTable.defaults().pad(5).space(5);
+        // Victory Label
+        Label victoryLabel = new Label("VICTORY", skin, "default");
+        victoryLabel.setFontScale(2);
+        victoryLabel.setColor(Color.GOLD);
 
-        TextButton goToCharDeathButton = new TextButton("Go to Desert", skin);
-        goToCharDeathButton.setSize(750, 100); // Set the size of the button
-        // Position the button at the bottom center of the screen
-        goToCharDeathButton.setPosition((Gdx.graphics.getWidth() - goToCharDeathButton.getWidth()) / 2, 100); // Raise it 20px above the bottom
+        // Positioning the label at the top
+        mainTable.add(victoryLabel).padBottom(20).row();
 
-        goToCharDeathButton.addListener(new ClickListener() {
+        // Exit Button
+        TextButton exitButton = new TextButton("Exit", skin);
+        exitButton.addListener(new ClickListener() {
             @Override
-            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                game.setScreen(new CharacterDeathScreen(game, selectedCharacters)); // Transition to DesertScreen
+            public void clicked(InputEvent event, float x, float y) {
+                // Here you could call `Gdx.app.exit()` to close the application,
+                // or set the screen to another screen, like the main menu
+                Gdx.app.exit();
             }
         });
 
-        stage.addActor(goToCharDeathButton);
+        // Adding the exit button at the bottom of the table
+        mainTable.add(exitButton).padTop(20).size(200, 50);
+
+        mainTable.center();
     }
+
 
     @Override
     public void show() {
@@ -90,71 +100,8 @@ public class BossKilledScreen implements Screen {
         batch.draw(img, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
 
-
-        renderSelectedCharacters(batch, shapeRenderer);
-        // Handle additional rendering or logic here
-
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-    }
-
-    private void renderSelectedCharacters(SpriteBatch batch, ShapeRenderer shapeRenderer) {
-        float startX = 50; // X position for character info box
-        float startY = Gdx.graphics.getHeight() - 450; // Y position from the top of the screen
-        float boxWidth = 300; // Width of the character info box
-        float boxHeight = 100; // Height of the character info box
-        float portraitSize = 90; // Size of the character portrait
-        float padding = 10; // Padding inside the info box
-
-        BitmapFont font = new BitmapFont(); // Use your existing BitmapFont here
-        font.getData().setScale(1f); // Scale down the font size
-
-        // Draw the encapsulating rectangle for character info
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.BLACK); // Color for the background of the character info
-
-        for (Character character : selectedCharacters) {
-            // Draw the background rectangle
-            shapeRenderer.rect(startX, startY, boxWidth, boxHeight);
-
-            // Move to the next character's position
-            startY -= (boxHeight + padding);
-        }
-
-        shapeRenderer.end();
-
-        // Now draw the images and text on top of the boxes
-        batch.begin();
-
-        // Reset startY position
-        startY = Gdx.graphics.getHeight() - 450;
-
-        for (Character character : selectedCharacters) {
-            // Draw the character portrait within the box
-            Texture portrait = character.getImage();
-            batch.draw(portrait, startX + padding, startY + (boxHeight - portraitSize) / 2, portraitSize, portraitSize);
-
-            // Position the text next to the portrait inside the box
-            float textX = startX + portraitSize + 2 * padding;
-            float textY = startY + boxHeight - padding;
-
-            // Draw the character's name
-            font.setColor(Color.WHITE); // Set font color to white for better visibility
-            font.draw(batch, character.getName(), textX, textY);
-
-            // Draw the character's health
-            // Assuming getHealthString method exists in your Character class
-            String healthString = "HP: " + character.getHealth();
-            font.draw(batch, healthString, textX, textY - 20); // Adjust Y position for health below the name
-
-            // Move to the next character's position
-            startY -= (boxHeight + padding);
-        }
-
-        batch.end();
-
-        // Don't forget to dispose of the font when you're done to avoid memory leaks
-        font.dispose();
     }
     @Override
     public void resize(int width, int height) {
