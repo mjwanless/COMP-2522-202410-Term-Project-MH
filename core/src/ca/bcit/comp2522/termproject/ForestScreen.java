@@ -83,20 +83,6 @@ public class ForestScreen implements Screen {
         mainTable.defaults().pad(5).space(5);
         // Additional UI elements like buttons can be added here
     }
-//
-//        TextButton goToDesertButton = new TextButton("Go to Desert", skin);
-//        goToDesertButton.setSize(450, 100);
-//        goToDesertButton.setPosition((Gdx.graphics.getWidth() - goToDesertButton.getWidth()) / 2, 100);
-//
-//        goToDesertButton.addListener(new ClickListener() {
-//            @Override
-//            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-//                game.setScreen(new DesertScreen(game, selectedCharacters));
-//            }
-//        });
-//
-//        stage.addActor(goToDesertButton);
-//    }
 
     private void renderSelectedCharacters(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         // Constants for layout
@@ -292,12 +278,7 @@ public class ForestScreen implements Screen {
         restButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Implement logic to go to the rest screen
-                if (game.combatCounter >= 3)
                     game.setScreen(new OptionsAndSaveExitScreen(game, selectedCharacters, Locations.DESERT)); // Change to the appropriate screen
-                else {
-                    game.setScreen(new OptionsAndSaveExitScreen(game, selectedCharacters, Locations.FOREST)); // Change to the appropriate screen
-                }
             }
         });
         stage.addActor(restButton); // Add the new button to the stage
