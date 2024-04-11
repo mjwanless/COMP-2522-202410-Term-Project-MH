@@ -3,11 +3,7 @@ package ca.bcit.comp2522.termproject.Combat;
 import ca.bcit.comp2522.termproject.Enemy.*;
 import ca.bcit.comp2522.termproject.Locations;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class EnemyGeneration {
 
