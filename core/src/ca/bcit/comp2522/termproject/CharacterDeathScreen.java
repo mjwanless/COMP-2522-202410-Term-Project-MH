@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -25,14 +26,12 @@ public class CharacterDeathScreen implements Screen {
     private ShapeRenderer shapeRenderer;
     private AssetManager assetManager;
     private Music characterDeathMusic;
-    private Character[] selectedCharacters;
     private Stage stage;
     private Skin skin;
 
 
-    public CharacterDeathScreen(final DiceGame game, final Character[] selectedCharacters) {
+    public CharacterDeathScreen(final DiceGame game) {
         this.game = game;
-        this.selectedCharacters = selectedCharacters;
         batch = new SpriteBatch();
         img = new Texture("backgrounds/defeat.jpg");
 
@@ -45,26 +44,41 @@ public class CharacterDeathScreen implements Screen {
 
 
     private void setupUI() {
-        Table mainTable = new Table();
-        mainTable.setFillParent(true);
-        stage.addActor(mainTable);
+        // Use a Table for layout
+        Table table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
 
-        // Adjust the pad, spacing, and sizes as needed
-        mainTable.defaults().pad(5).space(5);
+        // Create UI components
+        Label defeatLabel = new Label("Face The Sorrow of DEFEAT", skin, "default");
+        TextButton newGameButton = new TextButton("New Game", skin);
+        TextButton exitButton = new TextButton("Exit", skin);
 
-        TextButton goToOptionsButton = new TextButton("Go to Desert", skin);
-        goToOptionsButton.setSize(750, 100); // Set the size of the button
-        // Position the button at the bottom center of the screen
-        goToOptionsButton.setPosition((Gdx.graphics.getWidth() - goToOptionsButton.getWidth()) / 2, 100); // Raise it 20px above the bottom
-
-        goToOptionsButton.addListener(new ClickListener() {
+        // Add listeners to buttons
+        newGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                game.setScreen(new OptionsAndSaveExitScreen(game, selectedCharacters, Locations.FOREST)); // Transition to DesertScreen
+                // Change to the intro screen
+                game.setScreen(new IntroScreen(game));
             }
         });
 
-        stage.addActor(goToOptionsButton);
+        // Add listener to the Exit button
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                Gdx.app.exit(); // Exit the application
+                System.exit(0); // Ensure that the application exits properly
+            }
+        });
+
+        table.row(); // Start a new row
+        table.add(newGameButton).padTop(10);
+        table.row(); // Start another new row
+
+        // Add the Exit button to the table, below the New Game and Load Game buttons
+        table.row(); // Start a new row
+        table.add(exitButton).padTop(10);
     }
 
     @Override
@@ -90,71 +104,10 @@ public class CharacterDeathScreen implements Screen {
         batch.draw(img, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
 
-
-        renderSelectedCharacters(batch, shapeRenderer);
         // Handle additional rendering or logic here
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-    }
-
-    private void renderSelectedCharacters(SpriteBatch batch, ShapeRenderer shapeRenderer) {
-        float startX = 50; // X position for character info box
-        float startY = Gdx.graphics.getHeight() - 450; // Y position from the top of the screen
-        float boxWidth = 300; // Width of the character info box
-        float boxHeight = 100; // Height of the character info box
-        float portraitSize = 90; // Size of the character portrait
-        float padding = 10; // Padding inside the info box
-
-        BitmapFont font = new BitmapFont(); // Use your existing BitmapFont here
-        font.getData().setScale(1f); // Scale down the font size
-
-        // Draw the encapsulating rectangle for character info
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.BLACK); // Color for the background of the character info
-
-        for (Character character : selectedCharacters) {
-            // Draw the background rectangle
-            shapeRenderer.rect(startX, startY, boxWidth, boxHeight);
-
-            // Move to the next character's position
-            startY -= (boxHeight + padding);
-        }
-
-        shapeRenderer.end();
-
-        // Now draw the images and text on top of the boxes
-        batch.begin();
-
-        // Reset startY position
-        startY = Gdx.graphics.getHeight() - 450;
-
-        for (Character character : selectedCharacters) {
-            // Draw the character portrait within the box
-            Texture portrait = character.getImage();
-            batch.draw(portrait, startX + padding, startY + (boxHeight - portraitSize) / 2, portraitSize, portraitSize);
-
-            // Position the text next to the portrait inside the box
-            float textX = startX + portraitSize + 2 * padding;
-            float textY = startY + boxHeight - padding;
-
-            // Draw the character's name
-            font.setColor(Color.WHITE); // Set font color to white for better visibility
-            font.draw(batch, character.getName(), textX, textY);
-
-            // Draw the character's health
-            // Assuming getHealthString method exists in your Character class
-            String healthString = "HP: " + character.getHealth();
-            font.draw(batch, healthString, textX, textY - 20); // Adjust Y position for health below the name
-
-            // Move to the next character's position
-            startY -= (boxHeight + padding);
-        }
-
-        batch.end();
-
-        // Don't forget to dispose of the font when you're done to avoid memory leaks
-        font.dispose();
     }
     @Override
     public void resize(int width, int height) {
@@ -187,10 +140,6 @@ public class CharacterDeathScreen implements Screen {
         }
         if (img != null) {
             img.dispose();
-        }
-        // Dispose character textures if not used elsewhere
-        for (Character character : selectedCharacters) {
-            character.dispose();
         }
         characterDeathMusic.dispose();
     }
