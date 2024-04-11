@@ -28,11 +28,12 @@ public class OptionsAndSaveExitScreen implements Screen {
     private Character[] selectedCharacters;
     private Stage stage;
     private Skin skin;
+    private Locations currentLocation;
 
-
-    public OptionsAndSaveExitScreen(final DiceGame game, final Character[] selectedCharacters) {
+    public OptionsAndSaveExitScreen(final DiceGame game, final Character[] selectedCharacters, Locations currentLocation) {
         this.game = game;
         this.selectedCharacters = selectedCharacters;
+        this.currentLocation = currentLocation;
         batch = new SpriteBatch();
         img = new Texture("backgrounds/campfire_background.jpeg");
 
@@ -52,6 +53,9 @@ public class OptionsAndSaveExitScreen implements Screen {
         // Adjust the pad, spacing, and sizes as needed
         mainTable.defaults().pad(5).space(5);
 
+        if (currentLocation == Locations.FOREST) {
+
+        }
         TextButton goToDesertButton = new TextButton("Go to Desert", skin);
         goToDesertButton.setSize(750, 100); // Set the size of the button
         // Position the button at the bottom center of the screen

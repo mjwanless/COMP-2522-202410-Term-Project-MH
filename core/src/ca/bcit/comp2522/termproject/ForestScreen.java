@@ -292,7 +292,7 @@ public class ForestScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Implement logic to go to the rest screen
-                game.setScreen(new OptionsAndSaveExitScreen(game, selectedCharacters)); // Change to the appropriate screen
+                game.setScreen(new OptionsAndSaveExitScreen(game, selectedCharacters, Locations.FOREST)); // Change to the appropriate screen
             }
         });
         stage.addActor(restButton); // Add the new button to the stage
