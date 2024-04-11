@@ -52,7 +52,19 @@ public class OptionsAndSaveExitScreen implements Screen {
 
         // Adjust the pad, spacing, and sizes as needed
         mainTable.defaults().pad(5).space(5);
-        healCharacters();
+        // Create a button for healing characters
+        TextButton healCharactersButton = new TextButton("Heal Characters", skin);
+        healCharactersButton.setSize(300, 100); // Adjust size as needed
+        healCharactersButton.setPosition(100, Gdx.graphics.getHeight() - 150); // Adjust position as needed
+
+        healCharactersButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                healCharacters(); // Call the method to heal characters
+            }
+        });
+
+        stage.addActor(healCharactersButton);
 
         if (currentLocation == Locations.FOREST) {
             TextButton goToForestButton = new TextButton("Go to Forest", skin);
