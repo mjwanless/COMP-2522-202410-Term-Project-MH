@@ -218,6 +218,9 @@ public class DesertScreen implements Screen {
         for (Character character : selectedCharacters) {
             if (character.getHealth() <= 0) {
                 selectedCharacters = removeCharacter(character, selectedCharacters);
+                if (selectedCharacters.length == 0) {
+                    game.setScreen(new CharacterDeathScreen(game)); // Change to the appropriate screen
+                }
             }
         }
         for (Enemy enemy : enemies) {
