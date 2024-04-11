@@ -73,7 +73,6 @@ public class DesertScreen implements Screen {
 
         // Additional UI elements like buttons can be added here
     }
-
     private void renderSelectedCharacters(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         // Constants for layout
         float startX = 50; // X position for character info box
