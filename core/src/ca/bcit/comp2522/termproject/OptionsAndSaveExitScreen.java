@@ -52,6 +52,7 @@ public class OptionsAndSaveExitScreen implements Screen {
 
         // Adjust the pad, spacing, and sizes as needed
         mainTable.defaults().pad(5).space(5);
+        healCharacters();
 
         if (currentLocation == Locations.FOREST) {
             TextButton goToForestButton = new TextButton("Go to Forest", skin);
@@ -201,6 +202,17 @@ public class OptionsAndSaveExitScreen implements Screen {
         // Don't forget to dispose of the font when you're done to avoid memory leaks
         font.dispose();
     }
+
+    /**
+     * Heals all selected characters by a specified amount.
+     */
+    private void healCharacters() {
+        int healAmount = 20; // The amount of health to restore to each character.
+        for (Character character : selectedCharacters) {
+            character.heal(healAmount); // Assuming a heal method exists in your Character class.
+        }
+    }
+
     @Override
     public void resize(int width, int height) {
         // If you need to handle screen resizing, do it here

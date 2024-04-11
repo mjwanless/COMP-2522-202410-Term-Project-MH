@@ -74,6 +74,13 @@ public abstract class Character {
     public int getEvade() { return evade; }
 
 
+    public void heal(int amount) {
+        health += amount;
+        if (health > 20) { // Assuming there's a maxHealth field that tracks the character's maximum health.
+            health = 20;
+        }
+    }
+
     /**
      * Method to apply damage to the character.
      *
