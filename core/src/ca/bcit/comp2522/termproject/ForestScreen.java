@@ -283,6 +283,7 @@ public class ForestScreen implements Screen {
         // Dispose of the reroll button and switch turn button
         encounterManager.removeRerollButton();
         encounterManager.removeSwitchTurnButton();
+        game.combatCounter += 1;
 
         // Create a new button for resting
         TextButton restButton = new TextButton("Rest", skin);
@@ -292,7 +293,11 @@ public class ForestScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Implement logic to go to the rest screen
-                game.setScreen(new OptionsAndSaveExitScreen(game, selectedCharacters, Locations.FOREST)); // Change to the appropriate screen
+                if (game.combatCounter >= 3)
+                    game.setScreen(new OptionsAndSaveExitScreen(game, selectedCharacters, Locations.DESERT)); // Change to the appropriate screen
+                else {
+                    game.setScreen(new OptionsAndSaveExitScreen(game, selectedCharacters, Locations.FOREST)); // Change to the appropriate screen
+                }
             }
         });
         stage.addActor(restButton); // Add the new button to the stage

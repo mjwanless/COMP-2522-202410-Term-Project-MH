@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class DiceGame extends Game {
 	SpriteBatch batch;
 	Texture img;
+	public int combatCounter = 0;
 
 //	The first thing that happens is this create method is called. It then creates a new SpriteBatch for optimized
 //	rendering of images and sprites.
@@ -22,8 +23,9 @@ public class DiceGame extends Game {
 	@Override
 	public void render () {
 		super.render(); // Important to call this to render the current screen
+
 	}
-	
+
 	@Override
 	public void dispose () {
 		batch.dispose();
