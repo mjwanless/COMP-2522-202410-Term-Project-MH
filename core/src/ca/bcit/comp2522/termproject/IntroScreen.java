@@ -93,7 +93,7 @@ public class IntroScreen implements Screen {
         // Add listeners to buttons
         nextAreaButton.addListener(new ClickListener() {
             @Override
-            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+            public void clicked(final com.badlogic.gdx.scenes.scene2d.InputEvent event, final float x, final float y) {
                 // Change to the intro screen
                 game.setScreen(new CharacterSelectionScreen(game));
             }
@@ -108,7 +108,7 @@ public class IntroScreen implements Screen {
         titleLabel.addAction(Actions.sequence(
                 Actions.moveTo(initialXPosition, initialYPosition),
                 Actions.delay(1f), // Wait for 1 second before scrolling
-                Actions.moveTo(initialXPosition, titleLabel.getHeight(), 10f) // Animate to move up
+                Actions.moveTo(initialXPosition, titleLabel.getHeight() - 450, 8f) // Animate to move up
         ));
 
         // Due to manual positioning, we won't add titleLabel to the table
@@ -116,7 +116,7 @@ public class IntroScreen implements Screen {
 
         // Position the button at the bottom of the screen
         table.row(); // Skip a row to move the button to the bottom
-        table.add(nextAreaButton).expand().bottom().padBottom(10);
+        table.add(nextAreaButton).expand().bottom().padBottom(50);
     }
 
     @Override
