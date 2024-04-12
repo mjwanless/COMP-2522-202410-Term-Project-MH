@@ -79,7 +79,7 @@ public class CharacterSelectionScreen implements Screen {
             // Stats
             Label statsLabel = new Label(character.getStatsAsString(), skin);
             statsLabel.setWrap(true); // Make sure the text wraps
-            rowTable.add(statsLabel).width(250).pad(10).padLeft(20).padRight(20); // Padding on all sides with extra on left and right
+            rowTable.add(statsLabel).width(350).pad(20).padLeft(20).padRight(20); // Padding on all sides with extra on left and right
 
             // Select button
             TextButton selectButton = new TextButton("Select", skin);
@@ -102,7 +102,7 @@ public class CharacterSelectionScreen implements Screen {
                     }
                 }
             });
-            rowTable.add(selectButton).width(100).pad(10);
+            rowTable.add(selectButton).width(200).pad(10);
 
             // Add the row to the main table
             mainTable.add(rowTable).fillX().expandX().padBottom(10);
@@ -143,7 +143,9 @@ public class CharacterSelectionScreen implements Screen {
             }
         };
 
-        dialog.text("You must select two characters to proceed.");
+        dialog.text("You must select two characters to proceed.").pad(75);
+        dialog.getContentTable().padTop(10); // Add padding at the top of the content table
+        dialog.getContentTable().row().padTop(10); // Add space between the text and the button below it
 
         // Create the button with a smaller size.
         TextButton okButton = new TextButton("OK", skin);
