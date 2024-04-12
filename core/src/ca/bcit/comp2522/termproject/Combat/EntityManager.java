@@ -6,10 +6,26 @@ import ca.bcit.comp2522.termproject.Enemy.Enemy;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages entities involved in combat, such as characters and enemies.
+ * The EntityManager class provides methods to apply damage to characters and enemies
+ * during combat rounds.
+ *
+ * @author Malcolm Wanless
+ * @author Heraldo Abreu
+ *
+ * @version 2024
+ *
+ */
 public class EntityManager {
     public final List<Character> characters;
     public final List<Enemy> enemies;
-
+    /**
+     * Constructs an EntityManager with the specified arrays of characters and enemies.
+     *
+     * @param charactersArray an array of Character instances representing combat characters.
+     * @param enemiesArray an array of Enemy instances representing combat enemies.
+     */
     public EntityManager(Character[] charactersArray, Enemy[] enemiesArray) {
         this.characters = new ArrayList<>();
         this.enemies = new ArrayList<>();
