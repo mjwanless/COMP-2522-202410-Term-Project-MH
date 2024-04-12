@@ -5,12 +5,23 @@ import ca.bcit.comp2522.termproject.Locations;
 
 import java.util.*;
 
+/**
+ * Generates enemies for different locations in the game world.
+ * Enemies are selected randomly from predefined pools based on the specified location.
+ *
+ * @author Malcolm Wanless
+ * @author Heraldo Abreu
+ *
+ * @version 2024
+ *
+ */
 public class EnemyGeneration {
 
+    /** The map of enemy pools for each location. */
     private static final Map<Locations, List<Class<? extends Enemy>>> enemyPools = new HashMap<>();
 
+    // Initialize the enemy pools for each location
     static {
-        // Initialize the enemy pools for each location
         List<Class<? extends Enemy>> forestEnemies = new ArrayList<>();
         forestEnemies.add(Dog.class);
         forestEnemies.add(Vandit.class);
@@ -33,7 +44,14 @@ public class EnemyGeneration {
         enemyPools.put(Locations.CASTLE, castleEnemies);
     }
 
-    public static List<Enemy> generateEnemiesForLocation(Locations location, int numberOfEnemies) {
+    /**
+     * Generates a list of enemies for the specified location.
+     *
+     * @param location the location where enemies will be generated.
+     * @param numberOfEnemies the number of enemies to generate.
+     * @return a list of Enemy instances generated for the specified location.
+     */
+    public static List<Enemy> generateEnemiesForLocation(final Locations location, final int numberOfEnemies) {
         List<Enemy> enemies = new ArrayList<>();
         List<Class<? extends Enemy>> availableEnemies = enemyPools.get(location);
 
@@ -47,9 +65,7 @@ public class EnemyGeneration {
                 e.printStackTrace(); // Log or handle the exception as needed
             }
         }
-
         return enemies;
     }
 
-    // Other methods...
 }

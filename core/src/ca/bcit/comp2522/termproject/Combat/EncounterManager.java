@@ -15,20 +15,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.Random;
 
-enum Initiative {
-    PLAYER, ENEMY
-}
-
 public class EncounterManager implements CombatManager.CombatEventListener {
 
-    private Stage stage;
+    private final Stage stage;
     private Image darkBackground;
-    private Label encounterMessage, resultLabel, turnLabel;
-    private Runnable onEncounterEnd;
-    private Skin skin;
-    private TextButton rollInitiativeButton, switchTurnButton, rerollButton;
-    private final boolean encounterActive = false;
-    private CombatManager combatManager;
+    private Label encounterMessage;
+    private Label resultLabel;
+    private Label turnLabel;
+    private final Runnable onEncounterEnd;
+    private final Skin skin;
+    private TextButton rollInitiativeButton;
+    private TextButton switchTurnButton;
+    private TextButton rerollButton;
+    private final CombatManager combatManager;
     private EntityManager entityManager;
 
     private int rerollCount = 0;
@@ -36,12 +35,12 @@ public class EncounterManager implements CombatManager.CombatEventListener {
 
 
     // Constructor
-    public EncounterManager(Stage stage, Runnable onEncounterEnd, EntityManager entityManager) {
+    public EncounterManager(final Stage stage, final Runnable onEncounterEnd, final EntityManager entityManager) {
         this.stage = stage;
         this.onEncounterEnd = onEncounterEnd;
         this.entityManager = entityManager;
         this.skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
-        this.combatManager = new CombatManager(entityManager); // Assuming CombatManager accepts EntityManager in its constructor
+        this.combatManager = new CombatManager(entityManager);
         this.combatManager.setEventListener(this);
         generateOverlay();
         initializeUI();
@@ -116,7 +115,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         switchTurnButton.setPosition((Gdx.graphics.getWidth() - switchTurnButton.getWidth()) / 2, 20);
         switchTurnButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void clicked(final InputEvent event, final float x, final float y) {
                 combatManager.switchTurn();
             }
         });
@@ -166,7 +165,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     public void showRerollButton(final boolean show) {
         if (combatManager.getCurrentInitiator() == Initiative.PLAYER) {
             rerollButton.setVisible(show);
-            rerollButton.setPosition((Gdx.graphics.getWidth() - rerollButton.getWidth()) / 2, 135); // Adjust y position for spacing
+            rerollButton.setPosition((Gdx.graphics.getWidth() - rerollButton.getWidth()) / 2, 135);
         } else {
             rerollButton.setVisible(false);
         }
@@ -176,7 +175,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     private void showRerollErrorDialog() {
         Dialog dialog = new Dialog("Re-roll Limit Reached", skin) {
             @Override
-            protected void result(Object obj) {
+            protected void result(final Object obj) {
                 System.out.println("Closed dialog with result: " + obj);
             }
         };

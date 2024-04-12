@@ -64,12 +64,12 @@ public class Wizard extends Character {
      */
     @Override
     public String toString() {
-        return "Wizard{" +
-                "name='" + getName() + '\'' +
-                ", strength=" + getStrength() +
-                ", health=" + getHealth() +
-                ", defense=" + getDefense() +
-                ", evade=" + getEvade() +
-                '}';
+        return "Wizard{"
+                + "name='" + getName() + '\''
+                + ", strength=" + getStrength()
+                + ", health=" + getHealth()
+                + ", defense=" + getDefense()
+                + ", evade=" + getEvade()
+                + '}';
     }
 }
