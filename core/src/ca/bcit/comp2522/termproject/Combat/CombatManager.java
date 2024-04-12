@@ -46,18 +46,11 @@ public class CombatManager {
         int dieResult = rollDie(numberOfFaces); // Result of the die roll
 
         if (currentInitiator == Initiative.PLAYER) {
-            System.out.println("Player attacks with a roll of: " + dieResult);
             if (eventListener != null) {
                 eventListener.onPlayerAttack(dieResult); // Notify about the player attack
             }
             if (enemies != null) {
                 entityManager.applyDamageToAllEnemies(dieResult); // Apply damage to all enemies
-                for (Enemy enemy : enemies) {
-                    System.out.println("Enemy health after attack: " + enemy.getHealth());
-                    if (enemy.getHealth() <= 0) {
-                        // Additional logic if needed to award XP to player
-                    }
-                }
             }
         } else if (currentInitiator == Initiative.ENEMY && !enemyHasAttacked) {
             System.out.println("Enemy attacks with a roll of: " + dieResult);
@@ -66,12 +59,6 @@ public class CombatManager {
             }
             if (characters != null) {
                 entityManager.applyDamageToAllCharacters(dieResult);
-
-                // Apply damage to player characters
-                // Assuming each character in the list has a method to apply damage
-                for (Character character : characters) {
-                     System.out.println("Character health after attack: " + character.getHealth());
-                }
             }
             enemyHasAttacked = true;
         }

@@ -85,7 +85,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         stage.addActor(resultLabel);
 
         rollInitiativeButton = new TextButton("Roll for initiative", skin);
-        rollInitiativeButton.setSize(200, 50);
+        rollInitiativeButton.setSize(500, 100);
         rollInitiativeButton.setPosition((Gdx.graphics.getWidth() - rollInitiativeButton.getWidth()) / 2, 20);
         rollInitiativeButton.addListener(new ClickListener() {
             @Override
@@ -98,7 +98,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         stage.addActor(rollInitiativeButton);
 
         switchTurnButton = new TextButton("Switch Turn", skin);
-        switchTurnButton.setSize(200, 50);
+        switchTurnButton.setSize(350, 100);
         switchTurnButton.setPosition((Gdx.graphics.getWidth() - switchTurnButton.getWidth()) / 2, 20);
         switchTurnButton.addListener(new ClickListener() {
             @Override
@@ -112,7 +112,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         combatManager.setCurrentInitiator(Initiative.PLAYER);
 
         rerollButton = new TextButton("Reroll Dice", skin);
-        rerollButton.setSize(200, 50);
+        rerollButton.setSize(350, 100);
         rerollButton.setPosition((Gdx.graphics.getWidth() - rerollButton.getWidth()) / 2, 100);
         rerollButton.addListener(new ClickListener() {
             @Override
@@ -144,6 +144,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     public void showRerollButton(boolean show) {
         if (combatManager.getCurrentInitiator() == Initiative.PLAYER) {
             rerollButton.setVisible(show);
+            rerollButton.setPosition((Gdx.graphics.getWidth() - rerollButton.getWidth()) / 2, 135); // Adjust y position for spacing
         } else {
             rerollButton.setVisible(false);
         }    }
@@ -156,7 +157,9 @@ public class EncounterManager implements CombatManager.CombatEventListener {
             }
         };
 
-        dialog.text("You can only reroll twice during combat.");
+        dialog.text("You can only reroll twice during combat.").pad(75);
+        dialog.getContentTable().padTop(9); // Add padding at the top of the content table
+        dialog.getContentTable().row().padTop(9); // Add space between the text and the button below it
 
         TextButton okButton = new TextButton("OK", skin);
         okButton.getLabel().setFontScale(0.8f);
