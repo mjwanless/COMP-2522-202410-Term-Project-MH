@@ -74,8 +74,6 @@ public class VolcanoScreen implements Screen {
         assetManager = new AssetManager();
         setupUI();
     }
-
-
     /**
      * Initializes and sets up UI components for the forest screen.
      */
