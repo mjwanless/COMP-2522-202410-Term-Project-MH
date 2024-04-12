@@ -5,10 +5,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.Random;
 
@@ -20,7 +23,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
 
     private Stage stage;
     private Image darkBackground;
-    private Label encounterMessage, resultLabel;
+    private Label encounterMessage, resultLabel, turnLabel;
     private Runnable onEncounterEnd;
     private Skin skin;
     private TextButton rollInitiativeButton, switchTurnButton, rerollButton;
@@ -52,10 +55,16 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         resultLabel.setVisible(true);
     }
 
+    public void displayPlayerResult() {
+        String resultText = "Player Attacks";
+        turnLabel.setText(resultText);
+        turnLabel.setVisible(true);
+    }
+
     public void displayEnemyResult() {
         String resultText = "Enemy Attacks";
-        resultLabel.setText(resultText);
-        resultLabel.setVisible(true);
+        turnLabel.setText(resultText);
+        turnLabel.setVisible(true);
     }
 
     // Generate overlay method
@@ -74,13 +83,18 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     // Initialize UI method
     private void initializeUI() {
         encounterMessage = new Label("An enemy appears!", skin, "default");
-        encounterMessage.setPosition(Gdx.graphics.getWidth() / 2 - encounterMessage.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2 - encounterMessage.getHeight() / 2);
+        encounterMessage.setPosition((float) Gdx.graphics.getWidth() / 2 - encounterMessage.getWidth() / 2,
+                (float) Gdx.graphics.getHeight() / 2 - encounterMessage.getHeight() / 2);
         encounterMessage.setVisible(false);
         stage.addActor(encounterMessage);
 
+        turnLabel = new Label("", skin, "default");
+        turnLabel.setPosition((float) Gdx.graphics.getWidth() / 2 - 100, (float) Gdx.graphics.getHeight() / 3+50);
+        turnLabel.setVisible(false);
+        stage.addActor(turnLabel);
+
         resultLabel = new Label("", skin, "default");
-        resultLabel.setPosition(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() / 3);
+        resultLabel.setPosition((float) Gdx.graphics.getWidth() / 2 - 100, (float) Gdx.graphics.getHeight() / 3+100);
         resultLabel.setVisible(false);
         stage.addActor(resultLabel);
 
@@ -89,7 +103,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         rollInitiativeButton.setPosition((Gdx.graphics.getWidth() - rollInitiativeButton.getWidth()) / 2, 20);
         rollInitiativeButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void clicked(final InputEvent event, final float x, final float y) {
                 displayRandomInitiativeResult();
                 endOverlay();
             }
@@ -116,18 +130,26 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         rerollButton.setPosition((Gdx.graphics.getWidth() - rerollButton.getWidth()) / 2, 100);
         rerollButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void clicked(final InputEvent event, final float x, final float y) {
                 // Call the method to re-roll the dice
                 rerollDice();
             }
         });
         rerollButton.setVisible(false);
         stage.addActor(rerollButton);
+
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.BLACK);
+        pixmap.fill();
+        Texture texture = new Texture(pixmap); // Don't forget to dispose of this texture later!
+        pixmap.dispose();
+        Drawable blackBackground = new TextureRegionDrawable(new TextureRegion(texture));
     }
 
     // Display random initiative result method
     private void displayRandomInitiativeResult() {
-        Initiative result = new Random().nextBoolean() ? Initiative.PLAYER : Initiative.ENEMY;
+        Initiative result = new Random().nextBoolean()
+                ? Initiative.PLAYER : Initiative.ENEMY;
         resultLabel.setText(result + " rolls for initiative!");
         resultLabel.setVisible(true);
 
@@ -141,23 +163,25 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     }
 
     // Method to show the reroll button during the player's turn
-    public void showRerollButton(boolean show) {
+    public void showRerollButton(final boolean show) {
         if (combatManager.getCurrentInitiator() == Initiative.PLAYER) {
             rerollButton.setVisible(show);
             rerollButton.setPosition((Gdx.graphics.getWidth() - rerollButton.getWidth()) / 2, 135); // Adjust y position for spacing
         } else {
             rerollButton.setVisible(false);
-        }    }
+        }
+    }
+
     // Method to show the reroll error dialog
     private void showRerollErrorDialog() {
-        Dialog dialog = new Dialog("Reroll Limit Reached", skin) {
+        Dialog dialog = new Dialog("Re-roll Limit Reached", skin) {
             @Override
             protected void result(Object obj) {
                 System.out.println("Closed dialog with result: " + obj);
             }
         };
 
-        dialog.text("You can only reroll twice during combat.").pad(75);
+        dialog.text("You can only re-roll twice during combat.").pad(75);
         dialog.getContentTable().padTop(9); // Add padding at the top of the content table
         dialog.getContentTable().row().padTop(9); // Add space between the text and the button below it
 
@@ -190,8 +214,6 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         switchTurnButton.remove();
     }
 
-    // Method to
-
     // Start overlay method
     public void startOverlay() {
         darkBackground.setVisible(true);
@@ -216,12 +238,14 @@ public class EncounterManager implements CombatManager.CombatEventListener {
 
     @Override
     public void onPlayerAttack(int dieResult) {
+        displayPlayerResult();
         displayDiceResult(dieResult);
         showRerollButton(true);
     }
 
     @Override
     public void onEnemyAttack(int dieResult) {
+        displayEnemyResult();
         displayDiceResult(dieResult);
         showRerollButton(false);
     }

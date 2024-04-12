@@ -11,9 +11,9 @@ public class CombatManager {
     private Initiative currentInitiator;
     private CombatEventListener eventListener;
     private boolean enemyHasAttacked = false;
-    private List<Character> characters;
-    private List<Enemy> enemies;
-    private EntityManager entityManager;
+    private final List<Character> characters;
+    private final List<Enemy> enemies;
+    private final EntityManager entityManager;
 
     // Interface for listening to combat events
     public interface CombatEventListener {
@@ -32,11 +32,11 @@ public class CombatManager {
         return currentInitiator;
     }
 
-    public void setEventListener(CombatEventListener listener) {
+    public void setEventListener(final CombatEventListener listener) {
         this.eventListener = listener;
     }
 
-    private int rollDie(int numberOfFaces) {
+    private int rollDie(final int numberOfFaces) {
         Random random = new Random();
         return random.nextInt(numberOfFaces) + 1; // Generate a random number between 1 and numberOfFaces
     }
