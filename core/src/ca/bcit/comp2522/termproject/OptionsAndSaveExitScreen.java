@@ -61,6 +61,7 @@ public class OptionsAndSaveExitScreen implements Screen {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 healCharacters(); // Call the method to heal characters
+                healCharactersButton.remove(); // Remove the button from the stage
             }
         });
 
