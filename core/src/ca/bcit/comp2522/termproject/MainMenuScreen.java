@@ -55,7 +55,6 @@ public class MainMenuScreen implements Screen {
         // Create UI components
         Label titleLabel = new Label("Dice Adventure 2: Electric Boogaloo ", skin);
         TextButton newGameButton = new TextButton("New Game", skin);
-        TextButton loadGameButton = new TextButton("Load Game", skin);
         TextButton exitButton = new TextButton("Exit", skin);
 
         // Add listeners to buttons
@@ -64,13 +63,6 @@ public class MainMenuScreen implements Screen {
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 // Change to the intro screen
                 game.setScreen(new IntroScreen(game));
-            }
-        });
-
-        loadGameButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                // Handle load game action
             }
         });
 
@@ -84,15 +76,12 @@ public class MainMenuScreen implements Screen {
         });
 
         // Add components to the table
-        table.add(titleLabel).padBottom(20);
+        table.add(titleLabel).padBottom(50);
         table.row(); // Start a new row
         table.add(newGameButton).padTop(10);
-        table.row(); // Start another new row
-        table.add(loadGameButton).padTop(10);
-
         // Add the Exit button to the table, below the New Game and Load Game buttons
         table.row(); // Start a new row
-        table.add(exitButton).padTop(10);
+        table.add(exitButton).padTop(25);
     }
 
     @Override
