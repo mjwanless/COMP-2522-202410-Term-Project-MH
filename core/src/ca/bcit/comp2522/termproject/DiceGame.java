@@ -7,6 +7,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 // This class is the main entry point of the program.
+
+/**
+ * The main class of the game. This class extends the Game class from the LibGDX library.
+ * It is the entry point of the game and is responsible for creating the game window and
+ * managing the game screens.
+ *
+ * @author Malcolm Wanless
+ * @author Heraldo Abreu
+ *
+ * @version 2024
+ */
 public class DiceGame extends Game {
 	SpriteBatch batch;
 	Texture img;

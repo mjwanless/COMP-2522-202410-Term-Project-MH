@@ -16,6 +16,11 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
  * Represents the main menu screen of the game.
+ *
+ * @author Malcolm Wanless
+ * @author Heraldo Abreu
+ *
+ * @version 2024
  */
 public class MainMenuScreen implements Screen {
     private final DiceGame game;

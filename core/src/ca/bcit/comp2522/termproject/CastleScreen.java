@@ -21,27 +21,38 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
+/**
+ * Represents the castle screen of the game.
+ *
+ * @author Malcom Wanless
+ * @author Heraldo Abreu
+ *
+ * @version 2024
+ */
 public class CastleScreen implements Screen {
 
     // Field declarations for various components used in the screen
     private final DiceGame game; // The main game object to interact with other game screens and functionalities
     private SpriteBatch batch; // Used for drawing 2D images, such as the background and characters
-    private Texture img; // The background image for the forest screen
+    private final Texture img; // The background image for the forest screen
     private ShapeRenderer shapeRenderer; // Used for drawing shapes (e.g., for UI or highlighting)
-    private AssetManager assetManager; // Manages and loads assets, like textures and sounds
+    private final AssetManager assetManager; // Manages and loads assets, like textures and sounds
     private Music castleScreenMusic; // Background music for the forest screen
     private Character[] selectedCharacters; // Array of characters selected by the player
-    private Stage stage; // A container for UI elements, handling their events and rendering
-    private Skin skin; // Defines the look and feel of UI elements
+    private final Stage stage; // A container for UI elements, handling their events and rendering
+    private final Skin skin; // Defines the look and feel of UI elements
     private Enemy[] enemies; // Array of enemies present in the forest
-    private EncounterManager encounterManager; // Manages encounters with enemies
+    private final EncounterManager encounterManager; // Manages encounters with enemies
     private boolean encounterActive = true; // Indicates whether an encounter/battle is currently active
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     private int defeatedEnemyCount = 0; // Counter for defeated enemies
-
-
+    /**
+     * Constructs a new CastleScreen object.
+     *
+     * @param game               The main game object.
+     * @param selectedCharacters The characters selected for the encounter.
+     */
     public CastleScreen(final DiceGame game, final Character[] selectedCharacters) {
         this.game = game;
         this.selectedCharacters = selectedCharacters;

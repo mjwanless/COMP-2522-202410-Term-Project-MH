@@ -17,16 +17,21 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
  * Represents the introduction screen of the game.
+ *
+ * @author Malcolm Wanless
+ * @author Heraldo Abreu
+ *
+ * @version 2024
  */
 public class IntroScreen implements Screen {
 
     private final DiceGame game;
-    private SpriteBatch batch;
-    private Texture img;
-    private AssetManager assetManager;
+    private final SpriteBatch batch;
+    private final Texture img;
+    private final AssetManager assetManager;
     private Music introScreenMusic;
-    private Stage stage;
-    private Skin skin;
+    private final Stage stage;
+    private final Skin skin;
 
     /**
      * Constructs a new IntroScreen object.

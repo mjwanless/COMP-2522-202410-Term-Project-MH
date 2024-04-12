@@ -23,13 +23,13 @@ import java.util.ArrayList;
 public class CharacterSelectionScreen implements Screen {
 
     private final DiceGame game;
-    private SpriteBatch batch;
-    private Texture img;
-    private Stage stage;
-    private Skin skin;
-    private Character[] availableCharacters;
-    private ArrayList<Character> selectedCharacters;
-    private AssetManager assetManager;
+    private final SpriteBatch batch;
+    private final Texture img;
+    private final Stage stage;
+    private final Skin skin;
+    private final Character[] availableCharacters;
+    private final ArrayList<Character> selectedCharacters;
+    private final AssetManager assetManager;
     private Music characterSelectMusic;
 
     /**
