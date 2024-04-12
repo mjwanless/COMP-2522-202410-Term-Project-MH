@@ -17,19 +17,32 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+/**
+ * Represents the options screen where the player can heal characters and move to the next location.
+ *
+ * @author Malcolm Wanless
+ * @author Heraldo Abreu
+ *
+ * @version 2024
+ */
 public class OptionsAndSaveExitScreen implements Screen {
 
     private final DiceGame game;
     private SpriteBatch batch;
-    private Texture img;
+    private final Texture img;
     private ShapeRenderer shapeRenderer;
-    private AssetManager assetManager;
+    private final AssetManager assetManager;
     private Music optionsScreenMusic;
-    private Character[] selectedCharacters;
-    private Stage stage;
-    private Skin skin;
-    private Locations currentLocation;
-
+    private final Character[] selectedCharacters;
+    private final Stage stage;
+    private final Skin skin;
+    private final Locations currentLocation;
+    /**
+     * Constructs a new OptionsAndSaveExitScreen object.
+     * @param game The main game object.
+     * @param selectedCharacters The characters selected by the player.
+     * @param currentLocation The current location of the player.
+     */
     public OptionsAndSaveExitScreen(final DiceGame game, final Character[] selectedCharacters, Locations currentLocation) {
         this.game = game;
         this.selectedCharacters = selectedCharacters;

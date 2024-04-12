@@ -16,14 +16,19 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
  * Represents the main menu screen of the game.
+ *
+ * @author Malcolm Wanless
+ * @author Heraldo Abreu
+ *
+ * @version 2024
  */
 public class MainMenuScreen implements Screen {
     private final DiceGame game;
     private final SpriteBatch batch;
     private final Texture img;
-    private Stage stage;
-    private Skin skin;
-    private AssetManager assetManager;
+    private final Stage stage;
+    private final Skin skin;
+    private final AssetManager assetManager;
     private Music mainMenuMusic;
 
     /**
@@ -60,7 +65,7 @@ public class MainMenuScreen implements Screen {
         // Add listeners to buttons
         newGameButton.addListener(new ClickListener() {
             @Override
-            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+            public void clicked(final com.badlogic.gdx.scenes.scene2d.InputEvent event, final float x, final float y) {
                 // Change to the intro screen
                 game.setScreen(new IntroScreen(game));
             }
@@ -68,8 +73,9 @@ public class MainMenuScreen implements Screen {
 
         // Add listener to the Exit button
         exitButton.addListener(new ClickListener() {
+            @SuppressWarnings("checkstyle:FinalParameters")
             @Override
-            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+            public void clicked(final com.badlogic.gdx.scenes.scene2d.InputEvent event, final float x, final float y) {
                 Gdx.app.exit(); // Exit the application
                 System.exit(0); // Ensure that the application exits properly
             }
@@ -97,7 +103,7 @@ public class MainMenuScreen implements Screen {
     }
 
     @Override
-    public void render(float delta) {
+    public void render(final float delta) {
         game.clearScreen(); // A method to clear the screen
         batch.begin();
         batch.draw(img, 0, 0);
@@ -109,17 +115,17 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(final int width, final int height) {
-        // N/A
+        // No need to expand as this method is not used
     }
 
     @Override
     public void pause() {
-        // N/A
+        // No need to expand as this method is not used
     }
 
     @Override
     public void resume() {
-        // N/A
+        // No need to expand as this method is not used
     }
 
     @Override

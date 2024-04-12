@@ -17,20 +17,32 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
+/**
+ * Screen displayed when the boss is defeated.
+ *
+ * @author Malcolm Wanless
+ * @author Heraldo Abreu
+ *
+ * @version 2024
+ */
 public class BossKilledScreen implements Screen {
 
     private final DiceGame game;
     private SpriteBatch batch;
-    private Texture img;
+    private final Texture img;
     private ShapeRenderer shapeRenderer;
-    private AssetManager assetManager;
+    private final AssetManager assetManager;
     private Music bossKilledScreenMusic;
-    private Character[] selectedCharacters;
-    private Stage stage;
-    private Skin skin;
+    private final Character[] selectedCharacters;
+    private final Stage stage;
+    private final Skin skin;
 
-
+    /**
+     * Constructs a BossKilledScreen object.
+     *
+     * @param game              The game instance.
+     * @param selectedCharacters The characters selected for the encounter.
+     */
     public BossKilledScreen(final DiceGame game, final Character[] selectedCharacters) {
         this.game = game;
         this.selectedCharacters = selectedCharacters;

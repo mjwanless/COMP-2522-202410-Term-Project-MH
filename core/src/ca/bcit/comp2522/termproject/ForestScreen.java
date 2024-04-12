@@ -32,17 +32,17 @@ public class ForestScreen implements Screen {
     // Field declarations for various components used in the screen
     private final DiceGame game; // The main game object to interact with other game screens and functionalities
     private SpriteBatch batch; // Used for drawing 2D images, such as the background and characters
-    private Texture img; // The background image for the forest screen
+    private final Texture img; // The background image for the forest screen
     private ShapeRenderer shapeRenderer; // Used for drawing shapes (e.g., for UI or highlighting)
-    private AssetManager assetManager; // Manages and loads assets, like textures and sounds
+    private final AssetManager assetManager; // Manages and loads assets, like textures and sounds
     private Music forestScreenMusic; // Background music for the forest screen
     private Character[] selectedCharacters; // Array of characters selected by the player
-    private Stage stage; // A container for UI elements, handling their events and rendering
-    private Skin skin; // Defines the look and feel of UI elements
+    private final Stage stage; // A container for UI elements, handling their events and rendering
+    private final Skin skin; // Defines the look and feel of UI elements
     private Enemy[] enemies; // Array of enemies present in the forest
-    private EncounterManager encounterManager; // Manages encounters with enemies
+    private final EncounterManager encounterManager; // Manages encounters with enemies
     private boolean encounterActive = true; // Indicates whether an encounter/battle is currently active
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     private int defeatedEnemyCount = 0; // Counter for defeated enemies
 
@@ -67,7 +67,7 @@ public class ForestScreen implements Screen {
 
 
         assetManager = new AssetManager();
-        setupUI(); // Calls the method to setup UI components for the screen
+        setupUI(); // Calls the method to set up UI components for the screen
     }
 
     /**
@@ -268,6 +268,9 @@ public class ForestScreen implements Screen {
     }
 
     // Method to switch the turn button functionality to go to rest screen
+    /**
+     * Switches the turn button functionality to go to the rest screen.
+     */
     public void switchToRestScreen() {
         // Dispose of the reroll button and switch turn button
         encounterManager.removeRerollButton();

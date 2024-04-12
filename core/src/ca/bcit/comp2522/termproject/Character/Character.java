@@ -16,12 +16,12 @@ import com.badlogic.gdx.graphics.Texture;
  */
 
 public abstract class Character {
-    private String name;
-    private int strength;
+    private final String name;
+    private final int strength;
     private int health;
-    private int defense;
-    private int evade;
-    private Texture image; // LibGDX class to handle images
+    private final int defense;
+    private final int evade;
+    private final Texture image; // LibGDX class to handle images
     /**
      * Constructs a new Character instance with specified attributes and an image path.
      *
@@ -32,7 +32,8 @@ public abstract class Character {
      * @param evade The evade chance of the character.
      * @param imagePath The file path to the character's image.
      */
-    public Character(String name, int strength, int health, int defense, int evade, String imagePath) {
+    public Character(final String name, final int strength, final int health, final int defense, final int evade,
+                     final String imagePath) {
         this.name = name;
         this.strength = strength;
         this.health = health;
@@ -47,46 +48,63 @@ public abstract class Character {
      *
      * @return The character's name.
      */
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
     /**
      * Returns the strength of the character.
      *
      * @return The character's strength.
      */
-    public int getStrength() { return strength; }
+    public int getStrength() {
+        return strength;
+    }
     /**
      * Returns the health of the character.
      *
      * @return The character's health.
      */
-    public int getHealth() { return health; }
+    public int getHealth() {
+        return health;
+    }
     /**
      * Returns the defense attribute of the character.
      *
      * @return The character's defense.
      */
-    public int getDefense() { return defense; }
+    public int getDefense() {
+        return defense;
+    }
     /**
      * Returns the evade chance of the character.
      *
      * @return The character's evade chance.
      */
-    public int getEvade() { return evade; }
+    public int getEvade() {
+        return evade;
+    }
 
-
-    public void heal(int amount) {
-        health += amount;
-        if (health > 20) { // Assuming there's a maxHealth field that tracks the character's maximum health.
-            health = 20;
+    /**
+     * Restores the health of the character by the specified amount,
+     * ensuring the health does not exceed the upper limit.
+     *
+     * @param amount The amount of health to restore to the character.
+     */
+    public void heal(final int amount) {
+        final int healthUpperLimit = 20; // The upper limit of health that can be restored
+        health += amount; // Increase the character's health by the specified amount
+        if (health > healthUpperLimit) {
+            health = healthUpperLimit; // Cap the character's health at the upper limit
         }
     }
+
 
     /**
      * Method to apply damage to the character.
      *
      * @param damage The amount of damage to apply.
      */
-    public void takeDamage(int damage) {
+    public void takeDamage(final int damage) {
         this.health -= damage;
         if (this.health <= 0) {
             // Enemy is defeated
@@ -103,21 +121,14 @@ public abstract class Character {
     public Texture getImage() {
         return image;
     }
-    /**
-     * Returns a string representation of the character's health.
-     *
-     * @return The health status as a string.
-     */
-    public String getHealthString() {
-        return "HP: " + this.health + "/" + this.health; // if you don't have max health
-        // if you had a maxHealth property it would be "HP: " + this.health + "/" + this.maxHealth;
-    }
+
     /**
      * Abstract method to be implemented by subclasses to return the image path of the character.
      *
      * @return The image path as a string.
      */
     public abstract String getImagePath();
+
     /**
      * Abstract method to be implemented by subclasses to return the character's statistics as a string.
      *
@@ -125,7 +136,6 @@ public abstract class Character {
      */
     public abstract String getStatsAsString();
 
-    // You should also have a dispose method to dispose of the Texture when done
     /**
      * Disposes of the Texture resource when it is no longer needed, to prevent memory leaks.
      */

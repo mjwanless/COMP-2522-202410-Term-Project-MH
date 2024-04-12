@@ -8,7 +8,7 @@ package ca.bcit.comp2522.termproject.Character;
  * implementation that defines the specific attributes and behaviors of a Paladin, including
  * its image path and a textual representation of its statistics.
  *
- * @author Malcom Wanless
+ * @author Malcolm Wanless
  * @author Heraldo Abreu
  *
  * @version 2024
@@ -55,12 +55,12 @@ public class Paladin extends Character {
      */
     @Override
     public String toString() {
-        return "Paladin{" +
-                "name='" + getName() + '\'' +
-                ", strength=" + getStrength() +
-                ", health=" + getHealth() +
-                ", defense=" + getDefense() +
-                ", evade=" + getEvade() +
-                '}';
+        return "Paladin{"
+                + "name='" + getName() + '\''
+                + ", strength=" + getStrength()
+                + ", health=" + getHealth()
+                + ", defense=" + getDefense()
+                + ", evade=" + getEvade()
+                + '}';
     }
 }

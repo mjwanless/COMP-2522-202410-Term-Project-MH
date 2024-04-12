@@ -64,12 +64,12 @@ public class Rogue extends Character {
      */
     @Override
     public String toString() {
-        return "Rogue{" +
-                "name='" + getName() + '\'' +
-                ", strength=" + getStrength() +
-                ", health=" + getHealth() +
-                ", defense=" + getDefense() +
-                ", evade=" + getEvade() +
-                '}';
+        return "Rogue{"
+                + "name='" + getName() + '\''
+                + ", strength=" + getStrength()
+                + ", health=" + getHealth()
+                + ", defense=" + getDefense()
+                + ", evade=" + getEvade()
+                + '}';
     }
 }

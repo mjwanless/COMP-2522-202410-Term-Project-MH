@@ -14,19 +14,34 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
+/**
+ * Screen displayed when the character dies.
+ * This screen allows the player to start a new game or exit the application.
+ * The screen displays a background image and two buttons.
+ * The "New Game" button will take the player to the character selection screen.
+ * The "Exit" button will close the application.
+ *
+ * @author Malcolm Wanless
+ * @author Heraldo Abreu
+ *
+ * @version 2024
+ */
 public class CharacterDeathScreen implements Screen {
 
     private final DiceGame game;
     private SpriteBatch batch;
-    private Texture img;
+    private final Texture img;
     private ShapeRenderer shapeRenderer;
-    private AssetManager assetManager;
+    private final AssetManager assetManager;
     private Music characterDeathMusic;
-    private Stage stage;
-    private Skin skin;
+    private final Stage stage;
+    private final Skin skin;
 
-
+    /**
+     * Constructs a CharacterDeathScreen object.
+     *
+     * @param game The game instance.
+     */
     public CharacterDeathScreen(final DiceGame game) {
         this.game = game;
         batch = new SpriteBatch();

@@ -63,12 +63,12 @@ public class Warrior extends Character {
      */
     @Override
     public String toString() {
-        return "Warrior{" +
-                "name='" + getName() + '\'' +
-                ", strength=" + getStrength() +
-                ", health=" + getHealth() +
-                ", defense=" + getDefense() +
-                ", evade=" + getEvade() +
-                '}';
+        return "Warrior{"
+                + "name='" + getName() + '\''
+                + ", strength=" + getStrength()
+                + ", health=" + getHealth()
+                + ", defense=" + getDefense()
+                + ", evade=" + getEvade()
+                + '}';
     }
 }
