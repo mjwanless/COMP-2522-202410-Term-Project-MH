@@ -14,7 +14,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.Random;
-
+/**
+ * Manages encounters and combat interactions in the game.
+ *
+ * @author Malcom Wanless
+ * @author Heraldo Abreu
+ *
+ * @version 2024
+ */
 public class EncounterManager implements CombatManager.CombatEventListener {
 
     private final Stage stage;
@@ -28,13 +35,17 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     private TextButton switchTurnButton;
     private TextButton rerollButton;
     private final CombatManager combatManager;
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     private int rerollCount = 0;
-
-
-
     // Constructor
+    /**
+     * Constructs an EncounterManager object.
+     *
+     * @param stage            The stage to display UI elements.
+     * @param onEncounterEnd   The action to perform when the encounter ends.
+     * @param entityManager    The entity manager.
+     */
     public EncounterManager(final Stage stage, final Runnable onEncounterEnd, final EntityManager entityManager) {
         this.stage = stage;
         this.onEncounterEnd = onEncounterEnd;
@@ -48,24 +59,32 @@ public class EncounterManager implements CombatManager.CombatEventListener {
 
 
     // Display dice results method
+    /**
+     * Displays the result of a dice roll.
+     *
+     * @param dieResult The result of the dice roll.
+     */
     public void displayDiceResult(final int dieResult) {
         String resultText = "Dice Result: " + dieResult;
         resultLabel.setText(resultText);
         resultLabel.setVisible(true);
     }
-
+    /**
+     * Displays the message indicating the player's turn.
+     */
     public void displayPlayerResult() {
         String resultText = "Player Attacks";
         turnLabel.setText(resultText);
         turnLabel.setVisible(true);
     }
-
+    /**
+     * Displays the message indicating the enemy's turn.
+     */
     public void displayEnemyResult() {
         String resultText = "Enemy Attacks";
         turnLabel.setText(resultText);
         turnLabel.setVisible(true);
     }
-
     // Generate overlay method
     private void generateOverlay() {
         Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Pixmap.Format.RGBA8888);
@@ -78,7 +97,6 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         darkBackground.setVisible(false);
         stage.addActor(darkBackground);
     }
-
     // Initialize UI method
     private void initializeUI() {
         encounterMessage = new Label("An enemy appears!", skin, "default");
@@ -162,6 +180,11 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     }
 
     // Method to show the reroll button during the player's turn
+    /**
+     * Shows or hides the reroll button based on the current turn.
+     *
+     * @param show True to show the button, false to hide it.
+     */
     public void showRerollButton(final boolean show) {
         if (combatManager.getCurrentInitiator() == Initiative.PLAYER) {
             rerollButton.setVisible(show);
@@ -170,7 +193,6 @@ public class EncounterManager implements CombatManager.CombatEventListener {
             rerollButton.setVisible(false);
         }
     }
-
     // Method to show the reroll error dialog
     private void showRerollErrorDialog() {
         Dialog dialog = new Dialog("Re-roll Limit Reached", skin) {
@@ -191,8 +213,6 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         dialog.key(Input.Keys.ENTER, true);
         dialog.show(stage);
     }
-
-
     // Method to handle rerolling
     private void rerollDice() {
         if (rerollCount < 2) { // Check if the reroll limit has not been reached
@@ -203,17 +223,23 @@ public class EncounterManager implements CombatManager.CombatEventListener {
             showRerollErrorDialog(); // Show the reroll error dialog
         }
     }
-
     // Method to hide the reroll button
+    /**
+     * Removes the reroll button from the UI.
+     */
     public void removeRerollButton() {
         rerollButton.remove();
     }
-
+    /**
+     * Removes the switch turn button from the UI.
+     */
     public void removeSwitchTurnButton() {
         switchTurnButton.remove();
     }
-
     // Start overlay method
+    /**
+     * Starts the encounter overlay.
+     */
     public void startOverlay() {
         darkBackground.setVisible(true);
         encounterMessage.setVisible(true);
@@ -221,8 +247,10 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         switchTurnButton.setVisible(false);
         resultLabel.setVisible(false);
     }
-
     // End overlay method
+    /**
+     * Ends the encounter overlay.
+     */
     public void endOverlay() {
         darkBackground.setVisible(false);
         encounterMessage.setVisible(false);
@@ -232,9 +260,6 @@ public class EncounterManager implements CombatManager.CombatEventListener {
             onEncounterEnd.run();
         }
     }
-
-
-
     @Override
     public void onPlayerAttack(int dieResult) {
         displayPlayerResult();
