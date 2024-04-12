@@ -27,7 +27,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
     private Runnable onEncounterEnd;
     private Skin skin;
     private TextButton rollInitiativeButton, switchTurnButton, rerollButton;
-    private boolean encounterActive = false;
+    private final boolean encounterActive = false;
     private CombatManager combatManager;
     private EntityManager entityManager;
 

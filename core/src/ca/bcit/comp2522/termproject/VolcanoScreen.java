@@ -264,7 +264,7 @@ public class VolcanoScreen implements Screen {
 
         // Create a new button for resting
         TextButton restButton = new TextButton("Rest", skin);
-        restButton.setSize(200, 50);
+        restButton.setSize(200, 100);
         restButton.setPosition((Gdx.graphics.getWidth() - restButton.getWidth()) / 2, 20);
         restButton.addListener(new ClickListener() {
             @Override

@@ -54,7 +54,7 @@ public class OptionsAndSaveExitScreen implements Screen {
         mainTable.defaults().pad(5).space(5);
         // Create a button for healing characters
         TextButton healCharactersButton = new TextButton("Heal Characters", skin);
-        healCharactersButton.setSize(300, 100); // Adjust size as needed
+        healCharactersButton.setSize(500, 100); // Adjust size as needed
         healCharactersButton.setPosition(100, Gdx.graphics.getHeight() - 150); // Adjust position as needed
 
         healCharactersButton.addListener(new ClickListener() {
@@ -81,7 +81,7 @@ public class OptionsAndSaveExitScreen implements Screen {
             stage.addActor(goToForestButton);
         } else if (currentLocation == Locations.DESERT || currentLocation == Locations.VOLCANO) {
             TextButton goToNewLocationButton = new TextButton("Go to Next Location", skin);
-            goToNewLocationButton.setSize(750, 100); // Set the size of the button
+            goToNewLocationButton.setSize(600, 100); // Set the size of the button
             goToNewLocationButton.setPosition((Gdx.graphics.getWidth() - goToNewLocationButton.getWidth()) / 2, 100); // Raise it 20px above the bottom
 
             goToNewLocationButton.addListener(new ClickListener() {
