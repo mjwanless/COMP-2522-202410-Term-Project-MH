@@ -1,9 +1,14 @@
 package ca.bcit.comp2522.termproject.Combat;
 
-import ca.bcit.comp2522.termproject.Enemy.*;
 import ca.bcit.comp2522.termproject.Locations;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  * Generates enemies for different locations in the game world.
  * Enemies are selected randomly from predefined pools based on the specified location.
@@ -14,52 +19,67 @@ import java.util.*;
  * @version 2024
  *
  */
-public class EnemyGeneration {
+public final class EnemyGeneration {
     /** The map of enemy pools for each location. */
-    private static final Map<Locations, List<Class<? extends Enemy>>> enemyPools = new HashMap<>();
+    private static final Map<Locations, List<Class<? extends ca.bcit.comp2522.termproject.Enemy.Enemy>>> ENEMY_POOLS
+            = new HashMap<>();
 
+    private static final Logger LOGGER = Logger.getLogger(EnemyGeneration.class.getName());
+
+    // Private constructor to prevent instantiation
+    private EnemyGeneration() {
+        // Empty constructor
+    }
     static {
         // Initialize the enemy pools for each location
-        List<Class<? extends Enemy>> forestEnemies = new ArrayList<>();
-        forestEnemies.add(Dog.class);
-        forestEnemies.add(Vandit.class);
-        enemyPools.put(Locations.FOREST, forestEnemies);
+        java.util.List<Class<? extends ca.bcit.comp2522.termproject.Enemy.Enemy>> forestEnemies
+                = new java.util.ArrayList<>();
+        forestEnemies.add(ca.bcit.comp2522.termproject.Enemy.Dog.class);
+        forestEnemies.add(ca.bcit.comp2522.termproject.Enemy.Vandit.class);
+        ENEMY_POOLS.put(ca.bcit.comp2522.termproject.Locations.FOREST, forestEnemies);
 
         // Add more locations and their corresponding enemies as needed
-        List<Class<? extends Enemy>> desertEnemies = new ArrayList<>();
-        desertEnemies.add(Fremen.class);
-        desertEnemies.add(Vulture.class);
-        enemyPools.put(Locations.DESERT, desertEnemies);
+        java.util.List<Class<? extends ca.bcit.comp2522.termproject.Enemy.Enemy>> desertEnemies
+                = new java.util.ArrayList<>();
+        desertEnemies.add(ca.bcit.comp2522.termproject.Enemy.Fremen.class);
+        desertEnemies.add(ca.bcit.comp2522.termproject.Enemy.Vulture.class);
+        ENEMY_POOLS.put(ca.bcit.comp2522.termproject.Locations.DESERT, desertEnemies);
 
-        List<Class<? extends Enemy>> volcanoEnemies = new ArrayList<>();
-        volcanoEnemies.add(Slug.class);
-        volcanoEnemies.add(Lizard.class);
-        enemyPools.put(Locations.VOLCANO, volcanoEnemies);
+        java.util.List<Class<? extends ca.bcit.comp2522.termproject.Enemy.Enemy>> volcanoEnemies
+                = new java.util.ArrayList<>();
+        volcanoEnemies.add(ca.bcit.comp2522.termproject.Enemy.Slug.class);
+        volcanoEnemies.add(ca.bcit.comp2522.termproject.Enemy.Lizard.class);
+        ENEMY_POOLS.put(ca.bcit.comp2522.termproject.Locations.VOLCANO, volcanoEnemies);
 
-        List<Class<? extends Enemy>> castleEnemies = new ArrayList<>();
-        castleEnemies.add(Sentinel.class);
-        castleEnemies.add(Wolf.class);
-        enemyPools.put(Locations.CASTLE, castleEnemies);
+        java.util.List<Class<? extends ca.bcit.comp2522.termproject.Enemy.Enemy>> castleEnemies
+                = new java.util.ArrayList<>();
+        castleEnemies.add(ca.bcit.comp2522.termproject.Enemy.Sentinel.class);
+        castleEnemies.add(ca.bcit.comp2522.termproject.Enemy.Wolf.class);
+        ENEMY_POOLS.put(ca.bcit.comp2522.termproject.Locations.CASTLE, castleEnemies);
     }
     /**
      * Generates a list of enemies for the specified location.
      *
-     * @param location the location where enemies will be generated.
-     * @param numberOfEnemies the number of enemies to generate.
-     * @return a list of Enemy instances generated for the specified location.
+     * @param location         the location where enemies will be generated.
+     * @param numberOfEnemies  the number of enemies to generate.
+     * @return                 a list of Enemy instances generated for the specified location.
      */
-    public static List<Enemy> generateEnemiesForLocation(final Locations location, final int numberOfEnemies) {
-        List<Enemy> enemies = new ArrayList<>();
-        List<Class<? extends Enemy>> availableEnemies = enemyPools.get(location);
+    public static List<ca.bcit.comp2522.termproject.Enemy.Enemy> generateEnemiesForLocation(
+            final Locations location,
+            final int numberOfEnemies) {
+        List<ca.bcit.comp2522.termproject.Enemy.Enemy> enemies = new ArrayList<>();
+        List<Class<? extends ca.bcit.comp2522.termproject.Enemy.Enemy>> availableEnemies = ENEMY_POOLS.get(location);
 
         Random random = new Random();
         for (int i = 0; i < numberOfEnemies; i++) {
             try {
-                Class<? extends Enemy> enemyClass = availableEnemies.get(random.nextInt(availableEnemies.size()));
-                Enemy enemy = enemyClass.getDeclaredConstructor().newInstance();
+                Class<? extends ca.bcit.comp2522.termproject.Enemy.Enemy> enemyClass
+                        = availableEnemies.get(random.nextInt(availableEnemies.size()));
+                ca.bcit.comp2522.termproject.Enemy.Enemy enemy = enemyClass.getDeclaredConstructor().newInstance();
                 enemies.add(enemy);
-            } catch (Exception e) {
-                e.printStackTrace(); // Log or handle the exception as needed
+            } catch (InstantiationException | IllegalAccessException
+                     | java.lang.reflect.InvocationTargetException | NoSuchMethodException e) {
+                LOGGER.log(Level.SEVERE, "Error generating enemy", e);
             }
         }
 

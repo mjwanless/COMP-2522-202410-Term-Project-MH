@@ -13,30 +13,32 @@ import java.util.List;
  *
  * @author Malcolm Wanless
  * @author Heraldo Abreu
- *
  * @version 2024
- *
  */
 public class EntityManager {
+    /**
+     * List of characters involved in combat.
+     */
     public final List<Character> characters;
+
+    /**
+     * List of enemies involved in combat.
+     */
     public final List<Enemy> enemies;
+
     /**
      * Constructs an EntityManager with the specified arrays of characters and enemies.
      *
      * @param charactersArray an array of Character instances representing combat characters.
      * @param enemiesArray an array of Enemy instances representing combat enemies.
      */
-    public EntityManager(Character[] charactersArray, Enemy[] enemiesArray) {
+    public EntityManager(final Character[] charactersArray, final Enemy[] enemiesArray) {
         this.characters = new ArrayList<>();
         this.enemies = new ArrayList<>();
 
         // Convert arrays to lists for easier management
-        for (Character character : charactersArray) {
-            this.characters.add(character);
-        }
-        for (Enemy enemy : enemiesArray) {
-            this.enemies.add(enemy);
-        }
+        this.characters.addAll(java.util.Arrays.asList(charactersArray));
+        this.enemies.addAll(java.util.Arrays.asList(enemiesArray));
     }
 
     /**
@@ -45,34 +47,35 @@ public class EntityManager {
      *
      * @param damage The amount of damage to apply to each enemy.
      */
-    public void applyDamageToAllEnemies(int damage) {
+    public void applyDamageToAllEnemies(final int damage) {
         List<Enemy> defeatedEnemies = new ArrayList<>();
         for (Enemy enemy : enemies) {
             enemy.takeDamage(damage);
-            System.out.println("Applied " + damage + " damage to " + enemy.getName() + ". Health is now " + enemy.getHealth() + ".");
+            System.out.println("Applied " + damage + " damage to " + enemy.getName()
+                    + ". Health is now " + enemy.getHealth() + ".");
             if (enemy.getHealth() <= 0) {
                 defeatedEnemies.add(enemy);
             }
         }
         enemies.removeAll(defeatedEnemies); // Remove all defeated enemies from the list
     }
-        /**
-         * Applies damage to all characters.
-         * Removes any characters whose health drops to zero or below.
-         *
-         * @param damage The amount of damage to apply to each character.
-         */
-        public void applyDamageToAllCharacters(int damage) {
-            List<Character> defeatedCharacters = new ArrayList<>();
-            for (Character character : characters) {
-                character.takeDamage(damage);
-                System.out.println("Applied " + damage + " damage to " + character.getName() + ". Health is now " + character.getHealth() + ".");
-                if (character.getHealth() <= 0) {
-                    defeatedCharacters.add(character);
-                }
+
+    /**
+     * Applies damage to all characters.
+     * Removes any characters whose health drops to zero or below.
+     *
+     * @param damage The amount of damage to apply to each character.
+     */
+    public void applyDamageToAllCharacters(final int damage) {
+        List<Character> defeatedCharacters = new ArrayList<>();
+        for (Character character : characters) {
+            character.takeDamage(damage);
+            System.out.println("Applied " + damage + " damage to " + character.getName()
+                    + ". Health is now " + character.getHealth() + ".");
+            if (character.getHealth() <= 0) {
+                defeatedCharacters.add(character);
             }
-            characters.removeAll(defeatedCharacters); // Remove all defeated characters from the list
         }
-
-
+        characters.removeAll(defeatedCharacters); // Remove all defeated characters from the list
+    }
 }
