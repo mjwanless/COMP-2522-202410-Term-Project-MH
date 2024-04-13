@@ -7,14 +7,17 @@ package ca.bcit.comp2522.termproject.Enemy;
  * attributes and an image path for their visual representation within the game
  * environment.
  *
- * @author Malcom Wanless
+ * @author Malcolm Wanless
  * @author Heraldo Abreu
  *
  * @version 2024
  */
-public class Vandit extends Enemy{
+public class Vandit extends Enemy {
+    private static final int DEFAULT_STRENGTH = 2;
+    private static final int DEFAULT_HEALTH = 10;
+    private static final int DEFAULT_DEFENSE = 2;
+    private static final int DEFAULT_EVADE = 1;
     private static final String IMAGE_PATH = "Enemies/Vandit.jpg";
-
     // Default constructor
     /**
      * Constructs a default Vandit enemy with pre-defined attributes. Initializes
@@ -22,7 +25,7 @@ public class Vandit extends Enemy{
      * distinguishable among other enemy types.
      */
     public Vandit() {
-        this("Vandit", 2, 10, 2, 1, IMAGE_PATH);
+        this("Vandit", DEFAULT_STRENGTH, DEFAULT_HEALTH, DEFAULT_DEFENSE, DEFAULT_EVADE, IMAGE_PATH);
     }
     /**
      * Constructs a Vandit enemy with customizable attributes, allowing for the
@@ -36,7 +39,8 @@ public class Vandit extends Enemy{
      * @param evade     The evade chance of the Vandit.
      * @param imagePath The file path to the Vandit's image.
      */
-    public Vandit(String name, int strength, int health, int defense, int evade, String imagePath) {
+    public Vandit(final String name, final int strength, final int health,
+                  final int defense, final int evade, final String imagePath) {
         super(name, strength, health, defense, evade, imagePath);
     }
     /**
@@ -46,8 +50,8 @@ public class Vandit extends Enemy{
      *
      * @param name The name of the Vandit enemy.
      */
-    public Vandit(String name) {
-        super(name,2, 10, 2, 1, IMAGE_PATH);
+    public Vandit(final String name) {
+        this(name, DEFAULT_STRENGTH, DEFAULT_HEALTH, DEFAULT_DEFENSE, DEFAULT_EVADE, IMAGE_PATH);
     }
     /**
      * Returns the file path to the image representing the Vandit. This method
@@ -82,12 +86,12 @@ public class Vandit extends Enemy{
      */
     @Override
     public String toString() {
-        return "Vandit{" +
-                "name='" + getName() + '\'' +
-                ", strength=" + getStrength() +
-                ", health=" + getHealth() +
-                ", defense=" + getDefense() +
-                ", evade=" + getEvade() +
-                '}';
+        return "Vandit{"
+                + "name='" + getName() + '\''
+                + ", strength=" + getStrength()
+                + ", health=" + getHealth()
+                + ", defense=" + getDefense()
+                + ", evade=" + getEvade()
+                + '}';
     }
 }

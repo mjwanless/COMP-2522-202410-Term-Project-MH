@@ -13,7 +13,10 @@ package ca.bcit.comp2522.termproject.Enemy;
  */
 public class Wolf extends Enemy {
     private static final String IMAGE_PATH = "Enemies/Wolf.jpg";
-
+    private static final int DEFAULT_STRENGTH = 3;
+    private static final int DEFAULT_HEALTH = 8;
+    private static final int DEFAULT_DEFENSE = 2;
+    private static final int DEFAULT_EVADE = 2;
     // Default constructor
     /**
      * Constructs a default Wolf enemy with pre-defined attributes. Initializes
@@ -21,7 +24,7 @@ public class Wolf extends Enemy {
      * distinguishable among other enemy types.
      */
     public Wolf() {
-        this("Wolf", 3, 8, 2, 2, IMAGE_PATH);
+        this("Wolf", DEFAULT_STRENGTH, DEFAULT_HEALTH, DEFAULT_DEFENSE, DEFAULT_EVADE, IMAGE_PATH);
     }
     /**
      * Constructs a Wolf enemy with customizable attributes, allowing for the creation
@@ -35,7 +38,8 @@ public class Wolf extends Enemy {
      * @param evade     The evade chance of the Wolf.
      * @param imagePath The file path to the Wolf's image.
      */
-    public Wolf(String name, int strength, int health, int defense, int evade, String imagePath) {
+    public Wolf(final String name, final int strength, final int health,
+                final int defense, final int evade, final String imagePath) {
         super(name, strength, health, defense, evade, imagePath);
     }
     /**
@@ -45,8 +49,8 @@ public class Wolf extends Enemy {
      *
      * @param name The name of the Wolf enemy.
      */
-    public Wolf(String name) {
-        super(name, 3, 8, 2, 2, IMAGE_PATH);
+    public Wolf(final String name) {
+        this(name, DEFAULT_STRENGTH, DEFAULT_HEALTH, DEFAULT_DEFENSE, DEFAULT_EVADE, IMAGE_PATH);
     }
     /**
      * Returns the file path to the image representing the Wolf. This method
@@ -81,13 +85,13 @@ public class Wolf extends Enemy {
      */
     @Override
     public String toString() {
-        return "Wolf{" +
-                "name='" + getName() + '\'' +
-                ", strength=" + getStrength() +
-                ", health=" + getHealth() +
-                ", defense=" + getDefense() +
-                ", evade=" + getEvade() +
-                '}';
+        return "Wolf{"
+                + "name='" + getName() + '\''
+                + ", strength=" + getStrength()
+                + ", health=" + getHealth()
+                + ", defense=" + getDefense()
+                + ", evade=" + getEvade()
+                + '}';
     }
 }
 

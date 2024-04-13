@@ -6,14 +6,17 @@ package ca.bcit.comp2522.termproject.Enemy;
  * specific implementations for Vultures, including their attributes and an image path for
  * their visual representation in the game environment.
  *
- * @author Malcom Wanless
+ * @author Malcolm Wanless
  * @author Heraldo Abreu
  *
  * @version 2024
  */
 public class Vulture extends Enemy {
     private static final String IMAGE_PATH = "Enemies/Vulture.jpg";
-
+    private static final int DEFAULT_STRENGTH = 3;
+    private static final int DEFAULT_HEALTH = 10;
+    private static final int DEFAULT_DEFENSE = 3;
+    private static final int DEFAULT_EVADE = 3;
     // Default constructor
     /**
      * Constructs a default Vulture enemy with pre-defined attributes. Initializes
@@ -21,7 +24,7 @@ public class Vulture extends Enemy {
      * distinguishable among other enemy types.
      */
     public Vulture() {
-        this("Vulture", 3, 10, 3, 3, IMAGE_PATH);
+        this("Vulture", DEFAULT_STRENGTH, DEFAULT_HEALTH, DEFAULT_DEFENSE, DEFAULT_EVADE, IMAGE_PATH);
     }
     /**
      * Constructs a Vulture enemy with customizable attributes, allowing for the
@@ -35,7 +38,8 @@ public class Vulture extends Enemy {
      * @param evade     The evade chance of the Vulture.
      * @param imagePath The file path to the Vulture's image.
      */
-    public Vulture(String name, int strength, int health, int defense, int evade, String imagePath) {
+    public Vulture(final String name, final int strength, final int health,
+                   final int defense, final int evade, final String imagePath) {
         super(name, strength, health, defense, evade, imagePath);
     }
     /**
@@ -45,8 +49,8 @@ public class Vulture extends Enemy {
      *
      * @param name The name of the Vulture enemy.
      */
-    public Vulture(String name) {
-        super(name, 3, 10, 3, 3, IMAGE_PATH);
+    public Vulture(final String name) {
+        this(name, DEFAULT_STRENGTH, DEFAULT_HEALTH, DEFAULT_DEFENSE, DEFAULT_EVADE, IMAGE_PATH);
     }
     /**
      * Returns the file path to the image representing the Vulture. This method
@@ -81,12 +85,12 @@ public class Vulture extends Enemy {
      */
     @Override
     public String toString() {
-        return "Vulture{" +
-                "name='" + getName() + '\'' +
-                ", strength=" + getStrength() +
-                ", health=" + getHealth() +
-                ", defense=" + getDefense() +
-                ", evade=" + getEvade() +
-                '}';
+        return "Vulture{"
+                + "name='" + getName() + '\''
+                + ", strength=" + getStrength()
+                + ", health=" + getHealth()
+                + ", defense=" + getDefense()
+                + ", evade=" + getEvade()
+                + '}';
     }
 }

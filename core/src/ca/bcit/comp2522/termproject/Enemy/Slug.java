@@ -6,14 +6,17 @@ package ca.bcit.comp2522.termproject.Enemy;
  * a specific implementation for Slugs, including their attributes and an image path for their visual
  * representation within the game environment.
  *
- * @author Malcom Wanless
+ * @author Malcolm Wanless
  * @author Heraldo Abreu
  *
  * @version 2024
  */
 public class Slug extends Enemy {
+    private static final int DEFAULT_STRENGTH = 4;
+    private static final int DEFAULT_HEALTH = 10;
+    private static final int DEFAULT_DEFENSE = 4;
+    private static final int DEFAULT_EVADE = 1;
     private static final String IMAGE_PATH = "Enemies/Lavaslug.jpg";
-
     // Default constructor
     /**
      * Constructs a default Slug enemy with pre-defined attributes. Initializes the Slug
@@ -21,7 +24,7 @@ public class Slug extends Enemy {
      * other enemy types.
      */
     public Slug() {
-        this("Slug", 4, 10, 4, 1, IMAGE_PATH);
+        this("Slug", DEFAULT_STRENGTH, DEFAULT_HEALTH, DEFAULT_DEFENSE, DEFAULT_EVADE, IMAGE_PATH);
     }
     /**
      * Constructs a Slug enemy with customizable attributes, allowing for the creation
@@ -35,7 +38,8 @@ public class Slug extends Enemy {
      * @param evade     The evade chance of the Slug.
      * @param imagePath The file path to the Slug's image.
      */
-    public Slug(String name, int strength, int health, int defense, int evade, String imagePath) {
+    public Slug(final String name, final int strength, final int health,
+                final int defense, final int evade, final String imagePath) {
         super(name, strength, health, defense, evade, imagePath);
     }
     /**
@@ -45,8 +49,8 @@ public class Slug extends Enemy {
      *
      * @param name The name of the Slug enemy.
      */
-    public Slug(String name) {
-        super(name, 4, 10, 4, 1, IMAGE_PATH);
+    public Slug(final String name) {
+        this(name, DEFAULT_STRENGTH, DEFAULT_HEALTH, DEFAULT_DEFENSE, DEFAULT_EVADE, IMAGE_PATH);
     }
     /**
      * Returns the file path to the image representing the Slug. This method fulfills
@@ -81,12 +85,12 @@ public class Slug extends Enemy {
      */
     @Override
     public String toString() {
-        return "Slug{" +
-                "name='" + getName() + '\'' +
-                ", strength=" + getStrength() +
-                ", health=" + getHealth() +
-                ", defense=" + getDefense() +
-                ", evade=" + getEvade() +
-                '}';
+        return "Slug{"
+                + "name='" + getName() + '\''
+                + ", strength=" + getStrength()
+                + ", health=" + getHealth()
+                + ", defense=" + getDefense()
+                + ", evade=" + getEvade()
+                + '}';
     }
 }

@@ -12,8 +12,11 @@ package ca.bcit.comp2522.termproject.Enemy;
  * @version 2024
  */
 public class Sentinel extends Enemy {
+    private static final int DEFAULT_STRENGTH = 4;
+    private static final int DEFAULT_HEALTH = 15;
+    private static final int DEFAULT_DEFENSE = 4;
+    private static final int DEFAULT_EVADE = 0;
     private static final String IMAGE_PATH = "Enemies/Sentinel.jpg";
-
     // Default constructor
     /**
      * Constructs a default Sentinel enemy with pre-defined attributes. This constructor initializes
@@ -21,7 +24,7 @@ public class Sentinel extends Enemy {
      * enemy types.
      */
     public Sentinel() {
-        this("Sentinel", 4, 15, 4, 0, IMAGE_PATH);
+        this("Sentinel", DEFAULT_STRENGTH, DEFAULT_HEALTH, DEFAULT_DEFENSE, DEFAULT_EVADE, IMAGE_PATH);
     }
     /**
      * Constructs a Sentinel enemy with customizable attributes, allowing for the creation of
@@ -36,7 +39,8 @@ public class Sentinel extends Enemy {
      *                  character design.
      * @param imagePath The file path to the Sentinel's image.
      */
-    public Sentinel(String name, int strength, int health, int defense, int evade, String imagePath) {
+    public Sentinel(final String name, final int strength, final int health,
+                    final int defense, final int evade, final String imagePath) {
         super(name, strength, health, defense, evade, imagePath);
     }
     /**
@@ -45,8 +49,8 @@ public class Sentinel extends Enemy {
      *
      * @param name The name of the Sentinel enemy.
      */
-    public Sentinel(String name) {
-        super(name, 4, 15, 4, 0, IMAGE_PATH);
+    public Sentinel(final String name) {
+        this(name, DEFAULT_STRENGTH, DEFAULT_HEALTH, DEFAULT_DEFENSE, DEFAULT_EVADE, IMAGE_PATH);
     }
     /**
      * Returns the file path to the image representing the Sentinel. This method satisfies the
@@ -79,13 +83,13 @@ public class Sentinel extends Enemy {
      */
     @Override
     public String toString() {
-        return "Sentinel{" +
-                "name='" + getName() + '\'' +
-                ", strength=" + getStrength() +
-                ", health=" + getHealth() +
-                ", defense=" + getDefense() +
-                ", evade=" + getEvade() +
-                '}';
+        return "Sentinel{"
+                + "name='" + getName() + '\''
+                + ", strength=" + getStrength()
+                + ", health=" + getHealth()
+                + ", defense=" + getDefense()
+                + ", evade=" + getEvade()
+                + '}';
     }
 }
 
