@@ -12,12 +12,12 @@ import com.badlogic.gdx.graphics.Texture;
  *
  */
 public abstract class Enemy  {
-    private String name;
-    private int strength;
+    private final String name;
+    private final int strength;
     private int health;
-    private int defense;
-    private int evade;
-    private Texture image; // LibGDX class to handle images
+    private final int defense;
+    private final int evade;
+    private final Texture image; // LibGDX class to handle images
     /**
      * Constructs an Enemy object.
      *
@@ -28,7 +28,8 @@ public abstract class Enemy  {
      * @param evade     The evasion rate of the enemy.
      * @param imagePath The file path to the image representing the enemy.
      */
-    public Enemy(String name, int strength, int health, int defense, int evade, String imagePath) {
+    public Enemy(final String name, final int strength, final int health, final int defense, final int evade,
+                 final String imagePath) {
         this.name = name;
         this.strength = strength;
         this.health = health;
@@ -43,31 +44,41 @@ public abstract class Enemy  {
      *
      * @return The name of the enemy.
      */
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
     /**
      * Gets the strength of the enemy.
      *
      * @return The strength of the enemy.
      */
-    public int getStrength() { return strength; }
+    public int getStrength() {
+        return strength;
+    }
     /**
      * Gets the health of the enemy.
      *
      * @return The health of the enemy.
      */
-    public int getHealth() { return health; }
+    public int getHealth() {
+        return health;
+    }
     /**
      * Gets the defense of the enemy.
      *
      * @return The defense of the enemy.
      */
-    public int getDefense() { return defense; }
+    public int getDefense() {
+        return defense;
+    }
     /**
      * Gets the evasion rate of the enemy.
      *
      * @return The evasion rate of the enemy.
      */
-    public int getEvade() { return evade; }
+    public int getEvade() {
+        return evade;
+    }
     /**
      * Gets the image representing the enemy.
      *
@@ -76,15 +87,7 @@ public abstract class Enemy  {
     public Texture getImage() {
         return image;
     }
-    /**
-     * Gets a string representation of the enemy's health.
-     *
-     * @return A string representing the enemy's health.
-     */
-    public String getHealthString() {
-        return "HP: " + this.health + "/" + this.health; // if you don't have max health
-        // if you had a maxHealth property it would be "HP: " + this.health + "/" + this.maxHealth;
-    }
+
     /**
      * Gets the file path to the image representing the enemy.
      *
@@ -110,7 +113,7 @@ public abstract class Enemy  {
      *
      * @param damage The amount of damage to be dealt to the enemy.
      */
-    public void takeDamage(int damage) {
+    public void takeDamage(final int damage) {
         this.health -= damage;
         if (this.health <= 0) {
             // Enemy is defeated

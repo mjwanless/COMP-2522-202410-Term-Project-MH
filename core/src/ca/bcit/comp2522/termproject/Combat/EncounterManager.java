@@ -119,7 +119,7 @@ public class EncounterManager implements CombatManager.CombatEventListener {
         switchTurnButton.setVisible(false);
 
         stage.addActor(switchTurnButton);
-        combatManager.setCurrentInitiator(Initiative.PLAYER);
+        combatManager.setCurrentInitiator(ca.bcit.comp2522.termproject.Combat.CombatManager.Initiative.PLAYER);
 
         rerollButton = new TextButton("Reroll Dice", skin);
         rerollButton.setSize(350, 100);
@@ -144,23 +144,23 @@ public class EncounterManager implements CombatManager.CombatEventListener {
 
     // Display random initiative result method
     private void displayRandomInitiativeResult() {
-        Initiative result = new Random().nextBoolean()
-                ? Initiative.PLAYER : Initiative.ENEMY;
+        ca.bcit.comp2522.termproject.Combat.CombatManager.Initiative result = new Random().nextBoolean()
+                ? ca.bcit.comp2522.termproject.Combat.CombatManager.Initiative.PLAYER : ca.bcit.comp2522.termproject.Combat.CombatManager.Initiative.ENEMY;
         resultLabel.setText(result + " rolls for initiative!");
         resultLabel.setVisible(true);
 
         // If the enemy rolls initiative, immediately trigger the enemy's attack
-        if (result == Initiative.ENEMY) {
-            combatManager.handleCombatRound(Initiative.ENEMY);
+        if (result == ca.bcit.comp2522.termproject.Combat.CombatManager.Initiative.ENEMY) {
+            combatManager.handleCombatRound(ca.bcit.comp2522.termproject.Combat.CombatManager.Initiative.ENEMY);
         } else {
-            combatManager.handleCombatRound(Initiative.PLAYER);
+            combatManager.handleCombatRound(ca.bcit.comp2522.termproject.Combat.CombatManager.Initiative.PLAYER);
         }
         // Proceed with the rest of the game logic here if needed
     }
 
     // Method to show the reroll button during the player's turn
     public void showRerollButton(final boolean show) {
-        if (combatManager.getCurrentInitiator() == Initiative.PLAYER) {
+        if (combatManager.getCurrentInitiator() == ca.bcit.comp2522.termproject.Combat.CombatManager.Initiative.PLAYER) {
             rerollButton.setVisible(show);
             rerollButton.setPosition((Gdx.graphics.getWidth() - rerollButton.getWidth()) / 2, 135); // Adjust y position for spacing
         } else {
