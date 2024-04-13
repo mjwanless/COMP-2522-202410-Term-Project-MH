@@ -3,8 +3,8 @@ package ca.bcit.comp2522.termproject;
 import ca.bcit.comp2522.termproject.Character.Character;
 import ca.bcit.comp2522.termproject.Combat.EncounterManager;
 import ca.bcit.comp2522.termproject.Combat.EnemyGeneration;
-import ca.bcit.comp2522.termproject.Combat.EntityManager;
 import ca.bcit.comp2522.termproject.Enemy.Enemy;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -23,13 +23,23 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 /**
  * Represents the castle screen of the game.
+ * This screen displays the castle background image, along with characters and enemies.
+ * It also handles music playing and disposing of assets.
  *
  * @author Malcom Wanless
  * @author Heraldo Abreu
- *
  * @version 2024
  */
 public class CastleScreen implements Screen {
+
+    // Constants for layout
+    private static final float CHARACTER_INFO_START_X = 50; // X position for character info box
+    private static final float CHARACTER_INFO_START_Y = Gdx.graphics.getHeight() - 450; // Y position from the top
+    private static final float CHARACTER_INFO_BOX_WIDTH = 300; // Width of the character info box
+    private static final float CHARACTER_INFO_BOX_HEIGHT = 100; // Height of the character info box
+    private static final float PORTRAIT_SIZE = 90; // Size of the character portrait
+    private static final float PADDING = 10; // Padding inside the info box
+    private static final int ENEMY_COUNT = 2; // Number of enemies generated
 
     // Field declarations for various components used in the screen
     private final DiceGame game; // The main game object to interact with other game screens and functionalities
@@ -43,10 +53,11 @@ public class CastleScreen implements Screen {
     private final Skin skin; // Defines the look and feel of UI elements
     private Enemy[] enemies; // Array of enemies present in the forest
     private final EncounterManager encounterManager; // Manages encounters with enemies
-    private boolean encounterActive = true; // Indicates whether an encounter/battle is currently active
-    private final EntityManager entityManager;
 
     private int defeatedEnemyCount = 0; // Counter for defeated enemies
+
+
+
     /**
      * Constructs a new CastleScreen object.
      *
@@ -58,10 +69,11 @@ public class CastleScreen implements Screen {
         this.selectedCharacters = selectedCharacters;
         batch = new SpriteBatch();
         img = new Texture("backgrounds/castle_background.jpeg");
-        enemies = EnemyGeneration.generateEnemiesForLocation(Locations.CASTLE, 2).toArray(new Enemy[0]);
+        enemies = EnemyGeneration.generateEnemiesForLocation(Locations.CASTLE, ENEMY_COUNT).toArray(new Enemy[0]);
 
         stage = new Stage(new ScreenViewport());
-        entityManager = new EntityManager(selectedCharacters, enemies);
+        ca.bcit.comp2522.termproject.Combat.EntityManager entityManager
+                = new ca.bcit.comp2522.termproject.Combat.EntityManager(selectedCharacters, enemies);
 
         encounterManager = new EncounterManager(stage, this::onEncounterEnd, entityManager);
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
@@ -69,7 +81,6 @@ public class CastleScreen implements Screen {
         assetManager = new AssetManager();
         setupUI();
     }
-
 
     /**
      * Initializes and sets up UI components for the forest screen.
@@ -84,14 +95,9 @@ public class CastleScreen implements Screen {
 
         // Additional UI elements like buttons can be added here
     }
-    private void renderSelectedCharacters(SpriteBatch batch, ShapeRenderer shapeRenderer) {
-        // Constants for layout
-        float startX = 50; // X position for character info box
-        float startY = Gdx.graphics.getHeight() - 450; // Y position from the top of the screen
-        float boxWidth = 300; // Width of the character info box
-        float boxHeight = 100; // Height of the character info box
-        float portraitSize = 90; // Size of the character portrait
-        float padding = 10; // Padding inside the info box
+
+    private void renderSelectedCharacters(final SpriteBatch batch, final ShapeRenderer shapeRenderer) {
+        final int ypos = 20;
 
         // Font setup
         BitmapFont font = new BitmapFont(); // Use your existing BitmapFont here
@@ -100,23 +106,25 @@ public class CastleScreen implements Screen {
         // Draw background for character info
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK); // Color for the background of the character info
+        float startY = CHARACTER_INFO_START_Y;
         for (Character character : selectedCharacters) {
-            shapeRenderer.rect(startX, startY, boxWidth, boxHeight); // Draw the background rectangle
-            startY -= (boxHeight + padding); // Move to the next character's position
+            shapeRenderer.rect(CHARACTER_INFO_START_X, startY, CHARACTER_INFO_BOX_WIDTH, CHARACTER_INFO_BOX_HEIGHT);
+            startY -= (CHARACTER_INFO_BOX_HEIGHT + PADDING); // Move to the next character's position
         }
         shapeRenderer.end();
 
         // Draw images and text on top of the boxes
         batch.begin();
-        startY = Gdx.graphics.getHeight() - 450; // Reset startY position
+        startY = CHARACTER_INFO_START_Y; // Reset startY position
         for (Character character : selectedCharacters) {
             // Draw character portrait
             Texture portrait = character.getImage();
-            batch.draw(portrait, startX + padding, startY + (boxHeight - portraitSize) / 2, portraitSize, portraitSize);
+            batch.draw(portrait, CHARACTER_INFO_START_X + PADDING,
+                    startY + (CHARACTER_INFO_BOX_HEIGHT - PORTRAIT_SIZE) / 2, PORTRAIT_SIZE, PORTRAIT_SIZE);
 
             // Position text
-            float textX = startX + portraitSize + 2 * padding;
-            float textY = startY + boxHeight - padding;
+            float textX = CHARACTER_INFO_START_X + PORTRAIT_SIZE + 2 * PADDING;
+            float textY = startY + CHARACTER_INFO_BOX_HEIGHT - PADDING;
 
             // Draw character's name
             font.setColor(Color.WHITE); // Set font color to white
@@ -124,10 +132,10 @@ public class CastleScreen implements Screen {
 
             // Draw character's health
             String healthString = "HP: " + character.getHealth();
-            font.draw(batch, healthString, textX, textY - 20); // Adjust Y position for health below the name
+            font.draw(batch, healthString, textX, textY - ypos); // Adjust Y position for health below the name
 
             // Move to the next character's position
-            startY -= (boxHeight + padding);
+            startY -= (CHARACTER_INFO_BOX_HEIGHT + PADDING);
         }
         batch.end();
 
@@ -135,14 +143,18 @@ public class CastleScreen implements Screen {
         font.dispose();
     }
 
-    private void renderEnemies(SpriteBatch batch, ShapeRenderer shapeRenderer) {
+    private void renderEnemies(final SpriteBatch batch, final ShapeRenderer shapeRenderer) {
+        final float adjX = 350f;
+        final float adjY = 450f;
+
+
         // Constants for layout
-        float startX = Gdx.graphics.getWidth() - 350; // Adjusted X position
-        float startY = Gdx.graphics.getHeight() - 450;
-        float boxWidth = 300;
-        float boxHeight = 100;
-        float portraitSize = 90;
-        float padding = 10;
+        float startX = Gdx.graphics.getWidth() - adjX; // Adjusted X position
+        float startY = Gdx.graphics.getHeight() - adjY;
+        final float boxWidth = 300;
+        final float boxHeight = 100;
+        final float portraitSize = 90;
+        final float padding = 10;
 
         // Font setup
         BitmapFont font = new BitmapFont();
@@ -158,7 +170,6 @@ public class CastleScreen implements Screen {
         shapeRenderer.end();
 
         batch.begin();
-        startY = Gdx.graphics.getHeight() - 450; // Reset startY for drawing images and text
         for (Enemy enemy : enemies) {
             // Draw enemy portrait
             Texture portrait = new Texture(Gdx.files.internal(enemy.getImagePath()));
@@ -174,7 +185,7 @@ public class CastleScreen implements Screen {
 
             // Draw enemy's health
             String healthString = "HP: " + enemy.getHealth();
-            font.draw(batch, healthString, textX, textY - 20);
+            font.draw(batch, healthString, textX, textY - padding * 2);
 
             // Move to the next enemy
             startY -= (boxHeight + padding);
@@ -186,11 +197,15 @@ public class CastleScreen implements Screen {
 
     // Method called when the EncounterManager is done
     private void onEncounterEnd() {
-        encounterActive = false; // Set the flag to false indicating the encounter is over
+        // Indicates whether an encounter/battle is currently active
+        boolean encounterActive = false; // Set the flag to false indicating the encounter is over
     }
+
+    /**
+     * Prepares assets and variables for the intro, loads music, and starts encounter overlay.
+     */
     @Override
     public void show() {
-        // Prepare any assets or variables for the intro
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         Gdx.input.setInputProcessor(stage);
@@ -204,8 +219,16 @@ public class CastleScreen implements Screen {
 
         encounterManager.startOverlay();
     }
+
+    /**
+     * Renders the castle screen, including background, characters, enemies, and stage elements.
+     *
+     * @param delta the time in seconds since the last render
+     */
     @Override
-    public void render(float delta) {
+    public void render(final float delta) {
+        final float drawMod = 30f; // Controls the maximum draw frequency
+
         // Clear screen
         game.clearScreen();
 
@@ -219,7 +242,7 @@ public class CastleScreen implements Screen {
         renderEnemies(batch, shapeRenderer);
 
         // Update and draw stage
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / drawMod));
         stage.draw();
 
         // Check for defeated characters and enemies and remove them from the stage
@@ -243,7 +266,7 @@ public class CastleScreen implements Screen {
     }
 
     // Method to remove a character from the array
-    private Character[] removeCharacter(Character characterToRemove, Character[] characters) {
+    private Character[] removeCharacter(final Character characterToRemove, final Character[] characters) {
         Character[] updatedCharacters = new Character[characters.length - 1];
         int idx = 0;
         for (Character character : characters) {
@@ -253,7 +276,7 @@ public class CastleScreen implements Screen {
         }
         return updatedCharacters;
     }
-    private Enemy[] removeEnemy(Enemy enemyToRemove, Enemy[] enemies) {
+    private Enemy[] removeEnemy(final Enemy enemyToRemove, final Enemy[] enemies) {
         Enemy[] updatedEnemies = new Enemy[enemies.length - 1];
         int idx = 0;
         for (Enemy enemy : enemies) {
@@ -263,27 +286,40 @@ public class CastleScreen implements Screen {
         }
         return updatedEnemies;
     }
-    // Method to switch the turn button functionality to go to rest screen
+    /**
+     * Switches the turn button functionality to go to the rest screen.
+     * This method removes the reroll button and switch turn button, increments the combat counter,
+     * and adds a new button for resting. When the resting button is clicked, it changes the screen
+     * to the appropriate BossKilledScreen.
+     */
     public void switchToRestScreen() {
         // Dispose of the reroll button and switch turn button
         encounterManager.removeRerollButton();
         encounterManager.removeSwitchTurnButton();
         game.combatCounter += 1;
 
+        // Define constants for button properties
+        final float buttonWidth = 200;
+        final float buttonHeight = 100;
+        final float buttonPositionX = (Gdx.graphics.getWidth() - buttonWidth) / 2;
+        final float buttonPositionY = 20;
+
         // Create a new button for resting
         TextButton restButton = new TextButton("Next", skin);
-        restButton.setSize(200, 100);
-        restButton.setPosition((Gdx.graphics.getWidth() - restButton.getWidth()) / 2, 20);
+        restButton.setSize(buttonWidth, buttonHeight);
+        restButton.setPosition(buttonPositionX, buttonPositionY);
         restButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new BossKilledScreen(game,selectedCharacters)); // Change to the appropriate screen
+            public void clicked(final InputEvent event, final float x, final float y) {
+                game.setScreen(new BossKilledScreen(game, selectedCharacters)); // Change to the appropriate screen
             }
         });
         stage.addActor(restButton); // Add the new button to the stage
     }
+
+
     @Override
-    public void resize(int width, int height) {
+    public void resize(final int width, final int height) {
         // If you need to handle screen resizing, do it here
     }
 
@@ -297,6 +333,10 @@ public class CastleScreen implements Screen {
         // Implement if there is a need to resume your screen
     }
 
+    /**
+     * Called when this screen is no longer the current screen for a {@link Game}.
+     * Stops the music playing in the background and disposes of any resources used by the screen.
+     */
     @Override
     public void hide() {
         // Stop music when hiding screen
@@ -304,20 +344,24 @@ public class CastleScreen implements Screen {
         // Implement if there is anything you need to hide
     }
 
+    /**
+     * Releases all resources of the screen.
+     * Disposes of the sprite batch, shape renderer, background image texture, characters, enemies, music, and stage.
+     */
     @Override
     public void dispose() {
         // Dispose resources
-        batch.dispose();
-        shapeRenderer.dispose();
-        img.dispose();
-        for (Character character : selectedCharacters) {
+        batch.dispose(); // Dispose sprite batch
+        shapeRenderer.dispose(); // Dispose shape renderer
+        img.dispose(); // Dispose background image texture
+        for (Character character : selectedCharacters) { // Dispose characters
             character.dispose();
         }
-        castleScreenMusic.dispose();
-        for (Enemy enemy : enemies) {
+        castleScreenMusic.dispose(); // Dispose background music
+        for (Enemy enemy : enemies) { // Dispose enemies
             enemy.dispose();
-
         }
-        stage.dispose();
+        stage.dispose(); // Dispose stage
     }
+
 }
