@@ -8,7 +8,7 @@ package ca.bcit.comp2522.termproject.Character;
  * attributes and behaviors. The Rogue is defined with specific values for strength, health,
  * defense, and evade, and it uses a unique image to visually represent the character.
  *
- * @author Malcom Wanless
+ * @author Malcolm Wanless
  * @author Heraldo Abreu
  * @version 2024
  *

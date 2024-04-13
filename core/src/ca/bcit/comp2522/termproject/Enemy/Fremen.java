@@ -5,15 +5,18 @@ package ca.bcit.comp2522.termproject.Enemy;
  * attributes and behaviors. The Fremen are known for their resilience, agility, and
  * combat skills, reflected in their stats.
  *
- * @author Malcom Wanless
+ * @author Malcolm Wanless
  * @author Heraldo Abreu
  *
  * @version 2024
 
  */
 public class Fremen extends Enemy {
+    private static final int DEFAULT_STRENGTH = 4;
+    private static final int DEFAULT_HEALTH = 12;
+    private static final int DEFAULT_DEFENSE = 1;
+    private static final int DEFAULT_EVADE = 3;
     private static final String IMAGE_PATH = "Enemies/Fremen.jpg";
-
     // Default constructor
     /**
      * Constructs a Fremen enemy with default attributes. This constructor initializes
@@ -21,7 +24,7 @@ public class Fremen extends Enemy {
      * enemy types.
      */
     public Fremen() {
-        this("Fremen", 4, 12, 1, 3, IMAGE_PATH);
+        this("Fremen", DEFAULT_STRENGTH, DEFAULT_HEALTH, DEFAULT_DEFENSE, DEFAULT_EVADE, IMAGE_PATH);
     }
     /**
      * Constructs a Fremen enemy with customizable attributes. Allows for the creation
@@ -34,7 +37,8 @@ public class Fremen extends Enemy {
      * @param evade     The evade chance of the Fremen.
      * @param imagePath The file path to the Fremen's image.
      */
-    public Fremen(String name, int strength, int health, int defense, int evade, String imagePath) {
+    public Fremen(final String name, final int strength, final int health,
+                  final int defense, final int evade, final String imagePath) {
         super(name, strength, health, defense, evade, imagePath);
     }
     /**
@@ -44,8 +48,8 @@ public class Fremen extends Enemy {
      *
      * @param name The name of the Fremen enemy.
      */
-    public Fremen(String name) {
-        super(name, 4, 12, 1, 3, IMAGE_PATH);
+    public Fremen(final String name) {
+        this(name, DEFAULT_STRENGTH, DEFAULT_HEALTH, DEFAULT_DEFENSE, DEFAULT_EVADE, IMAGE_PATH);
     }
     /**
      * Returns the file path to the image representing the Fremen. This method
@@ -79,13 +83,13 @@ public class Fremen extends Enemy {
      */
     @Override
     public String toString() {
-        return "Fremen{" +
-                "name='" + getName() + '\'' +
-                ", strength=" + getStrength() +
-                ", health=" + getHealth() +
-                ", defense=" + getDefense() +
-                ", evade=" + getEvade() +
-                '}';
+        return "Fremen{"
+                + "name='" + getName() + '\''
+                + ", strength=" + getStrength()
+                + ", health=" + getHealth()
+                + ", defense=" + getDefense()
+                + ", evade=" + getEvade()
+                + '}';
     }
 }
 

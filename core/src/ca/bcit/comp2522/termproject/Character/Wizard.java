@@ -10,7 +10,7 @@ package ca.bcit.comp2522.termproject.Character;
  * strength, health, defense, and evade statistics, along with a distinct image path
  * for visual representation.
  *
- * @author Malcom Wanless
+ * @author Malcolm Wanless
  * @author Heraldo Abreu
  * @version 2024
  */

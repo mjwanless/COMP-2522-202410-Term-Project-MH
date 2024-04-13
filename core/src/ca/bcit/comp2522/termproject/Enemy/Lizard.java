@@ -12,6 +12,10 @@ package ca.bcit.comp2522.termproject.Enemy;
  * @version 2024
  */
 public class Lizard extends Enemy {
+    private static final int DEFAULT_STRENGTH = 4;
+    private static final int DEFAULT_HEALTH = 10;
+    private static final int DEFAULT_DEFENSE = 4;
+    private static final int DEFAULT_EVADE = 1;
     private static final String IMAGE_PATH = "Enemies/LizardSoldier.jpg";
     // Default constructor
     /**
@@ -19,7 +23,7 @@ public class Lizard extends Enemy {
      * initializes the Lizard with a set of base stats and an image path.
      */
     public Lizard() {
-        this("Lizard", 4, 10, 4, 1, IMAGE_PATH);
+        this("Lizard", DEFAULT_STRENGTH, DEFAULT_HEALTH, DEFAULT_DEFENSE, DEFAULT_EVADE, IMAGE_PATH);
     }
     /**
      * Constructs a Lizard enemy with customizable attributes. This allows for the creation
@@ -33,7 +37,8 @@ public class Lizard extends Enemy {
      * @param evade     The evade chance of the Lizard.
      * @param imagePath The file path to the Lizard's image.
      */
-    public Lizard(String name, int strength, int health, int defense, int evade, String imagePath) {
+    public Lizard(final String name, final int strength, final int health,
+                  final int defense, final int evade, final String imagePath) {
         super(name, strength, health, defense, evade, imagePath);
     }
     /**
@@ -43,8 +48,8 @@ public class Lizard extends Enemy {
      *
      * @param name The name of the Lizard enemy.
      */
-    public Lizard(String name) {
-        super(name, 4, 10, 4, 1, IMAGE_PATH);
+    public Lizard(final String name) {
+        this(name, DEFAULT_STRENGTH, DEFAULT_HEALTH, DEFAULT_DEFENSE, DEFAULT_EVADE, IMAGE_PATH);
     }
     /**
      * Returns the file path to the image representing the Lizard. This method
@@ -77,13 +82,13 @@ public class Lizard extends Enemy {
      */
     @Override
     public String toString() {
-        return "Lizard{" +
-                "name='" + getName() + '\'' +
-                ", strength=" + getStrength() +
-                ", health=" + getHealth() +
-                ", defense=" + getDefense() +
-                ", evade=" + getEvade() +
-                '}';
+        return "Lizard{"
+                + "name='" + getName() + '\''
+                + ", strength=" + getStrength()
+                + ", health=" + getHealth()
+                + ", defense=" + getDefense()
+                + ", evade=" + getEvade()
+                + '}';
     }
 }
 

@@ -6,13 +6,17 @@ package ca.bcit.comp2522.termproject.Enemy;
  * The Dog is characterized by its specific strength, health, defense, and evade stats, along with
  * a unique image to represent it within the game environment.
  *
- * @author Malcom Wanless
+ * @author Malcolm Wanless
  * @author Heraldo Abreu
  *
  * @version 2024
  */
 public class Dog extends Enemy {
     private static final String IMAGE_PATH = "Enemies/GuardDog.jpg";
+    private static final int DEFAULT_STRENGTH = 3;
+    private static final int DEFAULT_HEALTH = 13;
+    private static final int DEFAULT_DEFENSE = 3;
+    private static final int DEFAULT_EVADE = 2;
 
     // Default constructor
     /**
@@ -20,7 +24,7 @@ public class Dog extends Enemy {
      * the Dog with predefined stats and an image path.
      */
     public Dog() {
-        this("Dog", 3, 13, 3, 2, IMAGE_PATH);
+        this("Dog", DEFAULT_STRENGTH, DEFAULT_HEALTH, DEFAULT_DEFENSE, DEFAULT_EVADE, IMAGE_PATH);
     }
     /**
      * Constructs a Dog enemy with customizable attributes. This allows for the creation
@@ -33,7 +37,8 @@ public class Dog extends Enemy {
      * @param evade     The evade chance of the Dog.
      * @param imagePath The file path to the Dog's image.
      */
-    public Dog(String name, int strength, int health, int defense, int evade, String imagePath) {
+    public Dog(final String name, final int strength, final int health,
+               final int defense, final int evade, final String imagePath) {
         super(name, strength, health, defense, evade, imagePath);
     }
     /**
@@ -43,8 +48,8 @@ public class Dog extends Enemy {
      *
      * @param name The name of the Dog enemy.
      */
-    public Dog(String name) {
-        super(name, 3, 13, 3, 2, IMAGE_PATH);
+    public Dog(final String name) {
+        this(name, DEFAULT_STRENGTH, DEFAULT_HEALTH, DEFAULT_DEFENSE, DEFAULT_EVADE, IMAGE_PATH);
     }
     /**
      * Returns the file path to the image representing the Dog. This method
@@ -78,12 +83,12 @@ public class Dog extends Enemy {
      */
     @Override
     public String toString() {
-        return "Dog{" +
-                "name='" + getName() + '\'' +
-                ", strength=" + getStrength() +
-                ", health=" + getHealth() +
-                ", defense=" + getDefense() +
-                ", evade=" + getEvade() +
-                '}';
+        return "Dog{"
+                + "name='" + getName() + '\''
+                + ", strength=" + getStrength()
+                + ", health=" + getHealth()
+                + ", defense=" + getDefense()
+                + ", evade=" + getEvade()
+                + '}';
     }
 }

@@ -8,7 +8,7 @@ package ca.bcit.comp2522.termproject.Character;
  * that defines the specific attributes and behaviors of a Warrior, including its image path
  * and a textual representation of its statistics.
  *
- * @author Malcom Wanless
+ * @author Malcolm Wanless
  * @author Heraldo Abreu
  * @version 2024
  *
