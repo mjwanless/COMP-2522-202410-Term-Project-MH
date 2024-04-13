@@ -43,7 +43,8 @@ public class OptionsAndSaveExitScreen implements Screen {
      * @param selectedCharacters The characters selected by the player.
      * @param currentLocation The current location of the player.
      */
-    public OptionsAndSaveExitScreen(final DiceGame game, final Character[] selectedCharacters, Locations currentLocation) {
+    public OptionsAndSaveExitScreen(final DiceGame game, final Character[] selectedCharacters,
+                                    Locations currentLocation) {
         this.game = game;
         this.selectedCharacters = selectedCharacters;
         this.currentLocation = currentLocation;
@@ -83,7 +84,7 @@ public class OptionsAndSaveExitScreen implements Screen {
         if (currentLocation == Locations.FOREST) {
             TextButton goToForestButton = new TextButton("Go to Forest", skin);
             goToForestButton.setSize(750, 100); // Set the size of the button
-            goToForestButton.setPosition((Gdx.graphics.getWidth() - goToForestButton.getWidth()) / 2, 100); // Raise it 20px above the bottom
+            goToForestButton.setPosition((Gdx.graphics.getWidth() - goToForestButton.getWidth()) / 2, 100);
 
             goToForestButton.addListener(new ClickListener() {
                 @Override
@@ -96,7 +97,8 @@ public class OptionsAndSaveExitScreen implements Screen {
         } else if (currentLocation == Locations.DESERT || currentLocation == Locations.VOLCANO) {
             TextButton goToNewLocationButton = new TextButton("Go to Next Location", skin);
             goToNewLocationButton.setSize(600, 100); // Set the size of the button
-            goToNewLocationButton.setPosition((Gdx.graphics.getWidth() - goToNewLocationButton.getWidth()) / 2, 100); // Raise it 20px above the bottom
+            goToNewLocationButton.setPosition((Gdx.graphics.getWidth()
+                    - goToNewLocationButton.getWidth()) / 2, 100);
 
             goToNewLocationButton.addListener(new ClickListener() {
                 @Override
@@ -115,7 +117,7 @@ public class OptionsAndSaveExitScreen implements Screen {
             TextButton goToCastleButton = new TextButton("Go to Castle", skin);
             goToCastleButton.setSize(750, 100); // Set the size of the button
             // Position the button at the bottom center of the screen
-            goToCastleButton.setPosition((Gdx.graphics.getWidth() - goToCastleButton.getWidth()) / 2, 100); // Raise it 20px above the bottom
+            goToCastleButton.setPosition((Gdx.graphics.getWidth() - goToCastleButton.getWidth()) / 2, 100);
 
             goToCastleButton.addListener(new ClickListener() {
                 @Override

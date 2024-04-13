@@ -26,7 +26,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
  * This screen displays the castle background image, along with characters and enemies.
  * It also handles music playing and disposing of assets.
  *
- * @author Malcom Wanless
+ * @author Malcolm Wanless
  * @author Heraldo Abreu
  * @version 2024
  */
@@ -144,17 +144,14 @@ public class CastleScreen implements Screen {
     }
 
     private void renderEnemies(final SpriteBatch batch, final ShapeRenderer shapeRenderer) {
-        final float adjX = 350f;
-        final float adjY = 450f;
-
 
         // Constants for layout
-        float startX = Gdx.graphics.getWidth() - adjX; // Adjusted X position
-        float startY = Gdx.graphics.getHeight() - adjY;
-        final float boxWidth = 300;
-        final float boxHeight = 100;
-        final float portraitSize = 90;
-        final float padding = 10;
+        float startX = Gdx.graphics.getWidth() - 350; // Adjusted X position
+        float startY = Gdx.graphics.getHeight() - 450;
+        float boxWidth = 300;
+        float boxHeight = 100;
+        float portraitSize = 90;
+        float padding = 10;
 
         // Font setup
         BitmapFont font = new BitmapFont();
@@ -170,6 +167,7 @@ public class CastleScreen implements Screen {
         shapeRenderer.end();
 
         batch.begin();
+        startY = Gdx.graphics.getHeight() - 450; // Reset startY for drawing images and text
         for (Enemy enemy : enemies) {
             // Draw enemy portrait
             Texture portrait = new Texture(Gdx.files.internal(enemy.getImagePath()));
@@ -185,7 +183,7 @@ public class CastleScreen implements Screen {
 
             // Draw enemy's health
             String healthString = "HP: " + enemy.getHealth();
-            font.draw(batch, healthString, textX, textY - padding * 2);
+            font.draw(batch, healthString, textX, textY - 20);
 
             // Move to the next enemy
             startY -= (boxHeight + padding);
@@ -201,11 +199,10 @@ public class CastleScreen implements Screen {
         boolean encounterActive = false; // Set the flag to false indicating the encounter is over
     }
 
-    /**
-     * Prepares assets and variables for the intro, loads music, and starts encounter overlay.
-     */
+
     @Override
     public void show() {
+        // Prepare any assets or variables for the intro
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         Gdx.input.setInputProcessor(stage);
@@ -220,15 +217,9 @@ public class CastleScreen implements Screen {
         encounterManager.startOverlay();
     }
 
-    /**
-     * Renders the castle screen, including background, characters, enemies, and stage elements.
-     *
-     * @param delta the time in seconds since the last render
-     */
+
     @Override
     public void render(final float delta) {
-        final float drawMod = 30f; // Controls the maximum draw frequency
-
         // Clear screen
         game.clearScreen();
 
@@ -242,7 +233,7 @@ public class CastleScreen implements Screen {
         renderEnemies(batch, shapeRenderer);
 
         // Update and draw stage
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / drawMod));
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
 
         // Check for defeated characters and enemies and remove them from the stage

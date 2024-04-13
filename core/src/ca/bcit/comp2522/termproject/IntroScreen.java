@@ -87,13 +87,14 @@ public class IntroScreen implements Screen {
 
         // Create a window for the story text
         Window storyWindow = new Window("Story", skin);
-        storyWindow.add(scrollPane).prefWidth(Gdx.graphics.getWidth() * 0.8f).prefHeight(Gdx.graphics.getHeight() * 0.6f);
+        storyWindow.add(scrollPane).prefWidth(Gdx.graphics.getWidth() * 0.8f)
+                .prefHeight(Gdx.graphics.getHeight() * 0.6f);
         storyWindow.row();
         storyWindow.pack();
 
         // Position the story window in the center of the screen
-        storyWindow.setPosition(Gdx.graphics.getWidth() / 2 - storyWindow.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2 - storyWindow.getHeight() / 2);
+        storyWindow.setPosition((float) com.badlogic.gdx.Gdx.graphics.getWidth() / 2 - storyWindow.getWidth() / 2,
+                (float) com.badlogic.gdx.Gdx.graphics.getHeight() / 2 - storyWindow.getHeight() / 2);
 
         // Add listeners to buttons
         nextAreaButton.addListener(new ClickListener() {

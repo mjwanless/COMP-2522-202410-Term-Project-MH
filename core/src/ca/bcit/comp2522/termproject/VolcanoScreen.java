@@ -3,7 +3,6 @@ package ca.bcit.comp2522.termproject;
 import ca.bcit.comp2522.termproject.Character.Character;
 import ca.bcit.comp2522.termproject.Combat.EncounterManager;
 import ca.bcit.comp2522.termproject.Combat.EnemyGeneration;
-import ca.bcit.comp2522.termproject.Combat.EntityManager;
 import ca.bcit.comp2522.termproject.Enemy.Enemy;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -48,8 +47,6 @@ public class VolcanoScreen implements Screen {
     private final Skin skin; // Defines the look and feel of UI elements
     private Enemy[] enemies; // Array of enemies present in the forest
     private final EncounterManager encounterManager; // Manages encounters with enemies
-    private boolean encounterActive = true; // Indicates whether an encounter/battle is currently active
-    private final EntityManager entityManager;
 
     private int defeatedEnemyCount = 0; // Counter for defeated enemies
 
@@ -66,7 +63,8 @@ public class VolcanoScreen implements Screen {
         enemies = EnemyGeneration.generateEnemiesForLocation(Locations.VOLCANO, 2).toArray(new Enemy[0]);
 
         stage = new Stage(new ScreenViewport());
-        entityManager = new EntityManager(selectedCharacters, enemies);
+        ca.bcit.comp2522.termproject.Combat.EntityManager entityManager
+                = new ca.bcit.comp2522.termproject.Combat.EntityManager(selectedCharacters, enemies);
 
         encounterManager = new EncounterManager(stage, this::onEncounterEnd, entityManager);
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
@@ -189,7 +187,8 @@ public class VolcanoScreen implements Screen {
 
     // Method called when the EncounterManager is done
     private void onEncounterEnd() {
-        encounterActive = false; // Set the flag to false indicating the encounter is over
+        // Indicates whether an encounter/battle is currently active
+        boolean encounterActive = false; // Set the flag to false indicating the encounter is over
     }
     @Override
     public void show() {
@@ -286,7 +285,7 @@ public class VolcanoScreen implements Screen {
         restButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new OptionsAndSaveExitScreen(game, selectedCharacters, Locations.CASTLE)); // Change to the appropriate screen
+                game.setScreen(new OptionsAndSaveExitScreen(game, selectedCharacters, Locations.CASTLE));
             }
         });
         stage.addActor(restButton); // Add the new button to the stage

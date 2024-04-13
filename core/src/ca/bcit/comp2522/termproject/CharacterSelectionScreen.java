@@ -79,7 +79,7 @@ public class CharacterSelectionScreen implements Screen {
             // Stats
             Label statsLabel = new Label(character.getStatsAsString(), skin);
             statsLabel.setWrap(true); // Make sure the text wraps
-            rowTable.add(statsLabel).width(350).pad(20).padLeft(20).padRight(20); // Padding on all sides with extra on left and right
+            rowTable.add(statsLabel).width(350).pad(20).padLeft(20).padRight(20);
 
             // Select button
             TextButton selectButton = new TextButton("Select", skin);

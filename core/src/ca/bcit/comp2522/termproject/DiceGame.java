@@ -23,8 +23,8 @@ public class DiceGame extends Game {
 	Texture img;
 	public int combatCounter = 0;
 
-//	The first thing that happens is this create method is called. It then creates a new SpriteBatch for optimized
-//	rendering of images and sprites.
+	// The first thing that happens is this create method is called.
+	// It then creates a new SpriteBatch for optimized rendering of images and sprites.
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -34,14 +34,14 @@ public class DiceGame extends Game {
 	@Override
 	public void render () {
 		super.render(); // Important to call this to render the current screen
-
 	}
 
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
-
+		if (img != null) {
+			img.dispose();
+		}
 	}
 
 	// Utility method for clearing the screen, may be implemented in the future
