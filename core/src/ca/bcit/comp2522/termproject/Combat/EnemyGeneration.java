@@ -48,7 +48,7 @@ public class EnemyGeneration {
      * @param numberOfEnemies the number of enemies to generate.
      * @return a list of Enemy instances generated for the specified location.
      */
-    public static List<Enemy> generateEnemiesForLocation(Locations location, int numberOfEnemies) {
+    public static List<Enemy> generateEnemiesForLocation(final Locations location, final int numberOfEnemies) {
         List<Enemy> enemies = new ArrayList<>();
         List<Class<? extends Enemy>> availableEnemies = enemyPools.get(location);
 
@@ -66,5 +66,4 @@ public class EnemyGeneration {
         return enemies;
     }
 
-    // Other methods...
 }

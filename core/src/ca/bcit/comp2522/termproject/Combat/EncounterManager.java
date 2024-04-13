@@ -15,10 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.Random;
 
-enum Initiative {
-    PLAYER, ENEMY
-}
-
 public class EncounterManager implements CombatManager.CombatEventListener {
 
     private Stage stage;

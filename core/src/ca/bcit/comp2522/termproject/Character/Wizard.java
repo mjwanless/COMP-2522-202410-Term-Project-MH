@@ -12,11 +12,15 @@ package ca.bcit.comp2522.termproject.Character;
  *
  * @author Malcom Wanless
  * @author Heraldo Abreu
- *
  * @version 2024
  */
 public class Wizard extends Character {
     private static final String IMAGE_PATH = "Characters/Wizard.jpg";
+    private static final String WIZARD_NAME = "Wizard";
+    private static final int WIZARD_STRENGTH = 5;
+    private static final int WIZARD_HEALTH = 20;
+    private static final int WIZARD_DEFENSE = 5;
+    private static final int WIZARD_EVADE = 1;
     /**
      * Constructs a Wizard character with predefined attributes. The initialization
      * includes setting the Wizard's stats to reflect its magical capabilities and
@@ -25,7 +29,7 @@ public class Wizard extends Character {
     public Wizard() {
         // Assuming you have specific values for Wizard's stats
         // and you are storing the image in the 'Characters' directory.
-        super("Wizard", 5, 20, 5, 1, IMAGE_PATH);
+        super(WIZARD_NAME, WIZARD_STRENGTH, WIZARD_HEALTH, WIZARD_DEFENSE, WIZARD_EVADE, IMAGE_PATH);
     }
     // Since strength, health, defense, and evade are already in the Character class,
     // you don't need to redeclare them here unless you have class-specific behavior.

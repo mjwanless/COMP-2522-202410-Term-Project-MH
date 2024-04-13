@@ -1,4 +1,5 @@
 package ca.bcit.comp2522.termproject.Character;
+
 /**
  * The Paladin class represents a specific character type within the game, characterized
  * by its unique balance of strength, health, defense, and evade attributes. Paladins are
@@ -10,20 +11,25 @@ package ca.bcit.comp2522.termproject.Character;
  *
  * @author Malcolm Wanless
  * @author Heraldo Abreu
- *
  * @version 2024
- *
  */
 public class Paladin extends Character {
     private static final String IMAGE_PATH = "Characters/Paladin.jpg";
+    private static final String NAME = "Paladin";
+    private static final int STRENGTH = 4;
+    private static final int HEALTH = 20;
+    private static final int DEFENSE = 6;
+    private static final int EVADE = 2;
+
     /**
      * Constructs a Paladin character with predefined attributes. The Paladin's
      * name, strength, health, defense, and evade values are set upon instantiation,
      * along with its associated image path.
      */
     public Paladin() {
-        super("Paladin", 4, 20, 6, 2, IMAGE_PATH);
+        super(NAME, STRENGTH, HEALTH, DEFENSE, EVADE, IMAGE_PATH);
     }
+
     /**
      * Returns the file path to the image representing the Paladin.
      * This path is relative to the project's resources directory.
@@ -34,6 +40,7 @@ public class Paladin extends Character {
     public String getImagePath() {
         return IMAGE_PATH;
     }
+
     /**
      * Provides a formatted string containing the Paladin's statistics, including
      * its name, strength, health, defense, and evade values. This method overrides
@@ -46,6 +53,7 @@ public class Paladin extends Character {
         return String.format("Name: %s, Strength: %d, Health: %d, Defense: %d, Evade: %d",
                 getName(), getStrength(), getHealth(), getDefense(), getEvade());
     }
+
     /**
      * Returns a string representation of the Paladin, detailing its name, strength,
      * health, defense, and evade attributes. This method provides a convenient way

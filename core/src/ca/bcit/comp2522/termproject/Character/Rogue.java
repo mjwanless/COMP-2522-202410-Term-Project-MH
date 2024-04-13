@@ -10,12 +10,16 @@ package ca.bcit.comp2522.termproject.Character;
  *
  * @author Malcom Wanless
  * @author Heraldo Abreu
- *
  * @version 2024
  *
  */
 public class Rogue extends Character {
     private static final String IMAGE_PATH = "Characters/Rogue.jpg";
+    private static final String ROGUE_NAME = "Rogue";
+    private static final int ROGUE_STRENGTH = 2;
+    private static final int ROGUE_HEALTH = 20;
+    private static final int ROGUE_DEFENSE = 4;
+    private static final int ROGUE_EVADE = 4;
     /**
      * Constructs a Rogue character with predefined attributes. The Rogue's
      * attributes are initialized to represent its specialized role focusing on
@@ -24,7 +28,7 @@ public class Rogue extends Character {
     public Rogue() {
         // Assuming you have specific values for Rouge's stats
         // and you are storing the image in the 'Characters' directory.
-        super("Rouge", 2, 20, 4, 4, IMAGE_PATH);
+        super(ROGUE_NAME, ROGUE_STRENGTH, ROGUE_HEALTH, ROGUE_DEFENSE, ROGUE_EVADE, IMAGE_PATH);
     }
 
     // Since strength, health, defense, and evade are already in the Character class,

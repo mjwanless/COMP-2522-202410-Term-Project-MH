@@ -10,12 +10,16 @@ package ca.bcit.comp2522.termproject.Character;
  *
  * @author Malcom Wanless
  * @author Heraldo Abreu
- *
  * @version 2024
  *
  */
 public class Warrior extends Character {
     private static final String IMAGE_PATH = "Characters/Warrior.jpg";
+    private static final String WARRIOR_NAME = "Warrior";
+    private static final int WARRIOR_STRENGTH = 5;
+    private static final int WARRIOR_HEALTH = 20;
+    private static final int WARRIOR_DEFENSE = 5;
+    private static final int WARRIOR_EVADE = 1;
     /**
      * Constructs a Warrior character with predefined attributes. The Warrior's attributes
      * are initialized to highlight its combat strengths, particularly in terms of offense
@@ -24,7 +28,7 @@ public class Warrior extends Character {
     public Warrior() {
         // Assuming you have specific values for Paladin's stats
         // and you are storing the image in the 'Characters' directory.
-        super("Warrior", 5, 20, 5, 1, IMAGE_PATH);
+        super(WARRIOR_NAME, WARRIOR_STRENGTH, WARRIOR_HEALTH, WARRIOR_DEFENSE, WARRIOR_EVADE, IMAGE_PATH);
     }
     // Since strength, health, defense, and evade are already in the Character class,
     // you don't need to redeclare them here unless you have class-specific behavior.
