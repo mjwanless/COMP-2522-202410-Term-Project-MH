@@ -25,7 +25,6 @@
 ## Gameplay
 
 - **Starting a New Game**: Launch the game and select "New Game" to begin your adventure.
-- **Storyline**: Immerse yourself in the game's storyline as you progress.
 - **Class Selection**: Choose two classes for your characters. Currently, all classes have identical stats, with health being the primary attribute.
 - **Combat**: Engage in battles across various arenas against two enemies. Roll dice to perform attacks; enemies will counterattack. You have two additional attacks per combat to gain an advantage.
 
@@ -50,4 +49,3 @@ The repository is organized as follows:
 - **Mindmap**: Refer to `Mindmap.pdf` for a visual representation of the game's design and structure.
 - **UML Diagrams**: Consult `UML.pdf` for detailed UML diagrams illustrating the system architecture.
 
-For further information or assistance, please refer to the project's GitHub repository: [https://github.com/mjwanless/COMP-2522-202410-Term-Project-MH](https://github.com/mjwanless/COMP-2522-202410-Term-Project-MH).
